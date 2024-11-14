@@ -1,5 +1,7 @@
 package pt.pa;
 
-public class TransportMap {
+import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
+
+public class TransportMap extends GraphEdgeList {
 
 }

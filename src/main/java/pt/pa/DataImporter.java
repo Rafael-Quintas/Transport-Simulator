@@ -1,0 +1,76 @@
+package pt.pa;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DataImporter {
+    public static List<Stop> loadStops() {
+        List<Stop> stops = new ArrayList<>();
+
+        try (CSVReader reader = new CSVReader(new FileReader("src/main/resources/dataset/stops.csv"))) {
+            String[] nextLine;
+            reader.readNext();
+            while ((nextLine = reader.readNext()) != null) {
+                String stopCode = nextLine[0];
+                String stopName = nextLine[1];
+                double latitude = Double.parseDouble(nextLine[2]);
+                double longitude = Double.parseDouble(nextLine[3]);
+
+                Stop stop = new Stop(stopCode, stopName, latitude, longitude);
+                stops.add(stop);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return stops;
+    }
+
+    public static List<GenericRoute> loadRoutes(String filePath) {
+        List<GenericRoute> genericRoutes = new ArrayList<>();
+
+        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
+            String[] values;
+            csvReader.readNext(); // Ignorar a primeira linha do ficheiro csv
+            while ((values = csvReader.readNext()) != null) {
+                List<Route> routes = new ArrayList<>();
+
+                // Usar funções auxiliares para não ter routes nulas
+                addRouteIfNotNull(routes, createRoute(TransportType.TRAIN, values[2], values[7], values[12]));
+                addRouteIfNotNull(routes, createRoute(TransportType.BUS, values[3], values[8], values[13]));
+                addRouteIfNotNull(routes, createRoute(TransportType.BOAT, values[4], values[9], values[14]));
+                addRouteIfNotNull(routes, createRoute(TransportType.WALK, values[5], values[10], values[15]));
+                addRouteIfNotNull(routes, createRoute(TransportType.BICYCLE, values[6], values[11], values[16]));
+
+                genericRoutes.add(new GenericRoute(values[0], values[1], routes));
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return genericRoutes;
+    }
+
+    private static Route createRoute(TransportType type, String distanceStr, String durationStr, String costStr) {
+        if (distanceStr.isEmpty() && durationStr.isEmpty() && costStr.isEmpty()) {
+            return null; // Não cria a rota se existirem valores vazios
+        }
+
+        double distance = Double.parseDouble(distanceStr);
+        int duration = Integer.parseInt(durationStr);
+        double cost = Double.parseDouble(costStr);
+
+        return new Route(type, distance, duration, cost);
+    }
+
+    private static void addRouteIfNotNull(List<Route> routes, Route route) {
+        if (route != null) {
+            routes.add(route);
+        }
+    }
+}

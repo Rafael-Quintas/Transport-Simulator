@@ -37,7 +37,7 @@ public class MapView extends BorderPane {
             System.exit(-1);
         }
     }
-
+    
     private void doLayout() {
         setCenter(this.graphView);
     }
