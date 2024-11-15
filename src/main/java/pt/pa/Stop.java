@@ -13,4 +13,8 @@ public class Stop {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public String getStopCode() {
+        return this.stopCode;
+    }
 }

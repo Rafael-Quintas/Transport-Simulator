@@ -2,11 +2,14 @@ package pt.pa;
 
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pt.pa.view.MapView;
+
+import java.util.List;
 
 /**
  * Main class
@@ -26,9 +29,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         // Boilerplate. Need your own class, parametrized
-        Graph graph = new GraphEdgeList();
+        Graph<Stop, List<Route>> graph = new TransportMap().loadToGraph();
 
         MapView view = new MapView(graph);
 

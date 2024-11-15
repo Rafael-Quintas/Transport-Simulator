@@ -12,5 +12,17 @@ public class GenericRoute {
         this.stopEnd = end;
         this.routes = routes;
     }
+
+    public String getStopStart() {
+        return this.stopStart;
+    }
+
+    public String getStopEnd() {
+        return this.stopEnd;
+    }
+
+    public List<Route> getRoutes() {
+        return this.routes;
+    }
 }
 

@@ -31,10 +31,10 @@ public class DataImporter {
         return stops;
     }
 
-    public static List<GenericRoute> loadRoutes(String filePath) {
+    public static List<GenericRoute> loadRoutes() {
         List<GenericRoute> genericRoutes = new ArrayList<>();
 
-        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
+        try (CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/dataset/routes.csv"))) {
             String[] values;
             csvReader.readNext(); // Ignorar a primeira linha do ficheiro csv
             while ((values = csvReader.readNext()) != null) {
@@ -57,7 +57,7 @@ public class DataImporter {
     }
 
     private static Route createRoute(TransportType type, String distanceStr, String durationStr, String costStr) {
-        if (distanceStr.isEmpty() && durationStr.isEmpty() && costStr.isEmpty()) {
+        if (distanceStr.isEmpty() || durationStr.isEmpty() || costStr.isEmpty()) {
             return null; // Não cria a rota se existirem valores vazios
         }
 
