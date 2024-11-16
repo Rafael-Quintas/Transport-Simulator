@@ -30,9 +30,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Boilerplate. Need your own class, parametrized
-        Graph<Stop, List<Route>> graph = new TransportMap().loadToGraph();
+        TransportMap map = new TransportMap();
 
-        MapView view = new MapView(graph);
+        MapView view = new MapView(map.getGraph());
+
+        map.positionVertex(view.getSmartGraph());
 
         Scene scene = new Scene(view, 1024, 720);
 

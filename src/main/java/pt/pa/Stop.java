@@ -17,4 +17,8 @@ public class Stop {
     public String getStopCode() {
         return this.stopCode;
     }
+
+    public String toString() {
+        return stopName;
+    }
 }

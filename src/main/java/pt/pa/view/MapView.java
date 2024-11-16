@@ -39,6 +39,10 @@ public class MapView extends BorderPane {
             System.exit(-1);
         }
     }
+
+    public SmartGraphPanel<Stop, List<Route>> getSmartGraph() {
+        return this.graphView;
+    }
     
     private void doLayout() {
         setCenter(this.graphView);

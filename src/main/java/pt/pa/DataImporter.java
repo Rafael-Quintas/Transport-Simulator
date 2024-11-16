@@ -1,11 +1,15 @@
 package pt.pa;
 
+import com.brunomnsilva.smartgraph.graph.Graph;
+import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class DataImporter {
@@ -31,7 +35,7 @@ public class DataImporter {
         return stops;
     }
 
-    public static List<GenericRoute> loadRoutes() {
+    public static List<GenericRoute> loadRoutes(List<Stop> stopList) {
         List<GenericRoute> genericRoutes = new ArrayList<>();
 
         try (CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/dataset/routes.csv"))) {
@@ -47,7 +51,7 @@ public class DataImporter {
                 addRouteIfNotNull(routes, createRoute(TransportType.WALK, values[5], values[10], values[15]));
                 addRouteIfNotNull(routes, createRoute(TransportType.BICYCLE, values[6], values[11], values[16]));
 
-                genericRoutes.add(new GenericRoute(values[0], values[1], routes));
+                genericRoutes.add(new GenericRoute(getStopByDesignation(values[0], stopList), getStopByDesignation(values[1], stopList), routes));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -72,5 +76,36 @@ public class DataImporter {
         if (route != null) {
             routes.add(route);
         }
+    }
+
+    public static void loadCordinates(SmartGraphPanel<Stop, List<Route>> smartGraph, Graph<Stop, List<Route>> graph) {
+        try (CSVReader reader = new CSVReader(new FileReader("src/main/resources/dataset/xy.csv"))) {
+            String[] nextLine;
+            reader.readNext();
+            while ((nextLine = reader.readNext()) != null) {
+                List<Vertex<Stop>> list = (List<Vertex<Stop>>) graph.vertices();
+                String stopCode = nextLine[0];
+                Double x = Double.parseDouble(nextLine[1]);
+                Double y = Double.parseDouble(nextLine[2]);
+
+                for (Vertex<Stop> v : list) {
+                    if (v.element().getStopCode().equals(stopCode)) {
+                        smartGraph.setVertexPosition(v, x, y);
+                    }
+                }
+
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Stop getStopByDesignation(String code, List<Stop> stopList) {
+        for (Stop s : stopList) {
+            if (s.getStopCode().equals(code)) {
+                return s;
+            }
+        }
+        return null;
     }
 }

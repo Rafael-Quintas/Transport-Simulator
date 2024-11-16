@@ -3,21 +3,21 @@ package pt.pa;
 import java.util.List;
 
 public class GenericRoute {
-    private String stopStart;
-    private String stopEnd;
+    private Stop stopStart;
+    private Stop stopEnd;
     private List<Route> routes;
 
-    public GenericRoute(String start, String end, List<Route> routes) {
+    public GenericRoute(Stop start, Stop end, List<Route> routes) {
         this.stopStart = start;
         this.stopEnd = end;
         this.routes = routes;
     }
 
-    public String getStopStart() {
+    public Stop getStopStart() {
         return this.stopStart;
     }
 
-    public String getStopEnd() {
+    public Stop getStopEnd() {
         return this.stopEnd;
     }
 
