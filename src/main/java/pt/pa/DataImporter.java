@@ -12,7 +12,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Classe responsável por importar dados de arquivos CSV para inicializar objetos.
+ */
 public class DataImporter {
+
+    /**
+     * Carrega a lista de stops a partir do arquivo CSV.
+     *
+     * @return uma lista de objetos {@link Stop} contendo as informações carregadas.
+     */
     public static List<Stop> loadStops() {
         List<Stop> stops = new ArrayList<>();
 
@@ -35,6 +44,13 @@ public class DataImporter {
         return stops;
     }
 
+
+    /**
+     * Carrega as rotas GenericRoutes a partir do arquivo CSV e associa com as paragens fornecidas.
+     *
+     * @param stopList lista de paragens ({@link Stop}) disponíveis.
+     * @return uma lista de objetos {@link GenericRoute}.
+     */
     public static List<GenericRoute> loadRoutes(List<Stop> stopList) {
         List<GenericRoute> genericRoutes = new ArrayList<>();
 
@@ -60,6 +76,16 @@ public class DataImporter {
         return genericRoutes;
     }
 
+    /**
+     * Cria uma instância de {@link Route} com base nos parâmetros fornecidos.
+     * Retorna null se qualquer parâmetro estiver vazio.
+     *
+     * @param type Tipo de transporte ({@link TransportType}).
+     * @param distanceStr Distância em formato String.
+     * @param durationStr Duração em formato String.
+     * @param costStr Custo em formato String.
+     * @return Instância de {@link Route} ou null.
+     */
     private static Route createRoute(TransportType type, String distanceStr, String durationStr, String costStr) {
         if (distanceStr.isEmpty() || durationStr.isEmpty() || costStr.isEmpty()) {
             return null; // Não cria a rota se existirem valores vazios
@@ -72,12 +98,24 @@ public class DataImporter {
         return new Route(type, distance, duration, cost);
     }
 
+    /**
+     * Adiciona uma rota à lista se não for nula.
+     *
+     * @param routes Lista de rotas.
+     * @param route Rota a ser adicionada.
+     */
     private static void addRouteIfNotNull(List<Route> routes, Route route) {
         if (route != null) {
             routes.add(route);
         }
     }
 
+    /**
+     * Carrega as coordenadas dos vértices no grafo e ajusta as suas posições no painel do SmartGraph.
+     *
+     * @param smartGraph Painel do SmartGraph ({@link SmartGraphPanel})
+     * @param graph Grafo que contém os vértices ({@link Graph})
+     */
     public static void loadCordinates(SmartGraphPanel<Stop, List<Route>> smartGraph, Graph<Stop, List<Route>> graph) {
         try (CSVReader reader = new CSVReader(new FileReader("src/main/resources/dataset/xy.csv"))) {
             String[] nextLine;
@@ -100,6 +138,13 @@ public class DataImporter {
         }
     }
 
+    /**
+     * Encontra uma paragem ({@link Stop}) pelo código de designação
+     *
+     * @param code Código da paragem.
+     * @param stopList Lista de paragens disponíveis.
+     * @return uma instância de ({@link Stop}) correspondente ao código, ou null se não for encontrada.
+     */
     private static Stop getStopByDesignation(String code, List<Stop> stopList) {
         for (Stop s : stopList) {
             if (s.getStopCode().equals(code)) {

@@ -1,5 +1,8 @@
 package pt.pa;
 
+/**
+ * Enumeração que representa os diferentes tipos de transporte disponíveis.
+ */
 public enum TransportType {
     BUS,
     TRAIN,
@@ -7,3 +10,4 @@ public enum TransportType {
     WALK,
     BICYCLE
 }
+
