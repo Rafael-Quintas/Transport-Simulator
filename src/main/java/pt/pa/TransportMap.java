@@ -43,7 +43,7 @@ public class TransportMap {
             graph.insertVertex(s);
         }
 
-        List<GenericRoute> genericRouteList = DataImporter.loadRoutes(stopList);
+        List<GenericRoute> genericRouteList = DataImporter.loadRoutes();
         for (GenericRoute gr : genericRouteList) {
             graph.insertEdge(getStopByDesignation(gr.getStopStart(), stopList), getStopByDesignation(gr.getStopEnd(), stopList), gr.getRoutes());
         }

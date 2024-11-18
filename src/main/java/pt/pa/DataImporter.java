@@ -9,7 +9,6 @@ import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -48,10 +47,9 @@ public class DataImporter {
     /**
      * Carrega as rotas GenericRoutes a partir do arquivo CSV e associa com as paragens fornecidas.
      *
-     * @param stopList lista de paragens ({@link Stop}) disponíveis.
      * @return uma lista de objetos {@link GenericRoute}.
      */
-    public static List<GenericRoute> loadRoutes(List<Stop> stopList) {
+    public static List<GenericRoute> loadRoutes() {
         List<GenericRoute> genericRoutes = new ArrayList<>();
 
         try (CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/dataset/routes.csv"))) {
