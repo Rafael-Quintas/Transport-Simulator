@@ -67,7 +67,7 @@ public class DataImporter {
                 addRouteIfNotNull(routes, createRoute(TransportType.WALK, values[5], values[10], values[15]));
                 addRouteIfNotNull(routes, createRoute(TransportType.BICYCLE, values[6], values[11], values[16]));
 
-                genericRoutes.add(new GenericRoute(getStopByDesignation(values[0], stopList), getStopByDesignation(values[1], stopList), routes));
+                genericRoutes.add(new GenericRoute(values[0], values[1], routes));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -123,8 +123,8 @@ public class DataImporter {
             while ((nextLine = reader.readNext()) != null) {
                 List<Vertex<Stop>> list = (List<Vertex<Stop>>) graph.vertices();
                 String stopCode = nextLine[0];
-                Double x = Double.parseDouble(nextLine[1]);
-                Double y = Double.parseDouble(nextLine[2]);
+                double x = Double.parseDouble(nextLine[1]);
+                double y = Double.parseDouble(nextLine[2]);
 
                 for (Vertex<Stop> v : list) {
                     if (v.element().getStopCode().equals(stopCode)) {
@@ -136,21 +136,5 @@ public class DataImporter {
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Encontra uma paragem ({@link Stop}) pelo código de designação
-     *
-     * @param code Código da paragem.
-     * @param stopList Lista de paragens disponíveis.
-     * @return uma instância de ({@link Stop}) correspondente ao código, ou null se não for encontrada.
-     */
-    private static Stop getStopByDesignation(String code, List<Stop> stopList) {
-        for (Stop s : stopList) {
-            if (s.getStopCode().equals(code)) {
-                return s;
-            }
-        }
-        return null;
     }
 }

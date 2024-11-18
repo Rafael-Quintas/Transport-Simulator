@@ -8,8 +8,8 @@ import java.util.List;
  *
  */
 public class GenericRoute {
-    private Stop stopStart;
-    private Stop stopEnd;
+    private String stopStart;
+    private String stopEnd;
     private List<Route> routes;
 
     /**
@@ -19,7 +19,7 @@ public class GenericRoute {
      * @param end Paragem final da rota ({@link Stop}).
      * @param routes Lista de rotas específicas ({@link Route}) associadas a esta rota genérica.
      */
-    public GenericRoute(Stop start, Stop end, List<Route> routes) {
+    public GenericRoute(String start, String end, List<Route> routes) {
         this.stopStart = start;
         this.stopEnd = end;
         this.routes = routes;
@@ -30,7 +30,7 @@ public class GenericRoute {
      *
      * @return a paragem inicial ({@link Stop}).
      */
-    public Stop getStopStart() {
+    public String getStopStart() {
         return this.stopStart;
     }
 
@@ -39,7 +39,7 @@ public class GenericRoute {
      *
      * @return a paragem de destino ({@link Stop}).
      */
-    public Stop getStopEnd() {
+    public String getStopEnd() {
         return this.stopEnd;
     }
 
