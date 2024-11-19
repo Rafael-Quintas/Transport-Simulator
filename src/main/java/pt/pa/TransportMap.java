@@ -5,6 +5,7 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,22 +59,60 @@ public class TransportMap {
         DataImporter.loadCordinates(smartGraph, this.graph);
     }
 
-    public void addStop(Stop stop) {
-        if (stop == null) { throw new IllegalArgumentException("O vértice a adicionar não pode ser nulo."); }
-        graph.insertVertex(stop);
-    }
-
-    public void addRoute(String start, String end, Route route) {
-        List<Vertex<Stop>> list = (List<Vertex<Stop>>) graph.vertices();
-        Vertex<Stop> stopStart = getVertexByDesignation(start, list);
-        Vertex<Stop> stopEnd = getVertexByDesignation(end, list);
-
-        if (stopStart == null || stopEnd == null) {
-            throw new IllegalArgumentException("Um ou ambos os vértices não existem no grafo.");
+    public void addStop(String stopCode, String stopName, String latitude, String longitude) {
+        if (stopCode.isBlank() || stopName.isBlank()) {
+            showError("Stop name/code must not be empty.");
+            return;
         }
 
-        List<Route> routeList = getOrCreateRouteList(stopStart, stopEnd);
-        graph.insertEdge(stopStart, stopEnd, routeList);
+        if (!isNumeric(latitude) || !isNumeric(longitude)) {
+            showError("Latitude and Longitude must be valid numbers.");
+            return;
+        }
+
+        try {
+            graph.insertVertex(new Stop(stopCode, stopName, Double.parseDouble(latitude), Double.parseDouble(longitude)));
+        }
+        catch (Exception e) {
+            showError(e.getMessage());
+        }
+    }
+
+    public void addRoute(Vertex<Stop> v1, Vertex<Stop> v2, String type, String distance, String duration, String cost) {
+        if (!isNumeric(distance) || !isNumeric(cost) || !isNumeric(duration)) {
+            showError("Distance, Duration and Cost must be valid numbers.");
+            return;
+        }
+        try {
+            List<Route> list = getOrCreateRouteList(v1, v2);
+            TransportType transportType = TransportType.valueOf(type.toUpperCase());
+            list.add(new Route(transportType, Double.parseDouble(distance), Integer.parseInt(duration), Double.parseDouble(cost)));
+            graph.insertEdge(v1, v2, list);
+        }
+        catch (Exception e)
+        {
+            showError(e.getMessage());
+        }
+    }
+
+    public void removeStop(Vertex<Stop> vertex) {
+        try {
+            graph.removeVertex(vertex);
+        }
+        catch (Exception e)
+        {
+            showError(e.getMessage());
+        }
+    }
+
+    public void removeRoute(Edge<List<Route>, Stop> edge) {
+        try {
+            graph.removeEdge(edge);
+        }
+        catch (Exception e)
+        {
+            showError(e.getMessage());
+        }
     }
 
     /**
@@ -86,13 +125,6 @@ public class TransportMap {
     private static Stop getStopByDesignation(String code, List<Stop> stopList) {
         for (Stop s : stopList) {
             if (s.getStopCode().equals(code)) { return s; }
-        }
-        return null;
-    }
-
-    private Vertex<Stop> getVertexByDesignation(String code,  List<Vertex<Stop>> list) {
-        for (Vertex<Stop> v : list) {
-            if (v.element().getStopCode().equals(code)) { return v; }
         }
         return null;
     }
@@ -112,5 +144,26 @@ public class TransportMap {
             return new ArrayList<>();
         }
         return routeList;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // Error Reporting -> First method taken from PA´s laboratory.
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("An error has occurred. Description below:");
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
+
+    private boolean isNumeric(String string) {
+        if (string == null || string.isBlank()) return false;
+        try {
+            Double.parseDouble(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

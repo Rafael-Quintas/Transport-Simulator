@@ -18,6 +18,7 @@ public class Stop {
      * @param longitude Longitude da paragem.
      */
     public Stop(String stopCode, String stopName, double latitude, double longitude) {
+        if (stopCode == null || stopName == null) { throw new IllegalArgumentException("Name and Code cannot be null."); }
         this.stopCode = stopCode;
         this.stopName = stopName;
         this.latitude = latitude;

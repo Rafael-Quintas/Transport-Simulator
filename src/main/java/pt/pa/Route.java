@@ -19,6 +19,7 @@ public class Route {
      * @param cost Custo da rota em unidades monetárias.
      */
     public Route(TransportType type, double distance, int duration, double cost) {
+        if (distance < 0 || duration < 0) { throw new IllegalArgumentException("Distance and Duration cannot be negative."); }
         this.transportType = type;
         this.distance = distance;
         this.duration = duration;
