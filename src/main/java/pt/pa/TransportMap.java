@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Representa um mapa de transporte baseado num grafo que modela as Stops.
  * ({@link Stop}) e as suas conexões ({@link Route}).
+ *  @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class TransportMap {
     private Graph<Stop, List<Route>> graph;

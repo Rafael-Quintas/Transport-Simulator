@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Representa uma Route genérica que conecta duas Stops ({@link Stop})
  * e contém uma lista de Routes ({@link Route}) específicas para diferentes tipos de transportes.
- *
+ * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class GenericRoute {
     private String stopStart;

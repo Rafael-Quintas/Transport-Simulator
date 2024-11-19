@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Classe responsável por importar dados de arquivos CSV para inicializar objetos.
+ * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class DataImporter {
 

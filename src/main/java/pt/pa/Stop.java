@@ -2,6 +2,7 @@ package pt.pa;
 
 /**
  * Representa uma Stop com um código único, nome e coordenadas.
+ *  @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class Stop {
     private String stopCode;

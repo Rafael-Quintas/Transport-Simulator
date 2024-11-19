@@ -3,6 +3,7 @@ package pt.pa;
 /**
  * Representa uma Route especídfica que descreve o tranporte entre duas Stops.
  * Contém informações sobre o tipo de transporte, distância, duração e custo.
+ *  @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class Route {
     private TransportType transportType;

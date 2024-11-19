@@ -36,24 +36,33 @@ A estrutura de dados baseia-se em:
 ## Interface Atual
 Exemplo de como a interface está estruturada:
 
-![Interface Atual](\images\app_javafx.png)
+![Interface Atual](\Ficheiros Auxiliares\images\app_javafx.png)
 
 ---
 
 # Mockup da Futura Interface Gráfica (GUI)
 Descrição do mockup idealizado para a interface gráfica:
 
-![Mockup](\images\mockup.png)
+![Mockup](\Ficheiros Auxiliares\images\Mockup.png)
 
 ## Funcionalidades Identificadas na Mockup
 
 ### Navegação Principal (Barra Superior)
 Botões interativos disponíveis na barra de navegação:
-- **Stops**: Permite visualizar todas as paragens disponíveis no mapa.
-- **Routes**: Exibe as rotas disponíveis entre as paragens.
-- **Top 5**: Apresenta as 5 paragens mais relevantes (com base em critérios como centralidade ou popularidade).
-- **Logs**: Acede ao histórico de operações realizadas pelo utilizador na aplicação.
+- **Origin**: Dropdown menu para escolher a paragem de origem.
+- **Destination**: Dropdown menu para escolher a paragem de destino.
+- **Criteria**: Dropdown menu para escolher o critério de otimização do percurso.
+- **Transport Type**: Dropdown menu para escolher o meio de transporte.
+- **Calculate Cost**: Butão que calcula o custo total com base nos critérios selecionados.
+- **Top 5**: Butão que faz apresentar as 5 paragens mais relevantes (com base em critérios como centralidade ou popularidade).
+- **Stops N Routes Away**: Butão que irá fazer aparecer pop ups em que o utilizador seleciona as N rotas e a paragem E.
+- **Logs**: Butão que acede ao histórico de operações realizadas pelo utilizador na aplicação, pois estas serão gravadas automaticamente.
 
+### Funcionalidade ao clicar no butão "Top 5".
+![Tabela Top5](\Ficheiros Auxiliares\images\Top5Central.png)  
+### Funcionalidade ao dar duplo clique numa rota.
+Nota: Estes dados não são baseados no projeto apenas servem como uma ideia geral de apresentação da tabela mencionada no enunciado.
+![Double Click Route](\Ficheiros Auxiliares\images\DoubleClickRoute.png)
 ---
 
 ### Mapa Interativo
