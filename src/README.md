@@ -31,91 +31,63 @@ A estrutura de dados baseia-se em:
    - `DataImporter`: Lê os ficheiros CSV para carregar paragens e rotas no grafo.
 
 ---
-## Mockup da Interface Gráfica
 
-### Visão Geral
-A interface gráfica apresenta um mapa interativo que permite:
-1. Visualizar a rede de transportes (paragens e rotas) geograficamente.
-2. Selecionar paragens ou rotas para visualizar informações detalhadas.
-3. Adicionar, editar ou remover paragens e rotas (possível implementação futura).
 
-### Componentes Visuais
-1. **Barra de Título**:
-   - Exibe o nome do projeto: `Projeto PA 2024/25 - Maps`.
-   
-
-2. **Mapa Interativo**:
-   - Mostra as paragens como círculos azuis.
-   - Linhas tracejadas vermelhas indicam as rotas entre as paragens.
-   
-
-3. **Paragens e Rotas**:
-   - Cada círculo azul representa uma paragem, identificado pelo nome.
-   - As linhas tracejadas conectam as paragens, representando as rotas disponíveis.
-
----
-
-## Mockup Visual
+## Interface Atual
 Exemplo de como a interface está estruturada:
 
-![Mockup da Interface](\images\app_javafx.png)
+![Interface Atual](\images\app_javafx.png)
 
 ---
 
 # Mockup da Futura Interface Gráfica (GUI)
 Descrição do mockup idealizado para a interface gráfica:
 
-## **Tela Principal**
+![Mockup](\images\mockup.png)
 
-### Menu Superior
-- **Opções principais:**
-   - `Importar Dataset`: Permite carregar os arquivos CSV do dataset.
-   - `Visualizar Métricas`: Exibe informações detalhadas, como número total de paragens, rotas e métricas de centralidade.
-   - `Calcular Rota`: Acede à funcionalidade de cálculo do percurso mais curto com base em critérios como distância, tempo ou custo.
-   - `Selecionar Percurso`: Ativa o modo de seleção manual de percursos.
-   - `Reiniciar`: Reinicia a aplicação.
-   - `Salvar/Exportar`: Permite guardar o estado atual ou exportar resultados.
+## Funcionalidades Identificadas na Mockup
 
-### Área de Visualização do Grafo
-- Representação gráfica do sistema de transportes, utilizando a biblioteca *JavaFXSmartGraph*.
-- **Interatividade:**
-   - Duplo clique numa paragem ou rota para obter informações detalhadas.
-   - Destaque visual dos percursos calculados com cores associadas ao meio de transporte.
-
-### Legenda
-- Representação visual das paragens e rotas:
-   - **Cores distintas:** Para os diferentes meios de transporte.
-   - **Ícones:** Para diferenciar tipos de paragens (isoladas ou conectadas).
-
-### **Métricas**
-- **Botão ou Aba "Exibir Métricas"**:
-   - Número total de paragens e rotas.
-   - Lista de centralidade das paragens.
-   - Gráfico de barras para as 5 paragens mais centrais.
-
-
-### **Procura de Caminhos**
-- **Formulário para entrada de dados:**
-   - Paragem de origem e destino (_dropdown_ ou clique no grafo).
-   - Critério de otimização: distância, duração ou sustentabilidade.
-   - Meios de transporte selecionáveis (checkboxes para comboio, autocarro, barco, caminhada e bicicleta).
-- **Botão "Calcular Caminho"**:
-   - Atualiza o grafo com o percurso otimizado destacado.
-
-
-### **Interatividade e Seleção Manual**
-- **Modo Seleção Manual**:
-   - Clique na paragem inicial.
-   - Seleção de paragens subsequentes, apenas adjacentes.
-   - Visualização imediata dos custos da rota escolhida.
-
-
-### **Logger**
-- Painel ou botão acessível para visualizar o histórico de operações realizadas.
+### Navegação Principal (Barra Superior)
+Botões interativos disponíveis na barra de navegação:
+- **Stops**: Permite visualizar todas as paragens disponíveis no mapa.
+- **Routes**: Exibe as rotas disponíveis entre as paragens.
+- **Top 5**: Apresenta as 5 paragens mais relevantes (com base em critérios como centralidade ou popularidade).
+- **Logs**: Acede ao histórico de operações realizadas pelo utilizador na aplicação.
 
 ---
 
-## Estrutura dos Dados de Entrada
+### Mapa Interativo
+#### Representação Geográfica:
+- Paragens apresentadas como círculos azuis, com etiquetas indicando os seus nomes.
+- Rotas desenhadas como linhas tracejadas vermelhas, ligando as paragens correspondentes.
+
+#### Possível Interatividade:
+- Clicar numa paragem para obter informações detalhadas (como conexões ou rotas disponíveis).
+- Seleção dinâmica de rotas e percursos diretamente no mapa.
+
+---
+
+### Ferramentas de Pesquisa (Painel Superior Direito)
+Filtros disponíveis para personalizar a pesquisa:
+- **Origin**: Permite selecionar uma paragem de origem.
+- **Destination**: Permite selecionar uma paragem de destino.
+- **Transport**: Filtro para escolher o tipo de transporte (autocarro, comboio, etc.).
+- **Sort By**: Critério de ordenação, possivelmente para exibir percursos com base em distância, custo ou duração.
+
+---
+
+### Painel de Cálculo de Percurso (Inferior Esquerdo)
+#### Botão "Calculate Route":
+- Inicia o cálculo do percurso ideal entre a paragem de origem e a de destino selecionadas.
+
+#### Exibição de Resultados:
+- **Distance**: Apresenta a distância total do percurso calculado.
+- **Duration**: Exibe a duração estimada para o percurso.
+- **Cost**: Mostra o custo associado ao percurso, dependendo dos meios de transporte selecionados.
+
+---
+
+### Estrutura dos Dados de Entrada
 
 Os dados são carregados a partir de ficheiros CSV:
 1. **`stops.csv`:** Contém as informações das paragens:
@@ -127,3 +99,11 @@ Os dados são carregados a partir de ficheiros CSV:
 
 
 3. **`xy.csv`:** Coordenadas para posicionar visualmente as paragens no mapa interativo.
+
+---
+
+## Créditos
+Este projeto foi desenvolvido por:
+- **Rafael Quintas**
+- **Rafael Pato**
+- **Guilherme Pereira**
