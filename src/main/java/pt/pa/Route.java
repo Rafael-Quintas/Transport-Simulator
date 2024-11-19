@@ -1,7 +1,7 @@
 package pt.pa;
 
 /**
- * Representa uma rota especídfica que descreve o tranporte entre duas paragens.
+ * Representa uma Route especídfica que descreve o tranporte entre duas Stops.
  * Contém informações sobre o tipo de transporte, distância, duração e custo.
  */
 public class Route {
@@ -13,10 +13,10 @@ public class Route {
     /**
      * Construtor para inicializar uma instância de {@code Route}.
      *
-     * @param type Tipo de transporte utilizado nesta rota ({@link TransportType}).
-     * @param distance Distância da rota em Kms
-     * @param duration Duração da rota em minutos.
-     * @param cost Custo da rota em unidades monetárias.
+     * @param type Tipo de transporte utilizado nesta Route ({@link TransportType}).
+     * @param distance Distância da Route em Kms
+     * @param duration Duração da Route em minutos.
+     * @param cost Custo da Route em unidades monetárias.
      */
     public Route(TransportType type, double distance, int duration, double cost) {
         if (distance < 0 || duration < 0) { throw new IllegalArgumentException("Distance and Duration cannot be negative."); }

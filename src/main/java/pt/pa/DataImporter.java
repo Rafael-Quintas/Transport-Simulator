@@ -17,7 +17,7 @@ import java.util.List;
 public class DataImporter {
 
     /**
-     * Carrega a lista de stops a partir do arquivo CSV.
+     * Carrega a lista de Stops a partir do arquivo CSV.
      *
      * @return uma lista de objetos {@link Stop} contendo as informações carregadas.
      */
@@ -45,7 +45,7 @@ public class DataImporter {
 
 
     /**
-     * Carrega as rotas GenericRoutes a partir do arquivo CSV e associa com as paragens fornecidas.
+     * Carrega as GenericRoutes a partir do arquivo CSV e associa com as paragens fornecidas.
      *
      * @return uma lista de objetos {@link GenericRoute}.
      */
@@ -97,7 +97,7 @@ public class DataImporter {
     }
 
     /**
-     * Adiciona uma rota à lista se não for nula.
+     * Adiciona uma Route à lista se não for nula.
      *
      * @param routes Lista de rotas.
      * @param route Rota a ser adicionada.

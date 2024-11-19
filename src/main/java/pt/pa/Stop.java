@@ -1,7 +1,7 @@
 package pt.pa;
 
 /**
- * Representa uma paragem com um código único, nome e coordenadas.
+ * Representa uma Stop com um código único, nome e coordenadas.
  */
 public class Stop {
     private String stopCode;
@@ -12,10 +12,10 @@ public class Stop {
     /**
      * Construtor para inicializar uma instância de {@code Stop}.
      *
-     * @param stopCode Código único da paragem.
-     * @param stopName Nome da paragem.
-     * @param latitude Latitude da paragem.
-     * @param longitude Longitude da paragem.
+     * @param stopCode Código único da Stop.
+     * @param stopName Nome da Stop.
+     * @param latitude Latitude da Stop.
+     * @param longitude Longitude da Stop.
      */
     public Stop(String stopCode, String stopName, double latitude, double longitude) {
         if (stopCode == null || stopName == null) { throw new IllegalArgumentException("Name and Code cannot be null."); }
@@ -26,18 +26,18 @@ public class Stop {
     }
 
     /**
-     * Obrém o código único da paragem.
+     * Obtém o código único da Stop.
      *
-     * @return Código da paragem.
+     * @return Código da Stop.
      */
     public String getStopCode() {
         return this.stopCode;
     }
 
     /**
-     * Retorna uma representação em String da paragem, que é o seu nome.
+     * Retorna uma representação em String da Stop, que é o seu nome.
      *
-     * @return Nome da paragem.
+     * @return Nome da Stop.
      */
     public String toString() {
         return stopName;
