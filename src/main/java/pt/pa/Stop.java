@@ -35,12 +35,24 @@ public class Stop {
         return this.stopCode;
     }
 
+    public String getStopName() {
+        return this.stopName;
+    }
+
     /**
      * Retorna uma representação em String da Stop, que é o seu nome.
      *
      * @return Nome da Stop.
      */
     public String toString() {
-        return stopName;
+        return this.stopName;
+    }
+
+    public double getLatitude() {
+        return this.latitude;
+    }
+
+    public double getLongitude() {
+        return this.longitude;
     }
 }

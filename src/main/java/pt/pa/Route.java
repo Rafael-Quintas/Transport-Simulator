@@ -26,4 +26,20 @@ public class Route {
         this.duration = duration;
         this.cost = cost;
     }
+
+    public TransportType getTransportType(){
+        return this.transportType;
+    }
+
+    public double getDistance(){
+        return this.distance;
+    }
+
+    public int getDuration(){
+        return this.duration;
+    }
+
+    public double getCost(){
+        return this.cost;
+    }
 }

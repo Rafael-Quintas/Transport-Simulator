@@ -31,7 +31,7 @@ public class Main extends Application {
 
         map.positionVertex(view.getSmartGraph());
 
-        Scene scene = new Scene(view, 1024, 720);
+        Scene scene = new Scene(view, 1024, 767);
 
         Stage stage = new Stage(StageStyle.DECORATED);
 
