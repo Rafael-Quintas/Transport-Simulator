@@ -9,7 +9,7 @@ public class Route {
     private TransportType transportType;
     private double distance;
     private int duration;
-    private double cost;
+    private double sustainability;
 
     /**
      * Construtor para inicializar uma instância de {@code Route}.
@@ -17,14 +17,14 @@ public class Route {
      * @param type Tipo de transporte utilizado nesta Route ({@link TransportType}).
      * @param distance Distância da Route em Kms
      * @param duration Duração da Route em minutos.
-     * @param cost Custo da Route em unidades monetárias.
+     * @param sustainability Custo da Route em unidades monetárias.
      */
-    public Route(TransportType type, double distance, int duration, double cost) {
+    public Route(TransportType type, double distance, int duration, double sustainability) {
         if (distance < 0 || duration < 0) { throw new IllegalArgumentException("Distance and Duration cannot be negative."); }
         this.transportType = type;
         this.distance = distance;
         this.duration = duration;
-        this.cost = cost;
+        this.sustainability = sustainability;
     }
 
     public TransportType getTransportType(){
@@ -39,7 +39,7 @@ public class Route {
         return this.duration;
     }
 
-    public double getCost(){
-        return this.cost;
+    public double getSustainability(){
+        return this.sustainability;
     }
 }

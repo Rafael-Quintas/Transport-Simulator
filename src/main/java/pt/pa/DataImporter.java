@@ -17,6 +17,24 @@ import java.util.List;
  */
 public class DataImporter {
 
+    // Constantes para os índices das colunas do CSV "routes.csv"
+    private static final int STOP_CODE_START = 0;
+    private static final int STOP_CODE_END = 1;
+    private static final int FIRST_DISTANCE = 2;
+    private static final int FIRST_DURATION = 7;
+    private static final int FIRST_COST = 12;
+
+    // Constantes para os índices das colunas do CSV "stops.csv"
+    private static final int STOP_CODE = 0;
+    private static final int STOP_NAME = 1;
+    private static final int LATITUDE = 2;
+    private static final int LONGITUDE = 3;
+
+    // Constantes para os índices das colunas do CSV "xy.csv"
+    private static final int STOP_POSITION = 0;
+    private static final int X = 1;
+    private static final int Y = 2;
+
     /**
      * Carrega a lista de Stops a partir do arquivo CSV.
      *
@@ -27,15 +45,14 @@ public class DataImporter {
 
         try (CSVReader reader = new CSVReader(new FileReader("src/main/resources/dataset/stops.csv"))) {
             String[] nextLine;
-            reader.readNext();
+            reader.readNext(); // Ignorar cabeçalho
             while ((nextLine = reader.readNext()) != null) {
-                String stopCode = nextLine[0];
-                String stopName = nextLine[1];
-                double latitude = Double.parseDouble(nextLine[2]);
-                double longitude = Double.parseDouble(nextLine[3]);
+                String stopCode = nextLine[STOP_CODE];
+                String stopName = nextLine[STOP_NAME];
+                double latitude = Double.parseDouble(nextLine[LATITUDE]);
+                double longitude = Double.parseDouble(nextLine[LONGITUDE]);
 
-                Stop stop = new Stop(stopCode, stopName, latitude, longitude);
-                stops.add(stop);
+                stops.add(new Stop(stopCode, stopName, latitude, longitude));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -55,18 +72,21 @@ public class DataImporter {
 
         try (CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/dataset/routes.csv"))) {
             String[] values;
-            csvReader.readNext(); // Ignorar a primeira linha do ficheiro csv
+            csvReader.readNext(); // Ignorar cabeçalho
             while ((values = csvReader.readNext()) != null) {
                 List<Route> routes = new ArrayList<>();
 
-                // Usar funções auxiliares para não ter routes nulas
-                addRouteIfNotNull(routes, createRoute(TransportType.TRAIN, values[2], values[7], values[12]));
-                addRouteIfNotNull(routes, createRoute(TransportType.BUS, values[3], values[8], values[13]));
-                addRouteIfNotNull(routes, createRoute(TransportType.BOAT, values[4], values[9], values[14]));
-                addRouteIfNotNull(routes, createRoute(TransportType.WALK, values[5], values[10], values[15]));
-                addRouteIfNotNull(routes, createRoute(TransportType.BICYCLE, values[6], values[11], values[16]));
+                // Iterar sobre os tipos de transporte dinamicamente
+                TransportType[] transportTypes = TransportType.values();
+                for (int i = 0; i < transportTypes.length; i++) {
+                    int distanceIndex = FIRST_DISTANCE + i;
+                    int durationIndex = FIRST_DURATION + i;
+                    int costIndex = FIRST_COST + i;
 
-                genericRoutes.add(new GenericRoute(values[0], values[1], routes));
+                    addRouteIfNotNull(routes, createRoute(transportTypes[i], values[distanceIndex], values[durationIndex], values[costIndex]));
+                }
+
+                genericRoutes.add(new GenericRoute(values[STOP_CODE_START], values[STOP_CODE_END], routes));
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -74,7 +94,6 @@ public class DataImporter {
 
         return genericRoutes;
     }
-
     /**
      * Cria uma instância de {@link Route} com base nos parâmetros fornecidos.
      * Retorna null se qualquer parâmetro estiver vazio.
@@ -121,9 +140,9 @@ public class DataImporter {
             reader.readNext();
             while ((nextLine = reader.readNext()) != null) {
                 List<Vertex<Stop>> list = (List<Vertex<Stop>>) graph.vertices();
-                String stopCode = nextLine[0];
-                double x = Double.parseDouble(nextLine[1]);
-                double y = Double.parseDouble(nextLine[2]);
+                String stopCode = nextLine[STOP_POSITION];
+                double x = Double.parseDouble(nextLine[X]);
+                double y = Double.parseDouble(nextLine[Y]);
 
                 for (Vertex<Stop> v : list) {
                     if (v.element().getStopCode().equals(stopCode)) {

@@ -6,6 +6,7 @@ import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import javafx.scene.control.Alert;
+import pt.pa.patterns.strategy.*;
 
 import java.util.*;
 
@@ -266,7 +267,7 @@ public class TransportMap {
         return new ArrayList<>(result);
     }
 
-    public Path leastCostBetweenStops(String origin, String destination, String standard, List<TransportType> transports) {
+    public Path leastCostBetweenStops(String origin, String destination, WeightCalculationStrategy strategy, List<TransportType> transports) {
         Map<Vertex<Stop>, Double> costs = new HashMap<>();
         Map<Vertex<Stop>, Vertex<Stop>> predecessors = new HashMap<>();
         List<Vertex<Stop>> vertices = new ArrayList<>(graph.vertices());
@@ -278,56 +279,55 @@ public class TransportMap {
             throw new IllegalArgumentException("Paragem de origem ou destino inválida.");
         }
 
-        // Inicializar custos e predecessores
         for (Vertex<Stop> vertex : vertices) {
             costs.put(vertex, Double.POSITIVE_INFINITY);
             predecessors.put(vertex, null);
         }
         costs.put(originVertex, 0.0);
 
-        // Relaxar todas as arestas |V| - 1 vezes
         for (int i = 0; i < vertices.size() - 1; i++) {
             for (Vertex<Stop> vertex : vertices) {
                 for (Edge<List<Route>, Stop> edge : graph.incidentEdges(vertex)) {
-                    relaxEdge(vertex, edge, costs, predecessors, transports, standard);
+                    relaxEdge(vertex, edge, costs, predecessors, transports, strategy);
                 }
             }
         }
 
-        // Verificar ciclos negativos
         for (Vertex<Stop> vertex : vertices) {
             for (Edge<List<Route>, Stop> edge : graph.incidentEdges(vertex)) {
-                if (hasNegativeCycle(vertex, edge, costs, transports, standard)) {
+                if (hasNegativeCycle(vertex, edge, costs, transports, strategy)) {
                     throw new IllegalStateException("O grafo contém um ciclo de peso negativo.");
                 }
             }
         }
 
-        List<Vertex<Stop>> path = reconstructPath(destinationVertex, originVertex, predecessors);
+        List<Vertex<Stop>> path = makeStopPath(destinationVertex, originVertex, predecessors);
 
-        // Calcular o custo total do caminho
-        double totalCost = calculateTotalCost(path, transports, standard);
+        double totalCost = calculateTotalCost(path, transports, strategy);
 
-        // Retornar o resultado
         return new Path(path, totalCost);
     }
 
+
     // Cálculo do custo total do caminho
-    private double calculateTotalCost(List<Vertex<Stop>> path, List<TransportType> transports, String standard) {
+    private double calculateTotalCost(
+            List<Vertex<Stop>> path,
+            List<TransportType> transports,
+            WeightCalculationStrategy strategy
+    ) {
         double totalCost = 0.0;
 
         for (int i = 0; i < path.size() - 1; i++) {
             Vertex<Stop> u = path.get(i);
             Vertex<Stop> v = path.get(i + 1);
 
-            // Encontrar a menor rota correspondente entre u e v
             double minCost = Double.POSITIVE_INFINITY;
 
             for (Edge<List<Route>, Stop> edge : graph.incidentEdges(u)) {
                 if (graph.opposite(u, edge).equals(v)) {
                     for (Route route : edge.element()) {
                         if (transports.contains(route.getTransportType())) {
-                            double weight = getWeight(route, standard);
+                            double weight = strategy.calculateWeight(route);
                             if (weight < minCost) {
                                 minCost = weight;
                             }
@@ -336,7 +336,6 @@ public class TransportMap {
                 }
             }
 
-            // Adicionar o menor custo encontrado
             if (minCost != Double.POSITIVE_INFINITY) {
                 totalCost += minCost;
             } else {
@@ -347,6 +346,8 @@ public class TransportMap {
         return totalCost;
     }
 
+
+
     // Relaxar uma aresta com o uso de opposite
     private void relaxEdge(
             Vertex<Stop> u,
@@ -354,18 +355,17 @@ public class TransportMap {
             Map<Vertex<Stop>, Double> costs,
             Map<Vertex<Stop>, Vertex<Stop>> predecessors,
             List<TransportType> transports,
-            String standard
+            WeightCalculationStrategy strategy
     ) {
-        Vertex<Stop> v = graph.opposite(u, edge); // Obtém o vértice oposto usando opposite
+        Vertex<Stop> v = graph.opposite(u, edge);
 
         for (Route route : edge.element()) {
             if (!transports.contains(route.getTransportType())) {
                 continue;
             }
 
-            double weight = getWeight(route, standard);
+            double weight = strategy.calculateWeight(route);
 
-            // Relaxar a aresta
             if (costs.get(u) + weight < costs.get(v)) {
                 costs.put(v, costs.get(u) + weight);
                 predecessors.put(v, u);
@@ -373,22 +373,23 @@ public class TransportMap {
         }
     }
 
+
     // Verificar ciclos negativos usando opposite
     private boolean hasNegativeCycle(
             Vertex<Stop> u,
             Edge<List<Route>, Stop> edge,
             Map<Vertex<Stop>, Double> costs,
             List<TransportType> transports,
-            String standard
+            WeightCalculationStrategy strategy
     ) {
-        Vertex<Stop> v = graph.opposite(u, edge); // Obtém o vértice oposto usando opposite
+        Vertex<Stop> v = graph.opposite(u, edge);
 
         for (Route route : edge.element()) {
             if (!transports.contains(route.getTransportType())) {
                 continue;
             }
 
-            double weight = getWeight(route, standard);
+            double weight = strategy.calculateWeight(route);
 
             if (costs.get(u) + weight < costs.get(v)) {
                 return true;
@@ -397,8 +398,9 @@ public class TransportMap {
         return false;
     }
 
-    // Reconstruir o caminho
-    private List<Vertex<Stop>> reconstructPath(Vertex<Stop> destinationVertex, Vertex<Stop> originVertex, Map<Vertex<Stop>, Vertex<Stop>> predecessors) {
+
+    // Faz o caminho
+    private List<Vertex<Stop>> makeStopPath(Vertex<Stop> destinationVertex, Vertex<Stop> originVertex, Map<Vertex<Stop>, Vertex<Stop>> predecessors) {
         List<Vertex<Stop>> path = new ArrayList<>();
         Vertex<Stop> step = destinationVertex;
 
@@ -414,6 +416,7 @@ public class TransportMap {
         return path;
     }
 
+
     // Obter um vértice pelo nome da paragem
     private Vertex<Stop> getVertexByDesignation(String stopName, Collection<Vertex<Stop>> vertexList) {
         for (Vertex<Stop> v : vertexList) {
@@ -422,16 +425,6 @@ public class TransportMap {
             }
         }
         return null;
-    }
-
-    // Obter o peso de uma rota com base no critério
-    private double getWeight(Route route, String standard) {
-        return switch (standard.toLowerCase()) {
-            case "distância" -> route.getDistance();
-            case "duração" -> route.getDuration();
-            case "sustentabilidade" -> route.getCost();
-            default -> throw new IllegalArgumentException("Critério de otimização inválido.");
-        };
     }
 
     ///////////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 package pt.pa.view;
 
 import com.brunomnsilva.smartgraph.graph.Graph;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import com.brunomnsilva.smartgraph.graphview.SmartRandomPlacementStrategy;
@@ -14,6 +15,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import pt.pa.Stop;
 import pt.pa.Route;
+import pt.pa.TransportType;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -85,18 +87,47 @@ public class MapView extends BorderPane {
         topMenu.setPadding(new Insets(10));
         topMenu.setStyle("-fx-background-color: #212121; -fx-border-color: #000000;");
 
+        String dropdownFX = "-fx-background-color: rgba(255, 255, 255); " +
+                "-fx-border-width: 2px; " +
+                "-fx-border-radius: 15px; " +
+                "-fx-background-radius: 15px; " +
+                "-fx-padding: 5px; " +
+                "-fx-font-size: 14px; " +
+                "-fx-text-fill: black;"   +
+                "-fx-font-weight: bold; " +
+                "-fx-alignment: center;";
+
         // Dropdowns
         ComboBox<String> originDropdown = new ComboBox<>();
         originDropdown.setPromptText("Origin");
+        originDropdown.setStyle(dropdownFX);
+        configureComboBox(originDropdown, 80);
+
 
         ComboBox<String> destinationDropdown = new ComboBox<>();
         destinationDropdown.setPromptText("Destination");
+        destinationDropdown.setStyle(dropdownFX);
+        configureComboBox(destinationDropdown, 100);
+
+        for (Vertex<Stop> vertex : graph.vertices()) {
+            String stopName = vertex.element().getStopName();
+            originDropdown.getItems().add(stopName);
+            destinationDropdown.getItems().add(stopName);
+        }
 
         ComboBox<String> criteriaDropdown = new ComboBox<>();
         criteriaDropdown.setPromptText("Criteria");
+        criteriaDropdown.getItems().addAll("Distance", "Duration", "Sustainability");
+        criteriaDropdown.setStyle(dropdownFX);
+        configureComboBox(criteriaDropdown, 80);
 
         ComboBox<String> transportDropdown = new ComboBox<>();
         transportDropdown.setPromptText("Transport Type");
+        for (TransportType transportType : TransportType.values()) {
+            transportDropdown.getItems().add(transportType.toString());
+        }
+        transportDropdown.setStyle(dropdownFX);
+        configureComboBox(transportDropdown, 120);
 
         // Buttons
         Button calculateCostButton = new Button("Calculate Cost");
@@ -120,27 +151,41 @@ public class MapView extends BorderPane {
     private VBox createVisualizerPane() {
         VBox visualizerPane = new VBox(10);
         visualizerPane.setPadding(new Insets(10));
-        visualizerPane.setStyle("-fx-background-color: rgba(207, 226, 243, 0.9); -fx-border-color: #6c757d; -fx-border-radius: 10px;");
+        visualizerPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-border-radius: 10px;");
         visualizerPane.setMaxWidth(200);
         visualizerPane.setMaxHeight(150);
 
+        String labelStyle = "-fx-text-fill: white;";
+
         // Visualizer Section
         Label visualizerLabel = new Label("Visualizer");
-        visualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        visualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; " + labelStyle);
 
         Label numberOfStopsLabel = new Label("Number of Stops:");
+        numberOfStopsLabel.setStyle(labelStyle);
+
         Label numberOfRoutesLabel = new Label("Number of Routes:");
+        numberOfRoutesLabel.setStyle(labelStyle);
+
         Label centralityLabel = new Label("Centrality:");
+        centralityLabel.setStyle(labelStyle);
 
         // Stop Visualizer Section
         Label stopVisualizerLabel = new Label("Stop Visualizer");
-        stopVisualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        stopVisualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; " + labelStyle);
 
         // Inicializar os rótulos de detalhes da paragem
         stopCodeLabel = new Label("Stop Code:");
+        stopCodeLabel.setStyle(labelStyle);
+
         stopNameLabel = new Label("Stop Name:");
+        stopNameLabel.setStyle(labelStyle);
+
         latitudeLabel = new Label("Latitude:");
+        latitudeLabel.setStyle(labelStyle);
+
         longitudeLabel = new Label("Longitude:");
+        longitudeLabel.setStyle(labelStyle);
 
         // Adicionar elementos ao painel
         visualizerPane.getChildren().addAll(
@@ -192,8 +237,8 @@ public class MapView extends BorderPane {
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
         // Coluna para Custo
-        TableColumn<Route, Double> costColumn = new TableColumn<>("Custo");
-        costColumn.setCellValueFactory(new PropertyValueFactory<>("cost"));
+        TableColumn<Route, Double> costColumn = new TableColumn<>("Sustentabilidade");
+        costColumn.setCellValueFactory(new PropertyValueFactory<>("sustainability"));
 
         table.getColumns().addAll(transportTypeColumn, distanceColumn, durationColumn, costColumn);
 
@@ -203,4 +248,28 @@ public class MapView extends BorderPane {
         stage.setScene(new javafx.scene.Scene(table, 600, 400));
         stage.show();
     }
+
+    private void configureComboBox(ComboBox<String> comboBox, int prefWidth) {
+        // Configurar o cellFactory para os itens do ComboBox
+        comboBox.setCellFactory(lv -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setStyle("-fx-pref-width: " + prefWidth + "px;");
+            }
+        });
+
+        // Configurar o botão principal do ComboBox para corresponder ao tamanho
+        comboBox.setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setStyle("-fx-pref-width: " + prefWidth + "px;");
+            }
+        });
+    }
+
+
 }
