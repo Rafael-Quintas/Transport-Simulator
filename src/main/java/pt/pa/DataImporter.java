@@ -5,7 +5,6 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,7 +75,6 @@ public class DataImporter {
             while ((values = csvReader.readNext()) != null) {
                 List<Route> routes = new ArrayList<>();
 
-                // Iterar sobre os tipos de transporte dinamicamente
                 TransportType[] transportTypes = TransportType.values();
                 for (int i = 0; i < transportTypes.length; i++) {
                     int distanceIndex = FIRST_DISTANCE + i;

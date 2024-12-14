@@ -5,11 +5,11 @@ package pt.pa;
  *  @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public enum TransportType {
-    BUS("Blue"),
-    TRAIN("Red"),
-    BOAT("Orange"),
-    WALK("Violet"),
-    BICYCLE("Green");
+    BUS("Yellow"),
+    TRAIN("Blue"),
+    BOAT("Green"),
+    WALK("Teal"),
+    BICYCLE("Magenta");
 
     private final String color;
 
