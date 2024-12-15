@@ -23,6 +23,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A classe {@code MapView} é responsável pela GUI do sistema.
+ * Exibe o grafo de transportes, as opções de interação e informações detalhadas sobre Stops e Routes.
+ *
+ * Implementa a interface {@link TransportMapUI} e é usada para conectar o Model ({@link TransportMap})
+ * e o Controller ({@link TransportMapController}).
+ *
+ * <h3>Funcionalidades principais:</h3>
+ * <ul>
+ *   <li>Exibição do grafo de transporte com suporte a interatividade.</li>
+ *   <li>Visualização de detalhes de Stops e Routes.</li>
+ *   <li>Opções para calcular caminhos, centralidade e personalização de trajetos.</li>
+ *   <li>Integração com o Controller para gerir eventos do utilizador.</li>
+ * </ul>
+ *
+ * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
+ */
 public class MapView extends BorderPane implements TransportMapUI {
 
     private TransportMap model;
@@ -47,7 +64,11 @@ public class MapView extends BorderPane implements TransportMapUI {
     private List<Vertex<Stop>> customPath = new ArrayList<>();
     private double currentCustomPathCost = 0.0;
 
-
+    /**
+     * Construtor que inicializa a interface do mapa de transportes com base no modelo fornecido.
+     *
+     * @param map modelo de transporte ({@link TransportMap}).
+     */
     public MapView(TransportMap map) {
         try {
             InputStream smartgraphProperties = getClass().getClassLoader().getResourceAsStream("smartgraph.properties");
@@ -72,10 +93,20 @@ public class MapView extends BorderPane implements TransportMapUI {
         }
     }
 
+    /**
+     * Retorna o painel gráfico do grafo.
+     *
+     * @return uma instância de {@link SmartGraphPanel}.
+     */
     public SmartGraphPanel<Stop, List<Route>> getSmartGraph() {
         return this.graphView;
     }
 
+    /**
+     * Define os triggers de interação para a interface gráfica.
+     *
+     * @param controller Controller responsável por gerir as interações do utilizador.
+     */
     @Override
     public void setTriggers(TransportMapController controller) {
         originDropdown.setOnAction(event -> controller.triggerLog("Origin Dropdown" + originDropdown.getValue()));
@@ -125,6 +156,17 @@ public class MapView extends BorderPane implements TransportMapUI {
             }
         });
     }
+
+    /**
+     * Configura o layout principal da GUI.
+     *
+     * Este método organiza os elementos da interface, incluindo:
+     * <ul>
+     *   <li>O menu superior com as opções de interação (botões e dropdowns).</li>
+     *   <li>A área central contendo o grafo e o visualizador de informações.</li>
+     * </ul>
+     * Os tamanhos são ajustados dinamicamente para manter a consistência visual.
+     */
     private void doLayout() {
         // Configurar o menu superior no topo
         HBox topMenu = createTopMenu();
@@ -147,6 +189,19 @@ public class MapView extends BorderPane implements TransportMapUI {
         this.setCenter(mapArea); // Configurar o mapa na área central
     }
 
+    /**
+     * Cria o menu superior da GUI.
+     *
+     * inclui:
+     * <ul>
+     *   <li>Dropdowns para selecionar a origem, destino e critério de cálculo.</li>
+     *   <li>Um menu suspenso para selecionar os tipos de transporte.</li>
+     *   <li>Botões para calcular custos, mostrar as 5 Stops mais centrais,
+     *       exibir paragens a N Routes de distância e ativar o modo de Path personalizado.</li>
+     * </ul>
+     *
+     * @return {@link HBox} contendo o menu superior.
+     */
     private HBox createTopMenu() {
         HBox topMenu = new HBox(10);
         topMenu.setPadding(new Insets(10));
@@ -231,6 +286,17 @@ public class MapView extends BorderPane implements TransportMapUI {
         return topMenu;
     }
 
+    /**
+     * Cria o painel visualizador da GUI.
+     *
+     * Exibe:
+     * <ul>
+     *   <li>Informações gerais sobre o grafo, como número de Stops, Routes e Paths possíveis.</li>
+     *   <li>Detalhes da Stop selecionada, incluindo código, nome, latitude e longitude.</li>
+     * </ul>
+     *
+     * @return {@link VBox} contendo o painel visualizador.
+     */
     private VBox createVisualizerPane() {
         VBox visualizerPane = new VBox(10);
         visualizerPane.setPadding(new Insets(10));
@@ -288,6 +354,11 @@ public class MapView extends BorderPane implements TransportMapUI {
         return visualizerPane;
     }
 
+    /**
+     * Exibe os detalhes de uma Stop na interface.
+     *
+     * @param stop Stop selecionada ({@link Stop}).
+     */
     public void showVertexDetails(Stop stop) {
         stopCodeLabel.setText("Stop Code: " + stop.getStopCode());
         stopNameLabel.setText("Stop Name: " + stop.getStopName());
@@ -295,6 +366,11 @@ public class MapView extends BorderPane implements TransportMapUI {
         longitudeLabel.setText("Longitude: " + stop.getLongitude());
     }
 
+    /**
+     * Exibe os detalhes de uma Route numa nova janela.
+     *
+     * @param routes a lista de Routes associadas a uma aresta ({@link Route}).
+     */
     public void showEdgeDetails(List<Route> routes) {
         Stage stage = new Stage();
         stage.setTitle("Informações da Rota");
@@ -329,6 +405,9 @@ public class MapView extends BorderPane implements TransportMapUI {
         stage.show();
     }
 
+    /**
+     * Exibe uma tabela com os detalhes de centralidade de todas as paragens.
+     */
     public void showCentralityDetails() {
         Stage stage = new Stage();
         stage.setTitle("Centrality Details");
@@ -363,6 +442,9 @@ public class MapView extends BorderPane implements TransportMapUI {
         stage.show();
     }
 
+    /**
+     * Exibe um gráfico de barras mostrando as 5 Stops com maior centralidade.
+     */
     public void showTopFiveCentralityChart() {
         Stage stage = new Stage();
         stage.setTitle("Top 5 Stops by Centrality");
@@ -415,6 +497,9 @@ public class MapView extends BorderPane implements TransportMapUI {
         stage.show();
     }
 
+    /**
+     * Cria um popup para calcular e exibir as Stops a N Routes de distância de uma Stop inicial.
+     */
     public void createStopsNRoutesAwayPopup() {
         Stage popupStage = new Stage();
         popupStage.setTitle("Stops N Routes Away");
@@ -471,6 +556,11 @@ public class MapView extends BorderPane implements TransportMapUI {
         popupStage.show();
     }
 
+    /**
+     * Exibe uma tabela com as Stops retornadas pelo cálculo de N rotas de distância.
+     *
+     * @param stops a lista de Stops encontradas ({@link Stop}).
+     */
     public void showStopsTable(List<Stop> stops) {
         Stage stage = new Stage();
         stage.setTitle("Stops N Routes Away");
@@ -506,6 +596,12 @@ public class MapView extends BorderPane implements TransportMapUI {
         stage.show();
     }
 
+    /**
+     * Configura o estilo e o comportamento de um {@link ComboBox}.
+     *
+     * @param comboBox ComboBox a ser configurado.
+     * @param prefWidth largura preferencial do ComboBox.
+     */
     private void configureComboBox(ComboBox<String> comboBox, int prefWidth) {
         // Configurar o cellFactory para os itens do ComboBox
         comboBox.setCellFactory(lv -> new ListCell<String>() {
@@ -528,23 +624,56 @@ public class MapView extends BorderPane implements TransportMapUI {
         });
     }
 
+    /**
+     * Obtém o dropdown de seleção de origem.
+     *
+     * @return uma instância de {@link ComboBox}.
+     */
     public ComboBox<String> getOriginDropdown() {
         return originDropdown;
     }
 
+    /**
+     * Obtém o dropdown de seleção de destino.
+     *
+     * @return instância de {@link ComboBox}.
+     */
     public ComboBox<String> getDestinationDropdown() {
         return destinationDropdown;
     }
 
+    /**
+     * Obtém o dropdown de critérios de cálculo.
+     *
+     * @return uma instância de {@link ComboBox}.
+     */
     public ComboBox<String> getCriteriaDropdown() {
         return criteriaDropdown;
     }
 
-    public boolean getIsSelectingCustomPath() { return isSelectingCustomPath; }
+    /**
+     * Retorna o estado do modo de seleção do Path personalizado.
+     *
+     * @return {@code true} se o modo estiver ativo; caso contrário, {@code false}.
+     */
+    public boolean getIsSelectingCustomPath() {
+        return isSelectingCustomPath;
+    }
 
-    public List<Vertex<Stop>> getCustomPath() { return customPath; }
+    /**
+     * Retorna a lista de Stops no Path personalizado.
+     *
+     * @return lista de vértices ({@link Vertex}).
+     */
+    public List<Vertex<Stop>> getCustomPath() {
+        return customPath;
+    }
 
-
+    /**
+     * Obtém os tipos de transporte selecionados no dropdown.
+     *
+     * @return lista de tipos de transporte ({@link TransportType}).
+     */
     public List<TransportType> getSelectedTransportTypes() {
         return transportDropdown.getItems().stream()
                 .filter(item -> item instanceof CheckMenuItem)
@@ -563,25 +692,49 @@ public class MapView extends BorderPane implements TransportMapUI {
                 .toList();
     }
 
+    /**
+     * Adiciona uma Stop ao Path personalizado.
+     *
+     * @param vertex vértice a ser adicionado ({@link Vertex}).
+     */
     public void addToCustomPath(Vertex<Stop> vertex) {
         customPath.add(vertex);
     }
 
+    /**
+     * Atualiza o custo acumulado do Path personalizado.
+     *
+     * @param cost custo a ser adicionado.
+     */
     public void updateCurrentCustomPathCost(double cost) {
         currentCustomPathCost += cost;
         updateCostLabel("Cost: " + currentCustomPathCost);
     }
 
+    /**
+     * Dá o custo acumulado do Path personalizado.
+     */
     public void resetCurrentCustomPathCost() {
         currentCustomPathCost = 0.0;
         updateCostLabel("Cost: " + currentCustomPathCost);
     }
 
-
+    /**
+     * Atualiza o rótulo de custo na interface.
+     *
+     * @param costText texto a ser exibido no rótulo.
+     */
     public void updateCostLabel(String costText) {
         calculateLabel.setText(costText);
     }
 
+    /**
+     * Destaca um Path específico no grafo.
+     *
+     * @param stopsInPath lista de Stops no Path.
+     * @param transportTypes tipos de transporte disponíveis.
+     * @param strategy estratégia de cálculo de peso.
+     */
     public void highlightPath(List<Vertex<Stop>> stopsInPath, List<TransportType> transportTypes, WeightCalculationStrategy strategy) {
 
         clearHighlights();
@@ -621,6 +774,9 @@ public class MapView extends BorderPane implements TransportMapUI {
         }
     }
 
+    /**
+     * Remove os destaques aplicados no grafo.
+     */
     public void clearHighlights() {
         model.getGraph().edges().forEach(edge -> {
             var graphicalEdge = graphView.getStylableEdge(edge);
@@ -631,6 +787,13 @@ public class MapView extends BorderPane implements TransportMapUI {
         });
     }
 
+    /**
+     * Destaca a aresta entre duas paragens no grafo.
+     *
+     * @param start vértice de início.
+     * @param end vértice de destino.
+     * @param strategy estratégia de cálculo de peso.
+     */
     public void highlightEdge(Vertex<Stop> start, Vertex<Stop> end, WeightCalculationStrategy strategy) {
         model.getGraph().incidentEdges(start).stream()
                 .filter(edge -> model.getGraph().opposite(start, edge).equals(end))
@@ -659,8 +822,14 @@ public class MapView extends BorderPane implements TransportMapUI {
                 });
     }
 
+
     ///////////////////////////////////////////////////////////////////////////////////
     // Error Reporting -> First method taken from PA´s laboratory.
+    /**
+     * Exibe um alerta de erro com uma mensagem específica.
+     *
+     * @param message mensagem de erro a ser exibida.
+     */
     public void showWarning(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Warning Notification");
@@ -669,6 +838,11 @@ public class MapView extends BorderPane implements TransportMapUI {
         alert.showAndWait();
     }
 
+    /**
+     * Exibe uma notificação de sucesso ou informação com uma mensagem específica.
+     *
+     * @param message mensagem de notificação a ser exibida.
+     */
     public void showNotification(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Notification");

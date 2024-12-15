@@ -11,11 +11,25 @@ import pt.pa.patterns.strategy.SustainabilityStrategy;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * A classe {@code TransportMapController} atua como um Controller para gerir a interação entre o modelo
+ * ({@link TransportMap}) e a visualização ({@link MapView}). Responde a eventos da GUI e executa operações
+ * no modelo e na visualização.
+ *
+ * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
+ */
 public class TransportMapController implements Observer {
     private final TransportMap model;
     private final MapView view;
     private final Logger logger;
 
+    /**
+     * Construtor para criar uma instância do Controller, configurando os observadores no modelo e na visualização.
+     *
+     * @param model modelo do mapa de transporte ({@link TransportMap}).
+     * @param view visualização do mapa de transporte ({@link MapView}).
+     * @param logger logger usado para registar eventos e ações do Controller.
+     */
     public TransportMapController(TransportMap model, MapView view, Logger logger) {
         this.model = model;
         this.view = view;
@@ -25,33 +39,55 @@ public class TransportMapController implements Observer {
         model.addObservers(this);
     }
 
+    /**
+     * Exibe os detalhes de uma paragem selecionada na interface.
+     *
+     * @param vertex o vértice selecionado ({@link SmartGraphVertex}).
+     */
     public void doShowVertexDetails(SmartGraphVertex<Stop> vertex) {
         Stop stop = vertex.getUnderlyingVertex().element();
         view.showVertexDetails(stop);
         logger.info("Vertex clicked: " + stop.getStopName());
     }
 
+    /**
+     * Exibe os detalhes de uma rota selecionada na interface.
+     *
+     * @param edge a aresta selecionada ({@link SmartGraphEdge}).
+     */
     public void doShowEdgeDetails(SmartGraphEdge<List<Route>, Stop> edge) {
         List<Route> routes = edge.getUnderlyingEdge().element();
         view.showEdgeDetails(routes);
         logger.info("Edge clicked: [" + edge.getUnderlyingEdge().vertices()[0].element().getStopName() + ", " + edge.getUnderlyingEdge().vertices()[1].element().getStopName()+"]");
     }
 
+    /**
+     * Exibe os detalhes de centralidade na interface.
+     */
     public void doShowCentralityDetails(){
         view.showCentralityDetails();
         logger.info("User has clicked the Centrality button");
     }
 
+    /**
+     * Exibe as cinco paragens mais centrais na interface.
+     */
     public void doShowTopFive(){
         view.showTopFiveCentralityChart();
         logger.info("User has clicked the Top Five button");
     }
 
+    /**
+     * Cria uma interface para calcular e exibir paragens a uma certa distância de uma paragem inicial.
+     */
     public void doShowStopsNRoutesAway() {
         logger.info("User has clicked the StopsNRoutesAway button");
         view.createStopsNRoutesAwayPopup();
     }
 
+    /**
+     * Calcula e exibe o caminho de menor custo entre duas paragens com base em um critério e nos tipos de transporte selecionados.
+     */
     public void doShowLeastCostRoute() {
         String origin = view.getOriginDropdown().getValue();
         String destination = view.getDestinationDropdown().getValue();
@@ -76,6 +112,12 @@ public class TransportMapController implements Observer {
             view.showWarning(e.getMessage());
         }
     }
+
+    /**
+     * Gere a seleção de um caminho personalizado pelo utilizador e calcula os custos das conexões.
+     *
+     * @param vertex vértice selecionado ({@link SmartGraphVertex}).
+     */
 
     public void doShowCustomPath(SmartGraphVertex<Stop> vertex) {
         if (view.getIsSelectingCustomPath()) {
@@ -112,6 +154,14 @@ public class TransportMapController implements Observer {
         }
     }
 
+    /**
+     * Calcula o custo da aresta entre dois vértices com base numa estratégia de cálculo de peso.
+     *
+     * @param start vértice de origem.
+     * @param end vértice de destino.
+     * @param strategy estratégia de cálculo de peso ({@link WeightCalculationStrategy}).
+     * @return custo da aresta ou {@code Double.POSITIVE_INFINITY} se não houver uma conexão válida.
+     */
     private double calculateEdgeCost(Vertex<Stop> start, Vertex<Stop> end, WeightCalculationStrategy strategy) {
         return model.getGraph().incidentEdges(start).stream()
                 .filter(edge -> model.getGraph().opposite(start, edge).equals(end))
@@ -121,12 +171,22 @@ public class TransportMapController implements Observer {
                 .orElse(Double.POSITIVE_INFINITY);
     }
 
+    /**
+     * Atualiza a interface com base em notificações do modelo.
+     *
+     * @param obj objeto de notificação enviado pelo modelo.
+     */
     @Override
     public void update(Object obj) {
         logger.info("Model update received: " + obj.toString());
         view.update(obj);
     }
 
+    /**
+     * Regista mensagens personalizadas logger.
+     *
+     * @param string mensagem a ser registada.
+     */
     public void triggerLog(String string) {
         logger.info(string);
     }

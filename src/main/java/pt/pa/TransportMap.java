@@ -11,15 +11,20 @@ import pt.pa.patterns.strategy.*;
 import java.util.*;
 
 /**
- * Representa um mapa de transporte baseado num grafo que modela as Stops.
- * ({@link Stop}) e as suas conexões ({@link Route}).
- *  @author Rafael Quintas, Rafael Pato, Guilherme Pereira
+ * A classe {@code TransportMap} representa um mapa de transporte baseado num grafo que modela Stops
+ * ({@link Stop}) e as suas Routes ({@link Route}). Esta classe fornece métodos para manipulação, cálculo e análise
+ * de Stops e Routes.
+ *
+ * A estrutura principal é um grafo do tipo {@code GraphEdgeList} que armazena as Stops como vértices
+ * e as conexões entre elas como arestas, onde cada aresta pode conter uma lista de Routes disponíveis.
+ *
+ * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class TransportMap extends Subject {
     private Graph<Stop, List<Route>> graph;
 
     /**
-     * Construtor que inicializa o mapa de transporte carregando os Stops e Routes no grafo.
+     * Construtor de um novo mapa de transportes inicializando o grafo e carregando as Stops e Routes disponíveis.
      */
     public TransportMap() {
         this.graph = new GraphEdgeList<>();
@@ -63,14 +68,14 @@ public class TransportMap extends Subject {
     /**
      * Adiciona uma nova Stop.
      *
-     * Este método permite criar e adicionar um novo Stop (vértice) ao grafo que representa a rede de transportes.
+     * Este método permite criar e adicionar uma nova Stop (vértice) ao grafo que representa a rede de transportes.
      * Antes de adicionar, valida os valores fornecidos para garantir que o código, nome, latitude e longitude são válidos.
      * Se os valores forem inválidos, é lançada uma exceção com uma mensagem de erro.
      *
      * @param stopCode o código único da Stop (não pode ser vazio).
      * @param stopName o nome da Stop (não pode ser vazio).
-     * @param latitude a latitude da localização da Stop (deve ser um número válido).
-     * @param longitude a longitude da localização da Stop (deve ser um número válido).
+     * @param latitude a latitude da Stop (deve ser um número válido).
+     * @param longitude a longitude da Stop (deve ser um número válido).
      * @return o vértice correspondente à nova Stop adicionada.
      * @throws IllegalArgumentException se os valores fornecidos forem inválidos.
      */
@@ -92,15 +97,15 @@ public class TransportMap extends Subject {
      * Este método permite criar ou atualizar uma Route entre os Stops especificadas (vértices `v1` e `v2`),
      * adicionando um novo meio de transporte com os parâmetros fornecidos.
      * Se os valores de distância, duração ou custo não forem numéricos, é lançada uma exceção com mensagem de erro.
-     * Caso a Route seja adicionada com sucesso, ela será inserida no grafo.
+     * Caso a Route seja adicionada com sucesso, será inserida no grafo.
      *
-     * @param v1 o vértice de origem representando a Stop inicial.
-     * @param v2 o vértice de destino representando a Stop final.
-     * @param type o tipo de transporte (deve corresponder a um valor válido de {@link TransportType}).
-     * @param distance a distância do percurso (em formato de string, será convertida para {@code double}).
-     * @param duration a duração do percurso (em formato de string, será convertida para {@code int}).
-     * @param cost o custo associado ao percurso (em formato de string, será convertido para {@code double}).
-     * @return a aresta correspondente à nova Route adicionada.
+     * @param v1 vértice de origem representando a Stop inicial.
+     * @param v2 vértice de destino representando a Stop final.
+     * @param type tipo de transporte (deve corresponder a um valor válido de {@link TransportType}).
+     * @param distance distância do percurso (em formato de string, será convertida para {@code double}).
+     * @param duration duração do percurso (em formato de string, será convertida para {@code int}).
+     * @param cost custo associado ao percurso (em formato de string, será convertido para {@code double}).
+     * @return aresta correspondente à nova Route adicionada.
      * @throws IllegalArgumentException se os valores de distância, duração ou custo forem inválidos.
      */
     public Edge<List<Route>, Stop> addRoute(Vertex<Stop> v1, Vertex<Stop> v2, String type, String distance, String duration, String cost) {
@@ -157,9 +162,9 @@ public class TransportMap extends Subject {
      * e retorna a lista de Routes associadas à aresta que conecta o vértice de origem
      * ao vértice de destino (`stopEnd`). Se nenhuma conexão for encontrada, retorna {@code null}.
      *
-     * @param stopStart o vértice representando a Stop de origem.
-     * @param stopEnd o vértice representando a Stop de destino.
-     * @return a lista de Routes associadas à conexão entre as Stops, ou {@code null} se não houver conexão.
+     * @param stopStart vértice representando a Stop de origem.
+     * @param stopEnd vértice representando a Stop de destino.
+     * @return lista de Routes associadas à conexão entre as Stops, ou {@code null} se não houver conexão.
      */
     private List<Route> getEdgeByConnection(Vertex<Stop> stopStart, Vertex<Stop> stopEnd) {
         for (Edge<List<Route>, Stop> edge : graph.incidentEdges(stopStart)) {
@@ -177,8 +182,8 @@ public class TransportMap extends Subject {
      * (representadas pelos vértices fornecidos). Se nenhuma lista de Routes for encontrada,
      * retorna uma nova lista vazia.
      *
-     * @param stopStart o vértice representando a Stop de origem.
-     * @param stopEnd o vértice representando a Stop de destino.
+     * @param stopStart vértice que representa a Stop de origem.
+     * @param stopEnd vértice que representa a Stop de destino.
      * @return a lista de Routes entre as Stops, ou uma nova lista vazia se não existir nenhuma.
      */
     private List<Route> getOrCreateRouteList(Vertex<Stop> stopStart, Vertex<Stop> stopEnd) {
@@ -189,10 +194,20 @@ public class TransportMap extends Subject {
         return routeList;
     }
 
+    /**
+     * Calcula o número de Stops não isoladas no grafo.
+     *
+     * @return número de Stops conectadas a pelo menos uma Route.
+     */
     public int numberOfNonIsolatedStops() {
         return graph.numVertices() - numberOfIsolatedStops();
     }
 
+    /**
+     * Calcula o número de Stops isoladas no grafo.
+     *
+     * @return número de Stops sem conexões.
+     */
     public int numberOfIsolatedStops() {
         List<Vertex<Stop>> vertexList = (List<Vertex<Stop>>)graph.vertices();
         int isolatedCounter = 0;
@@ -206,6 +221,11 @@ public class TransportMap extends Subject {
         return isolatedCounter;
     }
 
+    /**
+     * Calcula o número total de Routes possíveis no grafo.
+     *
+     * @return número total de Routes.
+     */
     public int numberOfPossibleRoutes() {
         List<Edge<List<Route>, Stop>> edgeList = (List<Edge<List<Route>, Stop>>)graph.edges();
         int total = 0;
@@ -217,6 +237,11 @@ public class TransportMap extends Subject {
         return total;
     }
 
+    /**
+     * Calcula a centralidade de cada Stop com base no número de conexões.
+     *
+     * @return mapa ordenado de Stops e os seus valores de centralidade.
+     */
     public LinkedHashMap<Vertex<Stop>, Integer> centrality() {
         HashMap<Vertex<Stop>, Integer> map = new HashMap<>();
         List<Vertex<Stop>> vertexList = (List<Vertex<Stop>>) graph.vertices();
@@ -238,6 +263,11 @@ public class TransportMap extends Subject {
         return sortedMap;
     }
 
+    /**
+     * Obtém as cinco Stops mais centrais com base na centralidade calculada.
+     *
+     * @return lista das 5 Stops mais centrais e os seus valores de centralidade.
+     */
     public List<Map.Entry<Vertex<Stop>, Integer>> topFiveCentrality() {
         LinkedHashMap<Vertex<Stop>, Integer> centralityMap = centrality();
         List<Map.Entry<Vertex<Stop>, Integer>> entryList = new ArrayList<>(centralityMap.entrySet());
@@ -245,6 +275,14 @@ public class TransportMap extends Subject {
         return entryList.stream().limit(5).toList();
     }
 
+    /**
+     * Obtém uma lista de Stops que estão a exatamente N conexões de uma Stop inicial.
+     *
+     * @param start Stop inicial.
+     * @param N número de conexões.
+     * @return lista de Stops a N conexões.
+     * @throws IllegalArgumentException se a Stop inicial for nula ou N for negativo.
+     */
     public List<Stop> getStopsNRoutesAway(Vertex<Stop> start, int N) {
         if (start == null || N < 0) {
             throw new IllegalArgumentException("Stop cannot be null, N cannot be negative.");
@@ -278,6 +316,15 @@ public class TransportMap extends Subject {
         return new ArrayList<>(result);
     }
 
+    /**
+     * Encontra o Path de menor custo entre duas Stops com base num critério.
+     *
+     * @param origin Stop de origem.
+     * @param destination Stop de destino.
+     * @param criteria critério de otimização ("distance", "duration", "sustainability").
+     * @param transports tipos de transporte disponíveis.
+     * @return Path de menor custo como um objeto {@link Path}.
+     */
     public Path leastCostBetweenStops(String origin, String destination, String criteria, List<TransportType> transports) {
         Map<Vertex<Stop>, Double> costs = new HashMap<>();
         Map<Vertex<Stop>, Vertex<Stop>> predecessors = new HashMap<>();
@@ -318,15 +365,25 @@ public class TransportMap extends Subject {
             }
         }
 
-        // Construir caminho
+        // Construir Path
         List<Vertex<Stop>> path = makeStopPath(destinationVertex, originVertex, predecessors);
 
-        // Calcular custo total do caminho
+        // Calcular custo total do Path
         double totalCost = calculateTotalCost(path, transports, strategy);
 
         return new Path(path, totalCost);
     }
 
+    /**
+     * Relaxa uma aresta no algoritmo de Bellman-Ford, atualizando custos e predecessores.
+     *
+     * @param u o vértice de origem.
+     * @param edge a aresta a ser relaxada.
+     * @param costs o mapa de custos acumulados.
+     * @param predecessors o mapa de predecessores no Path.
+     * @param transports a lista de tipos de transporte permitidos.
+     * @param strategy a estratégia de cálculo de peso.
+     */
     private void relaxEdge(
             Vertex<Stop> u,
             Edge<List<Route>, Stop> edge,
@@ -340,14 +397,14 @@ public class TransportMap extends Subject {
         // Inicializar o menor peso como infinito
         double minWeight = Double.POSITIVE_INFINITY;
 
-        // Percorrer todas as rotas na aresta
+        // Percorrer todas as Routes na aresta
         for (Route route : edge.element()) {
             // Ignorar tipos de transporte não selecionados
             if (!transports.contains(route.getTransportType())) {
                 continue;
             }
 
-            // Calcular o peso da rota
+            // Calcular o peso da Route
             double weight = strategy.calculateWeight(route);
 
             // Atualizar o menor peso se necessário
@@ -358,10 +415,10 @@ public class TransportMap extends Subject {
 
         // Verificar se o menor peso foi encontrado
         if (minWeight == Double.POSITIVE_INFINITY) {
-            return; // Nenhuma rota válida foi encontrada
+            return; // Nenhuma Route válida foi encontrada
         }
 
-        // Verificar se o caminho via 'u' oferece menor custo acumulado para 'v'
+        // Verificar se o Path via 'u' oferece menor custo acumulado para 'v'
         double newCost = costs.get(u) + minWeight;
         if (newCost < costs.get(v)) {
             costs.put(v, newCost); // Atualizar custo acumulado
@@ -369,6 +426,16 @@ public class TransportMap extends Subject {
         }
     }
 
+    /**
+     * Verifica a existência de ciclos de peso negativo no grafo.
+     *
+     * @param u vértice de origem.
+     * @param edge aresta a ser verificada.
+     * @param costs mapa de custos acumulados.
+     * @param transports lista de tipos de transporte permitidos.
+     * @param strategy estratégia de cálculo de peso.
+     * @return {@code true} se houver um ciclo de peso negativo; caso contrário, {@code false}.
+     */
     private boolean hasNegativeCycle(
             Vertex<Stop> u,
             Edge<List<Route>, Stop> edge,
@@ -392,6 +459,15 @@ public class TransportMap extends Subject {
         return false;
     }
 
+    /**
+     * Constrói o Path de Stops do destino para a origem com base no mapa de predecessores.
+     *
+     * @param destinationVertex vértice de destino.
+     * @param originVertex vértice de origem.
+     * @param predecessors mapa de predecessores no Path.
+     * @return lista ordenada de vértices representando o Path.
+     * @throws IllegalStateException se não houver Path entre a origem e o destino.
+     */
     private List<Vertex<Stop>> makeStopPath(Vertex<Stop> destinationVertex, Vertex<Stop> originVertex, Map<Vertex<Stop>, Vertex<Stop>> predecessors) {
         List<Vertex<Stop>> path = new ArrayList<>();
         Vertex<Stop> step = destinationVertex;
@@ -408,6 +484,15 @@ public class TransportMap extends Subject {
         return path;
     }
 
+    /**
+     * Calcula o custo total de um Path com base nos tipos de transporte e na estratégia de cálculo de peso.
+     *
+     * @param path a lista de vértices que compõem o Path.
+     * @param transports a lista de tipos de transporte permitidos.
+     * @param strategy a estratégia de cálculo de peso.
+     * @return o custo total do Path.
+     * @throws IllegalStateException se não houver Routes válidas para o Path escolhido.
+     */
     private double calculateTotalCost(
             List<Vertex<Stop>> path,
             List<TransportType> transports,
@@ -447,6 +532,13 @@ public class TransportMap extends Subject {
         return Math.round(totalCost * 100.0) / 100.0;
     }
 
+    /**
+     * Cria uma estratégia de cálculo de peso com base no critério fornecido.
+     *
+     * @param criteria critério de otimização ("distance", "duration", "sustainability").
+     * @return uma instância de {@link WeightCalculationStrategy}.
+     * @throws IllegalArgumentException se o critério for inválido.
+     */
     public WeightCalculationStrategy createStrategy(String criteria){
         return switch (criteria) {
             case "distance" -> new DistanceStrategy();
@@ -456,7 +548,13 @@ public class TransportMap extends Subject {
         };
     }
 
-    // Obter um vértice pelo nome da paragem
+    /**
+     * Obtém um vértice no grafo com base no nome da Stop.
+     *
+     * @param stopName nome da Stop.
+     * @param vertexList lista de vértices do grafo.
+     * @return vértice correspondente, ou {@code null} se não for encontrado.
+     */
     private Vertex<Stop> getVertexByDesignation(String stopName, Collection<Vertex<Stop>> vertexList) {
         for (Vertex<Stop> v : vertexList) {
             if (v.element().getStopName().equals(stopName)) {
@@ -466,19 +564,23 @@ public class TransportMap extends Subject {
         return null;
     }
 
+    /**
+     * Verifica se dois vértices estão diretamente conectados no grafo.
+     *
+     * @param current vértice atual.
+     * @param next próximo vértice.
+     * @return {@code true} se os vértices forem adjacentes; caso contrário, {@code false}.
+     */
     public boolean isAdjacent(Vertex<Stop> current, Vertex<Stop> next) {
         return graph.incidentEdges(current).stream()
                 .anyMatch(edge -> graph.opposite(current, edge).equals(next));
     }
 
     /**
-     * Verifica se uma string é numérica.
+     * Verifica se uma String é numérica.
      *
-     * Este método verifica se a string fornecida é um número válido,
-     *Retorna {@code false} se a string for nula, vazia ou não puder ser convertida para um número.
-     *
-     * @param string a string a ser verificada.
-     * @return {@code true} se a string for numérica; {@code false} caso contrário.
+     * @param string String a ser verificada.
+     * @return {@code true} se a String for numérica; {@code false} caso contrário.
      */
     private boolean isNumeric(String string) {
         if (string == null || string.isBlank()) return false;
@@ -490,9 +592,3 @@ public class TransportMap extends Subject {
         }
     }
 }
-
-
-
-
-
-

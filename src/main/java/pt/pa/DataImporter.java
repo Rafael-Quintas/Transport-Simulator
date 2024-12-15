@@ -92,6 +92,7 @@ public class DataImporter {
 
         return genericRoutes;
     }
+
     /**
      * Cria uma instância de {@link Route} com base nos parâmetros fornecidos.
      * Retorna null se qualquer parâmetro estiver vazio.

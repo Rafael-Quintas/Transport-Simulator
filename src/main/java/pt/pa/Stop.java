@@ -35,6 +35,11 @@ public class Stop {
         return this.stopCode;
     }
 
+    /**
+     * Retorna o nome da Stop.
+     *
+     * @return stopName
+     */
     public String getStopName() {
         return this.stopName;
     }
@@ -48,10 +53,20 @@ public class Stop {
         return this.stopName;
     }
 
+    /**
+     * Retorna a latitude da Stop.
+     *
+     * @return latitude
+     */
     public double getLatitude() {
         return this.latitude;
     }
 
+    /**
+     * Retorna a longitude da Stop.
+     *
+     * @return longitude
+     */
     public double getLongitude() {
         return this.longitude;
     }
