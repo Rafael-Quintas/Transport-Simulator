@@ -294,20 +294,25 @@ public class TransportMap extends Subject {
 
         queue.add(start);
         distances.put(start, 0);
-        result.add(start.element());
 
         while (!queue.isEmpty()) {
             Vertex<Stop> current = queue.poll();
             int currentDistance = distances.get(current);
 
+            // Process neighbors only if we haven't reached distance N yet
             if (currentDistance < N) {
                 for (Edge<List<Route>, Stop> edge : graph.incidentEdges(current)) {
                     Vertex<Stop> neighbor = graph.opposite(current, edge);
 
                     if (!distances.containsKey(neighbor)) {
-                        distances.put(neighbor, currentDistance + 1);
+                        int neighborDistance = currentDistance + 1;
+                        distances.put(neighbor, neighborDistance);
                         queue.add(neighbor);
-                        result.add(neighbor.element());
+
+                        // Add to result only if the neighbor is exactly at distance N
+                        if (neighborDistance == N) {
+                            result.add(neighbor.element());
+                        }
                     }
                 }
             }
@@ -315,6 +320,7 @@ public class TransportMap extends Subject {
 
         return new ArrayList<>(result);
     }
+
 
     /**
      * Encontra o Path de menor custo entre duas Stops com base num critério.
