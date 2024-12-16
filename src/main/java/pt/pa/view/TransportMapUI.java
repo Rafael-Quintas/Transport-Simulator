@@ -6,7 +6,7 @@ import pt.pa.patterns.observer.Observer;
 /**
  * A interface {@code TransportMapUI} define o contrato para a UI no sistema de mapa de transporte.
  *
- * A interface estende {@link Observer}, permitindo que a UI seja notificada de atualizações do modelo
+ * A interface estende {@link Observer} de forma a permitir que a UI seja notificada das atualizações do modelo
  * no padrão Observer.
  * Fornece um método para configurar os triggers de interação com o Controller.
  *
@@ -15,10 +15,10 @@ import pt.pa.patterns.observer.Observer;
 public interface TransportMapUI extends Observer {
 
     /**
-     * Configura os triggers de interação para a UI, conectando os elementos da UI
+     * Configura os triggers de interação para a UI, de forma a conectar os elementos da UI
      * às ações definidas no {@link TransportMapController}.
      *
-     * @param controller Controller responsável por geir as interações do utilizador.
+     * @param controller Controller responsável por gerir as interações do utilizador.
      */
     void setTriggers(TransportMapController controller);
 }

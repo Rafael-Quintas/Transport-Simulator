@@ -15,8 +15,8 @@ import java.util.*;
  * ({@link Stop}) e as suas Routes ({@link Route}). Esta classe fornece métodos para manipulação, cálculo e análise
  * de Stops e Routes.
  *
- * A estrutura principal é um grafo do tipo {@code GraphEdgeList} que armazena as Stops como vértices
- * e as conexões entre elas como arestas, onde cada aresta pode conter uma lista de Routes disponíveis.
+ * A estrutura principal é um grafo do tipo {@code GraphEdgeList} que armazena os Stops como vértices
+ * e as conexões entre eles como arestas, onde cada aresta pode conter uma lista de Routes disponíveis.
  *
  * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
@@ -238,6 +238,45 @@ public class TransportMap extends Subject {
     }
 
     /**
+     * Calcula o número de rotas no grafo que utilizam o tipo de transporte recebido por parâmetro.
+     *
+     * Este método percorre todas as arestas do grafo e soma a quantidade de rotas
+     * em cada lista de rotas associada às arestas que correspondem ao {@code TransportType}.
+     *
+     * @param type o tipo de transporte a verificar.
+     * @return o número total de rotas no grafo que utilizam o tipo de transporte especificado.
+     */
+    public int numberOfRoutesByTransport(TransportType type) {
+        List<Edge<List<Route>, Stop>> edgeList = (List<Edge<List<Route>, Stop>>) graph.edges();
+        int total = 0;
+
+        for (Edge<List<Route>, Stop> edge : edgeList) {
+            List<Route> routes = edge.element();
+            total += countRoutesByTransport(routes, type);
+        }
+
+        return total;
+    }
+
+    /**.
+     * Método auxiliar para o método numberOfRoutesByTransport que conta e retorna o número de rotas que correspondem ao transporte fornecido.
+     *
+     * @param routes a lista de rotas a ser verificada.
+     * @param type o tipo de transporte a verificar.
+     * @return o número de rotas na lista que utilizam o tipo de transporte especificado.
+     */
+    private int countRoutesByTransport(List<Route> routes, TransportType type) {
+        int count = 0;
+        for (Route route : routes) {
+            if (route.getTransportType().equals(type)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    /**
      * Calcula a centralidade de cada Stop com base no número de conexões.
      *
      * @return mapa ordenado de Stops e os seus valores de centralidade.
@@ -276,7 +315,7 @@ public class TransportMap extends Subject {
     }
 
     /**
-     * Obtém uma lista de Stops que estão a exatamente N conexões de uma Stop inicial.
+     * Obtém uma lista de Stops que estão a exatamente N arestas (Routes) de um Stop inicial.
      *
      * @param start Stop inicial.
      * @param N número de conexões.
@@ -299,7 +338,7 @@ public class TransportMap extends Subject {
             Vertex<Stop> current = queue.poll();
             int currentDistance = distances.get(current);
 
-            // Process neighbors only if we haven't reached distance N yet
+            // Procuramos neighbors até chegarmos à distância N
             if (currentDistance < N) {
                 for (Edge<List<Route>, Stop> edge : graph.incidentEdges(current)) {
                     Vertex<Stop> neighbor = graph.opposite(current, edge);
@@ -309,7 +348,6 @@ public class TransportMap extends Subject {
                         distances.put(neighbor, neighborDistance);
                         queue.add(neighbor);
 
-                        // Add to result only if the neighbor is exactly at distance N
                         if (neighborDistance == N) {
                             result.add(neighbor.element());
                         }
@@ -327,17 +365,14 @@ public class TransportMap extends Subject {
      *
      * @param origin Stop de origem.
      * @param destination Stop de destino.
-     * @param criteria critério de otimização ("distance", "duration", "sustainability").
+     * @param strategy estratégia de otimização ("distance", "duration", "sustainability").
      * @param transports tipos de transporte disponíveis.
      * @return Path de menor custo como um objeto {@link Path}.
      */
-    public Path leastCostBetweenStops(String origin, String destination, String criteria, List<TransportType> transports) {
+    public Path leastCostBetweenStops(String origin, String destination, WeightCalculationStrategy strategy, List<TransportType> transports) {
         Map<Vertex<Stop>, Double> costs = new HashMap<>();
         Map<Vertex<Stop>, Vertex<Stop>> predecessors = new HashMap<>();
         List<Vertex<Stop>> vertices = new ArrayList<>(graph.vertices());
-
-        // Estratégia de cálculo de peso
-        WeightCalculationStrategy strategy = createStrategy(criteria);
 
         Vertex<Stop> originVertex = getVertexByDesignation(origin, vertices);
         Vertex<Stop> destinationVertex = getVertexByDesignation(destination, vertices);
@@ -353,7 +388,7 @@ public class TransportMap extends Subject {
         }
         costs.put(originVertex, 0.0);
 
-        // Relaxar arestas (Bellman-Ford)
+        // Relaxar arestas
         for (int i = 0; i < vertices.size() - 1; i++) {
             for (Vertex<Stop> vertex : vertices) {
                 for (Edge<List<Route>, Stop> edge : graph.incidentEdges(vertex)) {
@@ -421,14 +456,14 @@ public class TransportMap extends Subject {
 
         // Verificar se o menor peso foi encontrado
         if (minWeight == Double.POSITIVE_INFINITY) {
-            return; // Nenhuma Route válida foi encontrada
+            return;
         }
 
         // Verificar se o Path via 'u' oferece menor custo acumulado para 'v'
         double newCost = costs.get(u) + minWeight;
         if (newCost < costs.get(v)) {
-            costs.put(v, newCost); // Atualizar custo acumulado
-            predecessors.put(v, u); // Atualizar predecessor
+            costs.put(v, newCost);
+            predecessors.put(v, u);
         }
     }
 
@@ -530,7 +565,7 @@ public class TransportMap extends Subject {
             totalCost += minCost;
         }
 
-        // If the strategy is SustainabilityStrategy, subtract the offset for each edge
+        // No caso da estratégia ser Sustentabilidade, subtraimos o offset usado para cada edge
         if (strategy instanceof SustainabilityStrategy) {
             totalCost -= SustainabilityStrategy.OFFSET * (path.size() - 1);
         }
@@ -546,7 +581,8 @@ public class TransportMap extends Subject {
      * @throws IllegalArgumentException se o critério for inválido.
      */
     public WeightCalculationStrategy createStrategy(String criteria){
-        return switch (criteria) {
+        if (criteria == null) { throw new IllegalArgumentException("You must choose a valid criteria before calculating the least cost route"); }
+        return switch (criteria.toLowerCase()) {
             case "distance" -> new DistanceStrategy();
             case "duration" -> new DurationStrategy();
             case "sustainability" -> new SustainabilityStrategy();

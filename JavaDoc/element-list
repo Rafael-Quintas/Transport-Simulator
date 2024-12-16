@@ -1,4 +1,6 @@
 pt.pa
+pt.pa.patterns.observer
+pt.pa.patterns.strategy
 pt.pa.test
 pt.pa.utils
 pt.pa.view

@@ -26,18 +26,18 @@ public class GenericRoute {
     }
 
     /**
-     * Obtém a Stop inicial da Route.
+     * Obtém a designação Stop inicial da Route.
      *
-     * @return a Stop inicial ({@link Stop}).
+     * @return a designação Stop inicial ({@link Stop}).
      */
     public String getStopStart() {
         return this.stopStart;
     }
 
     /**
-     * Obtém a Stop final da Route.
+     * Obtém a designação Stop final da Route.
      *
-     * @return a Stop de destino ({@link Stop}).
+     * @return a designação Stop de destino ({@link Stop}).
      */
     public String getStopEnd() {
         return this.stopEnd;

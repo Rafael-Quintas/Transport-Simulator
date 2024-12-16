@@ -20,29 +20,20 @@ import java.util.logging.SimpleFormatter;
  * @author amfs
  */
 public class Main extends Application {
-
     /**
-     * Ponto de entrada padrão da aplicação.
-     * Este método inicia a aplicação JavaFX.
+     * The default entry point of the application
      *
-     * @param args argumentos da linha de comando.
+     * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
 
-    /**
-     * Método de inicialização da aplicação JavaFX. Configura o Model, View e Controller,
-     * e inicializa a GUI.
-     *
-     * @param primaryStage o estágio principal da aplicação.
-     */
     @Override
     public void start(Stage primaryStage) {
         Logger logger = Logger.getLogger("UserActionsLogger");
         configureLogger(logger);
 
-        // Boilerplate. Need your own class, parametrized
         TransportMap map = new TransportMap();
 
         MapView view = new MapView(map);

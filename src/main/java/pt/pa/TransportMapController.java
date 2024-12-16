@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * A classe {@code TransportMapController} atua como um Controller para gerir a interação entre o modelo
- * ({@link TransportMap}) e a visualização ({@link MapView}). Responde a eventos da GUI e executa operações
+ * ({@link TransportMap}) e a visualização ({@link MapView}). Responde a eventos da UI e executa operações
  * no modelo e na visualização.
  *
  * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
@@ -24,7 +24,7 @@ public class TransportMapController implements Observer {
     private final Logger logger;
 
     /**
-     * Construtor para criar uma instância do Controller, configurando os observadores no modelo e na visualização.
+     * Construtor para criar uma instância do Controller, configura os observadores no modelo e na visualização.
      *
      * @param model modelo do mapa de transporte ({@link TransportMap}).
      * @param view visualização do mapa de transporte ({@link MapView}).
@@ -91,7 +91,7 @@ public class TransportMapController implements Observer {
     public void doShowLeastCostRoute() {
         String origin = view.getOriginDropdown().getValue();
         String destination = view.getDestinationDropdown().getValue();
-        String criteria = view.getCriteriaDropdown().getValue().toLowerCase();
+        String criteria = view.getCriteriaDropdown().getValue();
         List<TransportType> transportTypes = view.getSelectedTransportTypes();
 
         try {
@@ -99,16 +99,15 @@ public class TransportMapController implements Observer {
             logger.info("User has selected the following destination Stop: " + destination);
             logger.info("User has selected: " + criteria + " criteria");
             logger.info("User has clicked the Calculate Cost button");
-            Path path = model.leastCostBetweenStops(origin, destination, criteria, transportTypes);
 
-            // Atualizar a label de custo no visualizador
-            view.updateCostLabel("Cost: " + path.getTotalCost());
-
-            // Colorir as arestas no grafo chamando o método da view
             WeightCalculationStrategy strategy = model.createStrategy(criteria);
 
+            Path path = model.leastCostBetweenStops(origin, destination, strategy, transportTypes);
+
+            view.updateCostLabel("Total Path Cost: " + Math.round(path.getTotalCost() * 100.0) / 100.0);
+
             view.highlightPath(path.getPath(), transportTypes, strategy);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IllegalArgumentException e) {
             view.showWarning(e.getMessage());
         }
     }
@@ -118,10 +117,14 @@ public class TransportMapController implements Observer {
      *
      * @param vertex vértice selecionado ({@link SmartGraphVertex}).
      */
-
     public void doShowCustomPath(SmartGraphVertex<Stop> vertex) {
         if (view.getIsSelectingCustomPath()) {
             Vertex<Stop> selectedVertex = vertex.getUnderlyingVertex();
+
+            if (view.getCustomPath().contains(selectedVertex)) {
+                view.showWarning("This Stop is already in the custom path: " + selectedVertex.element().getStopName());
+                return;
+            }
 
             if (view.getCustomPath().isEmpty() || model.isAdjacent(view.getCustomPath().get(view.getCustomPath().size() - 1), selectedVertex)) {
                 List<Vertex<Stop>> customPath = view.getCustomPath();
@@ -131,7 +134,6 @@ public class TransportMapController implements Observer {
                     Vertex<Stop> lastVertex = customPath.get(customPath.size() - 2);
                     WeightCalculationStrategy strategy = model.createStrategy(view.getCriteriaDropdown().getValue().toLowerCase());
 
-                    // Calcular o custo da nova aresta e atualizar o custo total
                     double edgeCost = calculateEdgeCost(lastVertex, selectedVertex, strategy);
 
                     // Aplicar o OFFSET se for SustainabilityStrategy
@@ -139,14 +141,11 @@ public class TransportMapController implements Observer {
                         edgeCost -= SustainabilityStrategy.OFFSET;
                     }
 
-                    edgeCost = Math.round(edgeCost * 100.0) / 100.0;
                     view.updateCurrentCustomPathCost(edgeCost);
 
-                    // Destacar a aresta entre o último e o atual
                     view.highlightEdge(lastVertex, selectedVertex, strategy);
                 }
 
-                // Notificar a seleção do vértice
                 view.showNotification("Vertex added to custom path: " + selectedVertex.element().getStopName());
             } else {
                 view.showWarning("Selected Stop is not adjacent to the last Stop in the path.");
@@ -183,7 +182,7 @@ public class TransportMapController implements Observer {
     }
 
     /**
-     * Regista mensagens personalizadas logger.
+     * Regista mensagens personalizadas no logger.
      *
      * @param string mensagem a ser registada.
      */

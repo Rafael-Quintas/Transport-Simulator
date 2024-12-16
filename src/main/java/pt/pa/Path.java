@@ -4,7 +4,7 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import java.util.*;
 
 /**
- * A classe {@code Path} representa um Path entre Stops ({@link Stop}) no grafo de transporte,
+ * A classe {@code Path} representa um Path entre Stops ({@link Stop}) no grafo,
  * incluindo a lista de vértices que compõem o Path e o custo total associado.
  *
  * Esta classe é usada para encapsular os resultados de cálculos de Paths no modelo de transporte.

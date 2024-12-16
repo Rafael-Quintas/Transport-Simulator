@@ -105,7 +105,7 @@ public class MapView extends BorderPane implements TransportMapUI {
     /**
      * Define os triggers de interação para a interface gráfica.
      *
-     * @param controller Controller responsável por gerir as interações do utilizador.
+     * @param controller O Controller responsável por gerir as interações do utilizador.
      */
     @Override
     public void setTriggers(TransportMapController controller) {
@@ -158,14 +158,11 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Configura o layout principal da GUI.
+     * Configura o layout principal da UI.
      *
      * Este método organiza os elementos da interface, incluindo:
-     * <ul>
-     *   <li>O menu superior com as opções de interação (botões e dropdowns).</li>
-     *   <li>A área central contendo o grafo e o visualizador de informações.</li>
-     * </ul>
-     * Os tamanhos são ajustados dinamicamente para manter a consistência visual.
+     * O menu superior com as opções de interação (botões e dropdowns).
+     * A área central que contem o grafo e o visualizador de informações.
      */
     private void doLayout() {
         // Configurar o menu superior no topo
@@ -177,7 +174,7 @@ public class MapView extends BorderPane implements TransportMapUI {
         mapArea.getChildren().add(graphView);
 
         // Ajustar tamanho do mapa com o visualizer
-        VBox visualizer = createVisualizerPane();
+        VBox visualizer = createVisualizer();
         StackPane.setAlignment(visualizer, Pos.BOTTOM_LEFT); // Posicionar no canto inferior esquerdo
         StackPane.setMargin(visualizer, new Insets(10)); // Margem no canto inferior esquerdo
         mapArea.getChildren().add(visualizer);
@@ -193,14 +190,11 @@ public class MapView extends BorderPane implements TransportMapUI {
      * Cria o menu superior da GUI.
      *
      * inclui:
-     * <ul>
-     *   <li>Dropdowns para selecionar a origem, destino e critério de cálculo.</li>
-     *   <li>Um menu suspenso para selecionar os tipos de transporte.</li>
-     *   <li>Botões para calcular custos, mostrar as 5 Stops mais centrais,
-     *       exibir paragens a N Routes de distância e ativar o modo de Path personalizado.</li>
-     * </ul>
+     * Dropdowns para selecionar a origem, destino e critério de cálculo.
+     * Um menu suspenso para selecionar os tipos de transporte.
+     * Botões para calcular custos, mostrar as 5 Stops mais centrais, exibir paragens a N Routes de distância e ativar o modo de caminho personalizado.
      *
-     * @return {@link HBox} contendo o menu superior.
+     * @return {@link HBox} que contém o menu superior.
      */
     private HBox createTopMenu() {
         HBox topMenu = new HBox(10);
@@ -252,33 +246,29 @@ public class MapView extends BorderPane implements TransportMapUI {
         calculateCostButton.setStyle(dropdownFX);
         calculateCostButton.setPrefWidth(120);
 
-        // Buttons: Aligned next to Calculate Cost
+        // Buttons alinhados ao lado do Calculate Cost
         topFiveButton = new Button("Top 5");
         stopsNRoutesButton = new Button("Stops N Routes Away");
         centralityButton = new Button("Centrality");
         customPathButton = new Button("Custom Path");
 
-        // Apply uniform style and size
+        // Estilos
         topFiveButton.setStyle(dropdownFX);
         stopsNRoutesButton.setStyle(dropdownFX);
         centralityButton.setStyle(dropdownFX);
         customPathButton.setStyle(dropdownFX);
-
-        // Set uniform size for all buttons
         topFiveButton.setPrefWidth(120);
         customPathButton.setPrefWidth(120);
         stopsNRoutesButton.setPrefWidth(160);
         centralityButton.setPrefWidth(160);
 
 
-        // Organize buttons into two rows with two buttons per row
+        // Organizar os buttons em duas secções com 2 buttons em cada uma
         HBox firstButtons = new HBox(10, stopsNRoutesButton, topFiveButton);
         HBox secondButtons = new HBox(10, centralityButton, customPathButton);
-
-        // VBox to stack the two rows of buttons
         VBox alignedButtons = new VBox(10, firstButtons, secondButtons);
 
-        // Main layout: ComboBox row + Calculate Cost + Buttons
+        // Layout Final
         HBox comboBoxRow = new HBox(10, originDropdown, destinationDropdown, criteriaDropdown, transportDropdown, calculateCostButton, alignedButtons);
         comboBoxRow.setAlignment(Pos.CENTER_LEFT);
 
@@ -287,26 +277,24 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Cria o painel visualizador da GUI.
+     * Cria o painel visualizador da UI.
      *
      * Exibe:
-     * <ul>
-     *   <li>Informações gerais sobre o grafo, como número de Stops, Routes e Paths possíveis.</li>
-     *   <li>Detalhes da Stop selecionada, incluindo código, nome, latitude e longitude.</li>
-     * </ul>
+     * Informações gerais sobre o grafo, como número de Stops, Routes possíveis.
+     * Detalhes da Stop selecionada, incluindo código, nome, latitude e longitude.
      *
-     * @return {@link VBox} contendo o painel visualizador.
+     * @return {@link VBox} que contém o painel visualizador.
      */
-    private VBox createVisualizerPane() {
+    private VBox createVisualizer() {
         VBox visualizerPane = new VBox(10);
         visualizerPane.setPadding(new Insets(10));
         visualizerPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3); -fx-border-radius: 10px;");
-        visualizerPane.setMaxWidth(250);
+        visualizerPane.setMaxWidth(280);
         visualizerPane.setMaxHeight(200);
 
         String labelStyle = "-fx-text-fill: white;";
 
-        // Visualizer Section
+        // Secção do Visualizer
         Label visualizerLabel = new Label("Visualizer");
         visualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; " + labelStyle);
 
@@ -319,16 +307,27 @@ public class MapView extends BorderPane implements TransportMapUI {
         Label nonIsolatedStopsLabel = new Label("Number of Non-Isolated Stops: " + model.numberOfNonIsolatedStops());
         nonIsolatedStopsLabel.setStyle(labelStyle);
 
-        Label RoutesLabel = new Label("Number of Routes: " + graph.numEdges());
-        RoutesLabel.setStyle(labelStyle);
+        Label routesLabel = new Label("Number of Routes: " + graph.numEdges());
+        routesLabel.setStyle(labelStyle);
 
-        Label PossibleRoutesLabel = new Label("Number of Possible Routes: " + model.numberOfPossibleRoutes());
-        PossibleRoutesLabel.setStyle(labelStyle);
+        Label possibleRoutesTitle = new Label("Number of Possible Routes:");
+        possibleRoutesTitle.setStyle(labelStyle);
 
-        calculateLabel = new Label("Cost: ");
+        // Labels e dados para cada transport type
+        VBox totalRoutes = createTransportRoute("Total", model.numberOfPossibleRoutes(), labelStyle);
+        VBox busRoutes = createTransportRoute("Bus", model.numberOfRoutesByTransport(TransportType.BUS), labelStyle);
+        VBox trainRoutes = createTransportRoute("Train", model.numberOfRoutesByTransport(TransportType.TRAIN), labelStyle);
+        VBox boatRoutes = createTransportRoute("Boat", model.numberOfRoutesByTransport(TransportType.BOAT), labelStyle);
+        VBox walkRoutes = createTransportRoute("Walk", model.numberOfRoutesByTransport(TransportType.WALK), labelStyle);
+        VBox bicycleRoutes = createTransportRoute("Bicycle", model.numberOfRoutesByTransport(TransportType.BICYCLE), labelStyle);
+
+        // Organizer o número de routes para transportes num layout horizontal
+        HBox transportRoutes = new HBox(15, totalRoutes, busRoutes, trainRoutes, boatRoutes, walkRoutes, bicycleRoutes);
+
+        calculateLabel = new Label("Total Path Cost: ");
         calculateLabel.setStyle(labelStyle);
 
-        // Stop Visualizer Section
+        // Secção do Visualizer de Stops
         Label stopVisualizerLabel = new Label("Stop Visualizer");
         stopVisualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; " + labelStyle);
 
@@ -347,11 +346,29 @@ public class MapView extends BorderPane implements TransportMapUI {
 
         // Adicionar elementos ao painel
         visualizerPane.getChildren().addAll(
-                visualizerLabel, stopsLabel, isolatedStopsLabel, nonIsolatedStopsLabel, RoutesLabel, PossibleRoutesLabel, calculateLabel,
-                stopVisualizerLabel, stopCodeLabel, stopNameLabel, latitudeLabel, longitudeLabel
+                visualizerLabel, calculateLabel, stopsLabel, isolatedStopsLabel, nonIsolatedStopsLabel, routesLabel, possibleRoutesTitle,
+                transportRoutes, stopVisualizerLabel, stopCodeLabel, stopNameLabel, latitudeLabel, longitudeLabel
         );
 
         return visualizerPane;
+    }
+
+    /**
+     * Exibe os detalhes de uma Stop na interface.
+     *
+     * @param stop Stop selecionada ({@link Stop}).
+     */
+
+    private VBox createTransportRoute(String text, int numberOfRoutes, String labelStyle) {
+        Label textLabel = new Label(text);
+        textLabel.setStyle("-fx-font-weight: bold; " + labelStyle);
+
+        Label numberLabel = new Label(String.valueOf(numberOfRoutes));
+        numberLabel.setStyle(labelStyle);
+
+        VBox transportRoute = new VBox(5, textLabel, numberLabel);
+        transportRoute.setAlignment(Pos.CENTER);
+        return transportRoute;
     }
 
     /**
@@ -443,7 +460,7 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Exibe um gráfico de barras mostrando as 5 Stops com maior centralidade.
+     * Exibe um gráfico de barras com as 5 Stops de maior centralidade.
      */
     public void showTopFiveCentralityChart() {
         Stage stage = new Stage();
@@ -498,7 +515,7 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Cria um popup para calcular e exibir as Stops a N Routes de distância de uma Stop inicial.
+     * Cria um popup para calcular e exibir os Stops a N Routes de distância de um Stop inicial.
      */
     public void createStopsNRoutesAwayPopup() {
         Stage popupStage = new Stage();
@@ -538,9 +555,8 @@ public class MapView extends BorderPane implements TransportMapUI {
                     .findFirst()
                     .orElse(null);
 
-            int N = Integer.parseInt(inputNumber);
-
             try {
+                int N = Integer.parseInt(inputNumber);
                 List<Stop> stops = model.getStopsNRoutesAway(selectedVertex, N);
                 popupStage.close();
                 showStopsTable(stops);
@@ -557,9 +573,9 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Exibe uma tabela com as Stops retornadas pelo cálculo de N rotas de distância.
+     * Exibe uma tabela com os Stops retornadas pelo cálculo de N rotas de distância.
      *
-     * @param stops a lista de Stops encontradas ({@link Stop}).
+     * @param stops a lista de Stops encontrados ({@link Stop}).
      */
     public void showStopsTable(List<Stop> stops) {
         Stage stage = new Stage();
@@ -625,7 +641,7 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Obtém o dropdown de seleção de origem.
+     * Obtém o dropdown de seleção do Stop de origem.
      *
      * @return uma instância de {@link ComboBox}.
      */
@@ -634,9 +650,9 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Obtém o dropdown de seleção de destino.
+     * Obtém o dropdown de seleção da Stop de destino.
      *
-     * @return instância de {@link ComboBox}.
+     * @return uma instância de {@link ComboBox}.
      */
     public ComboBox<String> getDestinationDropdown() {
         return destinationDropdown;
@@ -693,7 +709,7 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Adiciona uma Stop ao Path personalizado.
+     * Adiciona um Stop ao Path personalizado.
      *
      * @param vertex vértice a ser adicionado ({@link Vertex}).
      */
@@ -708,7 +724,7 @@ public class MapView extends BorderPane implements TransportMapUI {
      */
     public void updateCurrentCustomPathCost(double cost) {
         currentCustomPathCost += cost;
-        updateCostLabel("Cost: " + currentCustomPathCost);
+        updateCostLabel("Total Path Cost: " + Math.round(currentCustomPathCost * 100.0) / 100.0);
     }
 
     /**
@@ -716,13 +732,13 @@ public class MapView extends BorderPane implements TransportMapUI {
      */
     public void resetCurrentCustomPathCost() {
         currentCustomPathCost = 0.0;
-        updateCostLabel("Cost: " + currentCustomPathCost);
+        updateCostLabel("Total Path Cost: " + Math.round(currentCustomPathCost * 100.0) / 100.0);
     }
 
     /**
-     * Atualiza o rótulo de custo na interface.
+     * Atualiza o campo de custo na interface.
      *
-     * @param costText texto a ser exibido no rótulo.
+     * @param costText texto a ser exibido na secção do custo.
      */
     public void updateCostLabel(String costText) {
         calculateLabel.setText(costText);
@@ -824,7 +840,7 @@ public class MapView extends BorderPane implements TransportMapUI {
 
 
     ///////////////////////////////////////////////////////////////////////////////////
-    // Error Reporting -> First method taken from PA´s laboratory.
+    // Error Reporting
     /**
      * Exibe um alerta de erro com uma mensagem específica.
      *
@@ -851,6 +867,7 @@ public class MapView extends BorderPane implements TransportMapUI {
         alert.showAndWait();
     }
 
+    // Ainda não implementado
     @Override
     public void update(Object obj) {
 
