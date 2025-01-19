@@ -1,14 +1,12 @@
 package pt.pa;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertex;
 import pt.pa.patterns.memento.Caretaker;
-import pt.pa.patterns.observer.Observer;
+import pt.pa.patterns.strategy.SustainabilityStrategy;
 import pt.pa.patterns.strategy.WeightCalculationStrategy;
 import pt.pa.view.MapView;
-import pt.pa.patterns.strategy.SustainabilityStrategy;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
-public class TransportMapController implements Observer {
+public class TransportMapController {
     private TransportMap model;
     private MapView view;
     private Logger logger;
@@ -37,7 +35,6 @@ public class TransportMapController implements Observer {
         this.view = view;
         this.logger = logger;
         this.caretaker = new Caretaker(model);
-        model.addObservers(this);
     }
 
     /**
@@ -139,6 +136,10 @@ public class TransportMapController implements Observer {
                         return;
                     }
 
+                    if (strategy instanceof SustainabilityStrategy) {
+                        edgeCost -= SustainabilityStrategy.OFFSET;
+                    }
+
                     view.updateCurrentCustomPathCost(edgeCost);
                     view.highlightEdge(lastVertex, selectedVertex, strategy);
                 }
@@ -150,7 +151,6 @@ public class TransportMapController implements Observer {
             }
         }
     }
-
 
     /**
      * Calcula o custo da aresta entre dois vértices com base numa estratégia de cálculo de peso.
@@ -164,12 +164,11 @@ public class TransportMapController implements Observer {
         return model.getGraph().incidentEdges(start).stream()
                 .filter(edge -> model.getGraph().opposite(start, edge).equals(end))
                 .flatMap(edge -> edge.element().stream())
-                .filter(Route::getState) // Considera apenas rotas ativas
+                .filter(Route::getState)
                 .mapToDouble(strategy::calculateWeight)
                 .min()
                 .orElse(Double.POSITIVE_INFINITY);
     }
-
 
     public void doDisableRoute(SmartGraphEdge<List<Route>, Stop> edge, List<Route> routesToDisable) {
         logger.info("INFO: User disabled an edge: " + edge.getUnderlyingEdge());
@@ -193,17 +192,6 @@ public class TransportMapController implements Observer {
 
     public void undo() {
         caretaker.restoreState();
-    }
-
-    /**
-     * Atualiza a interface com base em notificações do modelo.
-     *
-     * @param obj objeto de notificação enviado pelo modelo.
-     */
-    @Override
-    public void update(Object obj) {
-        logger.info("Model update received: " + obj.toString());
-        view.update(obj);
     }
 
     /**

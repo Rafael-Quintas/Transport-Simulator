@@ -7,9 +7,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import com.brunomnsilva.smartgraph.graphview.SmartRandomPlacementStrategy;
-import com.sun.jdi.connect.Transport;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,8 +24,6 @@ import javafx.util.converter.IntegerStringConverter;
 import pt.pa.*;
 import javafx.scene.chart.*;
 import pt.pa.patterns.strategy.WeightCalculationStrategy;
-
-import java.net.URISyntaxException;
 import java.util.*;
 import java.io.InputStream;
 import java.net.URL;
@@ -101,7 +97,6 @@ public class MapView extends BorderPane implements TransportMapUI {
                 this.graphView = new SmartGraphPanel<>(graph, new SmartGraphProperties(smartgraphProperties), new SmartRandomPlacementStrategy(), css.toURI());
                 controller = new TransportMapController(map, this, logger);
 
-                // Configurações do painel do grafo
                 graphView.setStyle("-fx-background-color: #ffffff;");
                 graphView.setMinSize(0, 0);
                 graphView.setPrefSize(1024, 720);
@@ -134,7 +129,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         criteriaDropdown.setOnAction(event -> controller.triggerLog("Criteria Dropdown " + criteriaDropdown.getValue()));
 
         graphView.setVertexDoubleClickAction(vertex -> {
-            // Sempre mostrar os detalhes do vértice no visualizador
             controller.doShowVertexDetails(vertex);
 
             // Se o modo customPath estiver ativado, adicionar ao caminho personalizado
@@ -145,8 +139,7 @@ public class MapView extends BorderPane implements TransportMapUI {
 
         graphView.setEdgeDoubleClickAction(edge -> {
             this.currentEdge = edge;
-            //controller.doShowEdgeDetails(edge);
-            showEdgeDetails(edge);
+            controller.doShowEdgeDetails(edge);
         });
 
         centralityButton.setOnAction(event -> controller.doShowCentralityDetails());
@@ -165,10 +158,9 @@ public class MapView extends BorderPane implements TransportMapUI {
 
             isSelectingCustomPath = !isSelectingCustomPath;
             customPath.clear();
-            resetCurrentCustomPathCost(); // Reseta o custo acumulado
+            resetCurrentCustomPathCost();
             clearHighlights();
 
-            // Desabilitar ou habilitar o ComboBox de critérios
             criteriaDropdown.setDisable(isSelectingCustomPath);
 
             if (isSelectingCustomPath) {
@@ -188,25 +180,22 @@ public class MapView extends BorderPane implements TransportMapUI {
      * A área central que contem o grafo e o visualizador de informações.
      */
     private void doLayout() {
-        // Configurar o menu superior no topo
         HBox topMenu = createTopMenu();
         this.setTop(topMenu);
 
-        // Configurar o mapa e visualizer na região central
         StackPane mapArea = new StackPane();
         mapArea.getChildren().add(graphView);
 
-        // Ajustar tamanho do mapa com o visualizer
         VBox visualizer = createVisualizer();
-        StackPane.setAlignment(visualizer, Pos.BOTTOM_LEFT); // Posicionar no canto inferior esquerdo
-        StackPane.setMargin(visualizer, new Insets(10)); // Margem no canto inferior esquerdo
+        StackPane.setAlignment(visualizer, Pos.BOTTOM_LEFT);
+        StackPane.setMargin(visualizer, new Insets(10));
         mapArea.getChildren().add(visualizer);
 
-        // Limitar o tamanho do mapa à cena
+        // Limitar o tamanho do mapa à scene
         mapArea.prefWidthProperty().bind(Bindings.min(this.widthProperty(), 1024));
         mapArea.prefHeightProperty().bind(Bindings.min(this.heightProperty(), 720));
 
-        this.setCenter(mapArea); // Configurar o mapa na área central
+        this.setCenter(mapArea);
     }
 
     /**
@@ -264,12 +253,10 @@ public class MapView extends BorderPane implements TransportMapUI {
         }
         transportDropdown.setStyle(dropdownFX);
 
-        // Button: Calculate Cost
         calculateCostButton = new Button("Calculate Cost");
         calculateCostButton.setStyle(dropdownFX);
         calculateCostButton.setPrefWidth(120);
 
-        // Buttons alinhados ao lado do Calculate Cost
         topFiveButton = new Button("Top 5");
         stopsNRoutesButton = new Button("Stops N Routes Away");
         centralityButton = new Button("Centrality");
@@ -291,7 +278,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         HBox secondButtons = new HBox(10, centralityButton, customPathButton);
         VBox alignedButtons = new VBox(10, firstButtons, secondButtons);
 
-        // Layout Final
         HBox comboBoxRow = new HBox(10, originDropdown, destinationDropdown, criteriaDropdown, transportDropdown, calculateCostButton, alignedButtons);
         comboBoxRow.setAlignment(Pos.CENTER_LEFT);
 
@@ -317,7 +303,6 @@ public class MapView extends BorderPane implements TransportMapUI {
 
         String labelStyle = "-fx-text-fill: white;";
 
-        // Secção do Visualizer
         Label visualizerLabel = new Label("Visualizer");
         visualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; " + labelStyle);
 
@@ -350,11 +335,9 @@ public class MapView extends BorderPane implements TransportMapUI {
         calculateLabel = new Label("Total Path Cost: ");
         calculateLabel.setStyle(labelStyle);
 
-        // Secção do Visualizer de Stops
         Label stopVisualizerLabel = new Label("Stop Visualizer");
         stopVisualizerLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; " + labelStyle);
 
-        // Inicializar os rótulos de detalhes da paragem
         stopCodeLabel = new Label("Stop Code:");
         stopCodeLabel.setStyle(labelStyle);
 
@@ -367,7 +350,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         longitudeLabel = new Label("Longitude:");
         longitudeLabel.setStyle(labelStyle);
 
-        // Adicionar elementos ao painel
         visualizerPane.getChildren().addAll(
                 visualizerLabel, calculateLabel, stopsLabel, isolatedStopsLabel, nonIsolatedStopsLabel, routesLabel, possibleRoutesTitle,
                 transportRoutes, stopVisualizerLabel, stopCodeLabel, stopNameLabel, latitudeLabel, longitudeLabel
@@ -377,17 +359,13 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     public void updateVisualizer() {
-        // Atualiza o número total de Stops
         stopCodeLabel.setText("Number of Stops: " + graph.numVertices());
 
-        // Atualiza o número de Stops isolados e não isolados
         latitudeLabel.setText("Number of Isolated Stops: " + model.numberOfIsolatedStops());
         longitudeLabel.setText("Number of Non-Isolated Stops: " + model.numberOfNonIsolatedStops());
 
-        // Atualiza o número total de Routes
         stopNameLabel.setText("Number of Routes: " + graph.numEdges());
 
-        // Atualiza as informações de Routes por tipo de transporte
         updateTransportRoute(totalRoutes, "Total", model.numberOfPossibleRoutes());
         updateTransportRoute(busRoutes, "Bus", model.numberOfRoutesByTransport(TransportType.BUS));
         updateTransportRoute(trainRoutes, "Train", model.numberOfRoutesByTransport(TransportType.TRAIN));
@@ -415,8 +393,10 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     private void updateTransportRoute(VBox routeBox, String text, int numberOfRoutes) {
-        Label textLabel = (Label) routeBox.getChildren().get(0); // Assume que o primeiro filho é o texto
-        Label numberLabel = (Label) routeBox.getChildren().get(1); // Assume que o segundo filho é o número
+        // Assume que o primeiro filho é o texto
+        Label textLabel = (Label) routeBox.getChildren().get(0);
+        // Assume que o segundo filho é o número
+        Label numberLabel = (Label) routeBox.getChildren().get(1);
 
         textLabel.setText(text);
         numberLabel.setText(String.valueOf(numberOfRoutes));
@@ -447,11 +427,9 @@ public class MapView extends BorderPane implements TransportMapUI {
 
         List<Route> routes = edge.getUnderlyingEdge().element();
 
-        // Criar tabela
         TableView<Route> table = new TableView<>();
         table.setEditable(true);
 
-        // Configurar as colunas
         TableColumn<Route, String> transportTypeColumn = new TableColumn<>("Transport Type");
         transportTypeColumn.setCellValueFactory(new PropertyValueFactory<>("transportType"));
 
@@ -486,7 +464,6 @@ public class MapView extends BorderPane implements TransportMapUI {
             try {
                 int newDuration = event.getNewValue();
 
-                // Chama o controlador para alterar a duração
                 controller.doChangeBicycleRouteDuration(route, newDuration);
                 table.refresh();
 
@@ -504,7 +481,7 @@ public class MapView extends BorderPane implements TransportMapUI {
         activeColumn.setCellValueFactory(cellData -> {
             SimpleBooleanProperty activeProperty = new SimpleBooleanProperty(cellData.getValue().getState());
 
-            // Adicionar listener para monitorar mudanças na checkbox
+            // Adicionar listener para mudanças na checkbox
             activeProperty.addListener((observable, oldValue, newValue) -> {
                 Route route = cellData.getValue();
 
@@ -516,6 +493,7 @@ public class MapView extends BorderPane implements TransportMapUI {
             return activeProperty;
         });
 
+        // Bloqueia checkbox se a rota estiver desativada
         activeColumn.setCellFactory(column -> new CheckBoxTableCell<Route, Boolean>() {
             @Override
             public void updateItem(Boolean item, boolean empty) {
@@ -524,7 +502,7 @@ public class MapView extends BorderPane implements TransportMapUI {
                 if (!empty) {
                     Route route = getTableRow().getItem();
                     if (route != null) {
-                        setDisable(!route.getState()); // Bloqueia checkbox se a rota estiver desativada
+                        setDisable(!route.getState());
                     }
                 }
             }
@@ -532,10 +510,8 @@ public class MapView extends BorderPane implements TransportMapUI {
 
         table.getColumns().addAll(transportTypeColumn, distanceColumn, durationColumn, costColumn, activeColumn);
 
-        // Populate the table with initial routes
         refreshTable(table, routes);
 
-        // Button to deactivate all routes
         Button deactivateAllButton = new Button("Deactivate all routes");
         deactivateAllButton.setOnAction(event -> {
             controller.doDisableRoute(edge, routes);
@@ -543,10 +519,9 @@ public class MapView extends BorderPane implements TransportMapUI {
             updateVisualizer();
         });
 
-        // Button to undo changes
         Button undoButton = new Button("Undo");
         undoButton.setOnAction(event -> {
-            controller.undo(); // Undo changes in the controller
+            controller.undo();
             refreshGraphView();
             refreshTableAfterUndo(edge, table, routes);
             updateVisualizer();
@@ -560,9 +535,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         stage.show();
     }
 
-    /**
-     * Refreshes the table based on the current state of the routes.
-     */
     private void refreshTable(TableView<Route> table, List<Route> routes) {
         table.getItems().setAll(routes); // Replace the table's items with the updated list
         table.refresh(); // Force refresh to ensure UI consistency
@@ -597,7 +569,7 @@ public class MapView extends BorderPane implements TransportMapUI {
     private void refreshTableAfterUndo(SmartGraphEdge<List<Route>, Stop> edge, TableView<Route> table, List<Route> routes) {
         Vertex<Stop>[] adjacentStops = edge.getUnderlyingEdge().vertices();
 
-        // Encontrar as rotas correspondentes no grafo
+        // Econtrasse otas correspondentes no grafo
         List<Route> updatedRoutes = findRoutesByStops(adjacentStops);
 
         if (updatedRoutes != null) {
@@ -635,11 +607,9 @@ public class MapView extends BorderPane implements TransportMapUI {
         Stage stage = new Stage();
         stage.setTitle("Centrality Details");
 
-        // Criar tabela
         TableView<Map.Entry<Vertex<Stop>, Integer>> table = new TableView<>();
         table.setEditable(false);
 
-        // Coluna para Nome da Parada
         TableColumn<Map.Entry<Vertex<Stop>, Integer>, String> stopNameColumn = new TableColumn<>("Stop Name");
         stopNameColumn.setCellValueFactory(cellData -> {
             Vertex<Stop> vertex = cellData.getValue().getKey();
@@ -659,7 +629,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         LinkedHashMap<Vertex<Stop>, Integer> centralityMap = model.centrality();
         table.getItems().addAll(centralityMap.entrySet());
 
-        // Configurar a cena e exibir o estágio
         stage.setScene(new Scene(table, 218, 400));
         stage.setResizable(false);
         stage.show();
@@ -672,22 +641,22 @@ public class MapView extends BorderPane implements TransportMapUI {
         Stage stage = new Stage();
         stage.setTitle("Top 5 Stops by Centrality");
 
-        // Criar um eixo X para os nomes das paradas
+        // Cria um eixo X para os nomes dos stops
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Stop Name");
 
-        // Criar um eixo Y para os valores de centralidade
+        // Cria um eixo Y para os valores de centralidade
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Centrality");
 
-        // Criar o gráfico de barras
+        // Cria o gráfico de barras
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
         barChart.setTitle("Top 5 Stops by Centrality");
 
-        // Adicionar os dados ao gráfico
+        // Adiciona os dados ao gráfico
         XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
 
-        // Obter os top 5 stops
+        // Obtem os top 5 stops
         List<Map.Entry<Vertex<Stop>, Integer>> topFive = model.topFiveCentrality();
         for (Map.Entry<Vertex<Stop>, Integer> entry : topFive) {
             String stopName = entry.getKey().element().getStopName();
@@ -698,10 +667,10 @@ public class MapView extends BorderPane implements TransportMapUI {
         barChart.getData().add(dataSeries);
         barChart.setLegendVisible(false);
 
-        // Definir as cores personalizadas para cada barra
+        // Define as cores personalizadas para cada barra
         String[] barColors = { "#FF5733", "#33FF57", "#3357FF", "#FFC300", "#DAF7A6" };
 
-        // Configurar estilos após a renderização
+        // Configura estilos após a renderização
         stage.setOnShown(event -> {
             for (int i = 0; i < dataSeries.getData().size(); i++) {
                 XYChart.Data<String, Number> data = dataSeries.getData().get(i);
@@ -712,7 +681,6 @@ public class MapView extends BorderPane implements TransportMapUI {
             }
         });
 
-        // Configurar a cena e exibir o estágio
         VBox layout = new VBox(barChart);
         layout.setPadding(new Insets(10));
         stage.setScene(new Scene(layout, 600, 400));
@@ -727,7 +695,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         Stage popupStage = new Stage();
         popupStage.setTitle("Stops N Routes Away");
 
-        // Layout principal
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
 
@@ -741,12 +708,10 @@ public class MapView extends BorderPane implements TransportMapUI {
             stopDropdown.getItems().add(vertex.element().getStopName());
         }
 
-        // Campo para número de rotas
         TextField numberField = new TextField();
         numberField.setPromptText("Enter number of routes (N)");
         numberField.setPrefWidth(50);
 
-        // Botão para executar a ação
         Button findButton = new Button("Find Stops");
         findButton.setPrefWidth(200);
 
@@ -755,7 +720,7 @@ public class MapView extends BorderPane implements TransportMapUI {
             String selectedStopName = stopDropdown.getValue();
             String inputNumber = numberField.getText();
 
-            // Obtém o vértice e chama o método do modelo
+            // Obtém o vértice e chama o método do model
             Vertex<Stop> selectedVertex = model.getGraph().vertices().stream()
                     .filter(v -> v.element().getStopName().equals(selectedStopName))
                     .findFirst()
@@ -771,7 +736,6 @@ public class MapView extends BorderPane implements TransportMapUI {
             }
         });
 
-        // Adiciona elementos ao layout
         layout.getChildren().addAll(stopDropdown, numberField, findButton);
         popupStage.setScene(new Scene(layout, 300, 200));
         popupStage.setResizable(false);
@@ -787,32 +751,25 @@ public class MapView extends BorderPane implements TransportMapUI {
         Stage stage = new Stage();
         stage.setTitle("Stops N Routes Away");
 
-        // Cria tabela
         TableView<Stop> table = new TableView<>();
         table.setEditable(false);
 
-        // Coluna para o código da Stop
         TableColumn<Stop, String> codeColumn = new TableColumn<>("Stop Code");
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("stopCode"));
 
-        // Coluna para o nome da Stop
         TableColumn<Stop, String> nameColumn = new TableColumn<>("Stop Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("stopName"));
 
-        // Coluna para a latitude
         TableColumn<Stop, Double> latitudeColumn = new TableColumn<>("Latitude");
         latitudeColumn.setCellValueFactory(new PropertyValueFactory<>("latitude"));
 
-        // Coluna para a longitude
         TableColumn<Stop, Double> longitudeColumn = new TableColumn<>("Longitude");
         longitudeColumn.setCellValueFactory(new PropertyValueFactory<>("longitude"));
 
         table.getColumns().addAll(codeColumn, nameColumn, latitudeColumn, longitudeColumn);
 
-        // Adiciona dados à tabela
         table.getItems().addAll(stops);
 
-        // Configura a cena e exibe o estágio
         stage.setScene(new Scene(new VBox(table), 400, 300));
         stage.setResizable(false);
         stage.show();
@@ -825,7 +782,7 @@ public class MapView extends BorderPane implements TransportMapUI {
      * @param prefWidth largura preferencial do ComboBox.
      */
     private void configureComboBox(ComboBox<String> comboBox, int prefWidth) {
-        // Configurar o cellFactory para os itens do ComboBox
+        // Configura o cellFactory para os itens do ComboBox
         comboBox.setCellFactory(lv -> new ListCell<String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -835,7 +792,7 @@ public class MapView extends BorderPane implements TransportMapUI {
             }
         });
 
-        // Configurar o botão principal do ComboBox para corresponder ao tamanho
+        // Configura o botão principal do ComboBox para corresponder ao tamanho
         comboBox.setButtonCell(new ListCell<String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -908,9 +865,9 @@ public class MapView extends BorderPane implements TransportMapUI {
                             return type;
                         }
                     }
-                    return null; // Este caso não deve ocorrer, mas está aqui por segurança
+                    return null;
                 })
-                .filter(Objects::nonNull) // Remove qualquer possível valor nulo
+                .filter(Objects::nonNull)
                 .toList();
     }
 
@@ -974,7 +931,7 @@ public class MapView extends BorderPane implements TransportMapUI {
                         Route bestRoute = null;
                         double minWeight = Double.POSITIVE_INFINITY;
 
-                        // Determinar a rota com o menor peso usando a estratégia
+                        // Determinar a route com o menor valor usando a estratégia
                         for (Route route : edge.element()) {
                             if (transportTypes.contains(route.getTransportType()) && route.getState()) {
                                 double weight = strategy.calculateWeight(route);
@@ -985,11 +942,10 @@ public class MapView extends BorderPane implements TransportMapUI {
                             }
                         }
 
-                        // Se a melhor rota foi encontrada, aplica o estilo correspondente
+                        // Se a melhor route foi encontrada, aplica o estilo correspondente
                         if (bestRoute != null) {
                             var graphicalEdge = graphView.getStylableEdge(edge);
                             if (graphicalEdge != null) {
-                                // Aplica a classe CSS correspondente
                                 graphicalEdge.setStyleClass("edge-" + bestRoute.getTransportType().name().toLowerCase());
                             }
                         }
@@ -1005,7 +961,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         model.getGraph().edges().forEach(edge -> {
             var graphicalEdge = graphView.getStylableEdge(edge);
             if (graphicalEdge != null) {
-                // Remove quaisquer classes de estilo aplicadas
                 graphicalEdge.setStyleClass("edge");
             }
         });
@@ -1027,7 +982,7 @@ public class MapView extends BorderPane implements TransportMapUI {
                     Route bestRoute = null;
                     double minWeight = Double.POSITIVE_INFINITY;
 
-                    // Determinar a rota com o menor peso usando a estratégia, sem verificar transportTypes
+                    // Determinar a route com o menor valor usando a estratégia, sem verificar transportTypes
                     for (Route route : edge.element()) {
                         if (route.getState()) {
                             double weight = strategy.calculateWeight(route);
@@ -1038,11 +993,10 @@ public class MapView extends BorderPane implements TransportMapUI {
                         }
                     }
 
-                    // Se a melhor rota foi encontrada, aplica o estilo correspondente
+                    // Se a melhor route foi encontrada, aplica o estilo correspondente
                     if (bestRoute != null) {
                         var graphicalEdge = graphView.getStylableEdge(edge);
                         if (graphicalEdge != null) {
-                            // Aplica a classe CSS correspondente
                             graphicalEdge.setStyleClass("edge-" + bestRoute.getTransportType().name().toLowerCase());
                         }
                     }
@@ -1076,11 +1030,5 @@ public class MapView extends BorderPane implements TransportMapUI {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    // Ainda não implementado
-    @Override
-    public void update(Object obj) {
-
     }
 }

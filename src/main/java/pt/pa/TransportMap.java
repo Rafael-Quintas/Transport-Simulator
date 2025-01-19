@@ -7,7 +7,6 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import pt.pa.patterns.memento.Memento;
 import pt.pa.patterns.memento.Originator;
-import pt.pa.patterns.observer.Subject;
 import pt.pa.patterns.strategy.*;
 
 import java.util.*;
@@ -22,7 +21,7 @@ import java.util.*;
  *
  * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
-public class TransportMap extends Subject implements Originator {
+public class TransportMap implements Originator {
     private Graph<Stop, List<Route>> graph;
 
     /**
@@ -364,7 +363,6 @@ public class TransportMap extends Subject implements Originator {
         return new ArrayList<>(result);
     }
 
-
     /**
      * Encontra o Path de menor custo entre duas Stops com base num critério.
      *
@@ -414,7 +412,6 @@ public class TransportMap extends Subject implements Originator {
         return new Path(path, totalCost);
     }
 
-
     /**
      * Relaxa uma aresta no algoritmo de Bellman-Ford, atualizando custos e predecessores.
      *
@@ -437,7 +434,6 @@ public class TransportMap extends Subject implements Originator {
         double minWeight = Double.POSITIVE_INFINITY;
 
         for (Route route : edge.element()) {
-            // Filtro de rotas ativas e tipos de transporte permitidos
             if (!route.getState() || !transports.contains(route.getTransportType())) {
                 continue;
             }
@@ -449,7 +445,7 @@ public class TransportMap extends Subject implements Originator {
         }
 
         if (minWeight == Double.POSITIVE_INFINITY) {
-            return; // Nenhuma rota válida
+            return;
         }
 
         double newCost = costs.get(u) + minWeight;
@@ -458,7 +454,6 @@ public class TransportMap extends Subject implements Originator {
             predecessors.put(v, u);
         }
     }
-
 
     /**
      * Verifica a existência de ciclos de peso negativo no grafo.
@@ -555,6 +550,10 @@ public class TransportMap extends Subject implements Originator {
             }
 
             totalCost += minCost;
+        }
+
+        if (strategy instanceof SustainabilityStrategy) {
+            totalCost -= SustainabilityStrategy.OFFSET * (path.size() - 1);
         }
 
         return Math.round(totalCost * 100.0) / 100.0;

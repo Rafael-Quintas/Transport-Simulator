@@ -3400,3 +3400,165 @@ Jan 19, 2025 4:14:59 AM pt.pa.TransportMapController doShowVertexDetails
 INFO: Vertex clicked: Barreiro
 Jan 19, 2025 4:15:00 AM pt.pa.TransportMapController doShowVertexDetails
 INFO: Vertex clicked: Pinhal Novo
+Jan 19, 2025 2:15:57 PM pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+Jan 19, 2025 2:16:04 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+Jan 19, 2025 2:16:05 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+Jan 19, 2025 2:16:06 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+Jan 19, 2025 2:16:09 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+Jan 19, 2025 2:16:10 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Seixal
+Jan 19, 2025 2:47:47 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Odivelas
+Jan 19, 2025 2:47:49 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Entrecampos
+Jan 19, 2025 2:47:50 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+Jan 19, 2025 2:47:52 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Fogueteiro
+Jan 19, 2025 2:47:53 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Arrentela
+Jan 19, 2025 2:47:54 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+Jan 19, 2025 2:47:55 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+Jan 19, 2025 2:59:31 PM pt.pa.TransportMapController doShowStopsNRoutesAway
+INFO: User has clicked the StopsNRoutesAway button
+Jan 19, 2025 2:59:54 PM pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+Jan 19, 2025 2:59:56 PM pt.pa.TransportMapController doShowStopsNRoutesAway
+INFO: User has clicked the StopsNRoutesAway button
+Jan 19, 2025 3:06:36 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Rio de Mouro, Cacém]
+Jan 19, 2025 3:06:42 PM pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: INFO: User has changed the duration of a Route
+Jan 19, 2025 3:06:52 PM pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownRio de Mouro
+Jan 19, 2025 3:06:56 PM pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Cacém
+Jan 19, 2025 3:06:57 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+Jan 19, 2025 3:06:58 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Rio de Mouro
+Jan 19, 2025 3:06:58 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Cacém
+Jan 19, 2025 3:06:58 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+Jan 19, 2025 3:06:58 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+Jan 19, 2025 3:07:14 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Rio de Mouro, Cacém]
+Jan 19, 2025 3:07:32 PM pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: INFO: User has changed the duration of a Route
+Jan 19, 2025 3:07:35 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+Jan 19, 2025 3:07:36 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Duration
+Jan 19, 2025 3:07:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Rio de Mouro
+Jan 19, 2025 3:07:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Cacém
+Jan 19, 2025 3:07:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Duration criteria
+Jan 19, 2025 3:07:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+Jan 19, 2025 3:07:38 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Rio de Mouro, Cacém]
+Jan 19, 2025 3:07:42 PM pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: ERROR: User attemped to change the duration of a Route but it failed
+Jan 19, 2025 3:07:44 PM pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: ERROR: User attemped to change the duration of a Route but it failed
+Jan 19, 2025 3:07:56 PM pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownSintra
+Jan 19, 2025 3:08:02 PM pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Troia
+Jan 19, 2025 3:08:03 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+Jan 19, 2025 3:08:07 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Sintra
+Jan 19, 2025 3:08:07 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+Jan 19, 2025 3:08:07 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+Jan 19, 2025 3:08:07 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+Jan 19, 2025 3:13:28 PM pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownSintra
+Jan 19, 2025 3:13:32 PM pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Troia
+Jan 19, 2025 3:13:33 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+Jan 19, 2025 3:13:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Sintra
+Jan 19, 2025 3:13:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+Jan 19, 2025 3:13:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+Jan 19, 2025 3:13:36 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+Jan 19, 2025 3:14:43 PM pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownSintra
+Jan 19, 2025 3:14:59 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+Jan 19, 2025 3:15:01 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Odivelas
+Jan 19, 2025 3:15:02 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Sintra
+Jan 19, 2025 3:15:04 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Mem Martins
+Jan 19, 2025 3:15:05 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Rio de Mouro
+Jan 19, 2025 3:15:10 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cacém
+Jan 19, 2025 3:15:12 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Queluz
+Jan 19, 2025 3:15:14 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Amadora
+Jan 19, 2025 3:15:17 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Cacém, Queluz]
+Jan 19, 2025 3:15:23 PM pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Reboleira
+Jan 19, 2025 3:15:27 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Rio de Mouro, Cacém]
+Jan 19, 2025 3:15:34 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Entrecampos, Reboleira]
+Jan 19, 2025 3:15:36 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Reboleira, Odivelas]
+Jan 19, 2025 3:15:39 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Sintra, Mem Martins]
+Jan 19, 2025 3:15:46 PM pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Rio de Mouro, Cacém]
+Jan 19, 2025 3:19:44 PM pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownSintra
+Jan 19, 2025 3:19:46 PM pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Troia
+Jan 19, 2025 3:19:47 PM pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+Jan 19, 2025 3:19:52 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Sintra
+Jan 19, 2025 3:19:52 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+Jan 19, 2025 3:19:52 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+Jan 19, 2025 3:19:52 PM pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
