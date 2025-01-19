@@ -70,4 +70,8 @@ public class Stop {
     public double getLongitude() {
         return this.longitude;
     }
+
+    public Stop copyStop() {
+        return new Stop(this.stopCode, this.stopName, this.latitude, this.longitude);
+    }
 }

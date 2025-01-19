@@ -18,7 +18,6 @@ public interface TransportMapUI extends Observer {
      * Configura os triggers de interação para a UI, de forma a conectar os elementos da UI
      * às ações definidas no {@link TransportMapController}.
      *
-     * @param controller Controller responsável por gerir as interações do utilizador.
      */
-    void setTriggers(TransportMapController controller);
+    void setTriggers();
 }

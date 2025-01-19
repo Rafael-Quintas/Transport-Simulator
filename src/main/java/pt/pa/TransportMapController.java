@@ -4,6 +4,7 @@ import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertex;
+import pt.pa.patterns.memento.Caretaker;
 import pt.pa.patterns.observer.Observer;
 import pt.pa.patterns.strategy.WeightCalculationStrategy;
 import pt.pa.view.MapView;
@@ -19,9 +20,10 @@ import java.util.logging.Logger;
  * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class TransportMapController implements Observer {
-    private final TransportMap model;
-    private final MapView view;
-    private final Logger logger;
+    private TransportMap model;
+    private MapView view;
+    private Logger logger;
+    private Caretaker caretaker;
 
     /**
      * Construtor para criar uma instância do Controller, configura os observadores no modelo e na visualização.
@@ -34,8 +36,7 @@ public class TransportMapController implements Observer {
         this.model = model;
         this.view = view;
         this.logger = logger;
-
-        view.setTriggers(this);
+        this.caretaker = new Caretaker(model);
         model.addObservers(this);
     }
 
@@ -56,8 +57,7 @@ public class TransportMapController implements Observer {
      * @param edge a aresta selecionada ({@link SmartGraphEdge}).
      */
     public void doShowEdgeDetails(SmartGraphEdge<List<Route>, Stop> edge) {
-        List<Route> routes = edge.getUnderlyingEdge().element();
-        view.showEdgeDetails(routes);
+        view.showEdgeDetails(edge);
         logger.info("Edge clicked: [" + edge.getUnderlyingEdge().vertices()[0].element().getStopName() + ", " + edge.getUnderlyingEdge().vertices()[1].element().getStopName()+"]");
     }
 
@@ -168,6 +168,30 @@ public class TransportMapController implements Observer {
                 .mapToDouble(route -> strategy.calculateWeight(route))
                 .min()
                 .orElse(Double.POSITIVE_INFINITY);
+    }
+
+    public void doDisableRoute(SmartGraphEdge<List<Route>, Stop> edge, List<Route> routesToDisable) {
+        logger.info("INFO: User disabled an edge: " + edge.getUnderlyingEdge());
+        caretaker.saveState();
+        model.disableRoute(edge.getUnderlyingEdge(), routesToDisable);
+    }
+
+    public void doChangeBicycleRouteDuration(Route route, int duration) {
+        if (route.getTransportType() != TransportType.BICYCLE) {
+            logger.info("ERROR: User attemped to change the duration of a Route but it failed");
+            throw new IllegalArgumentException("You can only change the duration of a Bicycle Route");
+        } else if (duration < 0) {
+            logger.info("ERROR: User attemped to change the duration of a Route but it failed");
+            throw new IllegalArgumentException("The duration has to be greater than zero");
+        }
+        logger.info("INFO: User has changed the duration of a Route");
+        caretaker.saveState();
+
+        model.changeBicycleRouteDuration(route, duration);
+    }
+
+    public void undo() {
+        caretaker.restoreState();
     }
 
     /**

@@ -1,27 +1,40 @@
 package pt.pa.view;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdge;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import com.brunomnsilva.smartgraph.graphview.SmartRandomPlacementStrategy;
+import com.sun.jdi.connect.Transport;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.util.converter.IntegerStringConverter;
 import pt.pa.*;
 import javafx.scene.chart.*;
 import pt.pa.patterns.strategy.WeightCalculationStrategy;
+
+import java.net.URISyntaxException;
 import java.util.*;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * A classe {@code MapView} é responsável pela GUI do sistema.
@@ -51,6 +64,12 @@ public class MapView extends BorderPane implements TransportMapUI {
     private Label latitudeLabel;
     private Label longitudeLabel;
     private Label calculateLabel;
+    private VBox totalRoutes;
+    private VBox busRoutes;
+    private VBox trainRoutes;
+    private VBox boatRoutes;
+    private VBox walkRoutes;
+    private VBox bicycleRoutes;
     private Button centralityButton;
     private Button topFiveButton;
     private Button calculateCostButton;
@@ -63,13 +82,15 @@ public class MapView extends BorderPane implements TransportMapUI {
     private boolean isSelectingCustomPath = false;
     private List<Vertex<Stop>> customPath = new ArrayList<>();
     private double currentCustomPathCost = 0.0;
+    private SmartGraphEdge<List<Route>, Stop> currentEdge;
+    private TransportMapController controller;
 
     /**
      * Construtor que inicializa a interface do mapa de transportes com base no modelo fornecido.
      *
      * @param map modelo de transporte ({@link TransportMap}).
      */
-    public MapView(TransportMap map) {
+    public MapView(TransportMap map, Logger logger) {
         try {
             InputStream smartgraphProperties = getClass().getClassLoader().getResourceAsStream("smartgraph.properties");
             URL css = MapView.class.getClassLoader().getResource("styles/smartgraph.css");
@@ -78,15 +99,16 @@ public class MapView extends BorderPane implements TransportMapUI {
                 this.model = map;
                 this.graph = map.getGraph();
                 this.graphView = new SmartGraphPanel<>(graph, new SmartGraphProperties(smartgraphProperties), new SmartRandomPlacementStrategy(), css.toURI());
+                controller = new TransportMapController(map, this, logger);
 
                 // Configurações do painel do grafo
                 graphView.setStyle("-fx-background-color: #ffffff;");
                 graphView.setMinSize(0, 0);
                 graphView.setPrefSize(1024, 720);
-
             }
 
             doLayout();
+            setTriggers();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);
@@ -103,12 +125,10 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Define os triggers de interação para a interface gráfica.
-     *
-     * @param controller O Controller responsável por gerir as interações do utilizador.
+     * Define os triggers de interação para a interface gráficas
      */
     @Override
-    public void setTriggers(TransportMapController controller) {
+    public void setTriggers() {
         originDropdown.setOnAction(event -> controller.triggerLog("Origin Dropdown" + originDropdown.getValue()));
         destinationDropdown.setOnAction(event -> controller.triggerLog("Destination Dropdown " + destinationDropdown.getValue()));
         criteriaDropdown.setOnAction(event -> controller.triggerLog("Criteria Dropdown " + criteriaDropdown.getValue()));
@@ -124,7 +144,9 @@ public class MapView extends BorderPane implements TransportMapUI {
         });
 
         graphView.setEdgeDoubleClickAction(edge -> {
-            controller.doShowEdgeDetails(edge);
+            this.currentEdge = edge;
+            //controller.doShowEdgeDetails(edge);
+            showEdgeDetails(edge);
         });
 
         centralityButton.setOnAction(event -> controller.doShowCentralityDetails());
@@ -156,6 +178,7 @@ public class MapView extends BorderPane implements TransportMapUI {
             }
         });
     }
+
 
     /**
      * Configura o layout principal da UI.
@@ -314,12 +337,12 @@ public class MapView extends BorderPane implements TransportMapUI {
         possibleRoutesTitle.setStyle(labelStyle);
 
         // Labels e dados para cada transport type
-        VBox totalRoutes = createTransportRoute("Total", model.numberOfPossibleRoutes(), labelStyle);
-        VBox busRoutes = createTransportRoute("Bus", model.numberOfRoutesByTransport(TransportType.BUS), labelStyle);
-        VBox trainRoutes = createTransportRoute("Train", model.numberOfRoutesByTransport(TransportType.TRAIN), labelStyle);
-        VBox boatRoutes = createTransportRoute("Boat", model.numberOfRoutesByTransport(TransportType.BOAT), labelStyle);
-        VBox walkRoutes = createTransportRoute("Walk", model.numberOfRoutesByTransport(TransportType.WALK), labelStyle);
-        VBox bicycleRoutes = createTransportRoute("Bicycle", model.numberOfRoutesByTransport(TransportType.BICYCLE), labelStyle);
+        totalRoutes = createTransportRoute("Total", model.numberOfPossibleRoutes(), labelStyle);
+        busRoutes = createTransportRoute("Bus", model.numberOfRoutesByTransport(TransportType.BUS), labelStyle);
+        trainRoutes = createTransportRoute("Train", model.numberOfRoutesByTransport(TransportType.TRAIN), labelStyle);
+        boatRoutes = createTransportRoute("Boat", model.numberOfRoutesByTransport(TransportType.BOAT), labelStyle);
+        walkRoutes = createTransportRoute("Walk", model.numberOfRoutesByTransport(TransportType.WALK), labelStyle);
+        bicycleRoutes = createTransportRoute("Bicycle", model.numberOfRoutesByTransport(TransportType.BICYCLE), labelStyle);
 
         // Organizer o número de routes para transportes num layout horizontal
         HBox transportRoutes = new HBox(15, totalRoutes, busRoutes, trainRoutes, boatRoutes, walkRoutes, bicycleRoutes);
@@ -353,10 +376,30 @@ public class MapView extends BorderPane implements TransportMapUI {
         return visualizerPane;
     }
 
+    public void updateVisualizer() {
+        // Atualiza o número total de Stops
+        stopCodeLabel.setText("Number of Stops: " + graph.numVertices());
+
+        // Atualiza o número de Stops isolados e não isolados
+        latitudeLabel.setText("Number of Isolated Stops: " + model.numberOfIsolatedStops());
+        longitudeLabel.setText("Number of Non-Isolated Stops: " + model.numberOfNonIsolatedStops());
+
+        // Atualiza o número total de Routes
+        stopNameLabel.setText("Number of Routes: " + graph.numEdges());
+
+        // Atualiza as informações de Routes por tipo de transporte
+        updateTransportRoute(totalRoutes, "Total", model.numberOfPossibleRoutes());
+        updateTransportRoute(busRoutes, "Bus", model.numberOfRoutesByTransport(TransportType.BUS));
+        updateTransportRoute(trainRoutes, "Train", model.numberOfRoutesByTransport(TransportType.TRAIN));
+        updateTransportRoute(boatRoutes, "Boat", model.numberOfRoutesByTransport(TransportType.BOAT));
+        updateTransportRoute(walkRoutes, "Walk", model.numberOfRoutesByTransport(TransportType.WALK));
+        updateTransportRoute(bicycleRoutes, "Bicycle", model.numberOfRoutesByTransport(TransportType.BICYCLE));
+    }
+
     /**
      * Exibe os detalhes de uma Stop na interface.
      *
-     * @param stop Stop selecionada ({@link Stop}).
+     * @param numberOfRoutes Stop selecionada ({@link Stop}).
      */
 
     private VBox createTransportRoute(String text, int numberOfRoutes, String labelStyle) {
@@ -371,6 +414,15 @@ public class MapView extends BorderPane implements TransportMapUI {
         return transportRoute;
     }
 
+    private void updateTransportRoute(VBox routeBox, String text, int numberOfRoutes) {
+        Label textLabel = (Label) routeBox.getChildren().get(0); // Assume que o primeiro filho é o texto
+        Label numberLabel = (Label) routeBox.getChildren().get(1); // Assume que o segundo filho é o número
+
+        textLabel.setText(text);
+        numberLabel.setText(String.valueOf(numberOfRoutes));
+    }
+
+
     /**
      * Exibe os detalhes de uma Stop na interface.
      *
@@ -384,43 +436,194 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Exibe os detalhes de uma Route numa nova janela.
+     * Exibe os detalhes de uma Route numa nova janela, com opções para remover completamente a rota do grafo
+     * e selecionar quais tipos de transporte estão ativos individualmente.
      *
-     * @param routes a lista de Routes associadas a uma aresta ({@link Route}).
+     * @param edge a lista de Routes associadas a uma aresta ({@link Route}).
      */
-    public void showEdgeDetails(List<Route> routes) {
+    public void showEdgeDetails(SmartGraphEdge<List<Route>, Stop> edge) {
         Stage stage = new Stage();
         stage.setTitle("Informações da Rota");
 
+        List<Route> routes = edge.getUnderlyingEdge().element();
+
         // Criar tabela
         TableView<Route> table = new TableView<>();
-        table.setEditable(false);
+        table.setEditable(true);
 
-        // Coluna para Tipo de Transporte
+        // Configurar as colunas
         TableColumn<Route, String> transportTypeColumn = new TableColumn<>("Transport Type");
         transportTypeColumn.setCellValueFactory(new PropertyValueFactory<>("transportType"));
 
-        // Coluna para Distância
         TableColumn<Route, Double> distanceColumn = new TableColumn<>("Distance");
         distanceColumn.setCellValueFactory(new PropertyValueFactory<>("distance"));
 
-        // Coluna para Duração
-        TableColumn<Route, Double> durationColumn = new TableColumn<>("Duration");
+        // Coluna "Duration" que será editável apenas para bicicletas
+        TableColumn<Route, Integer> durationColumn = new TableColumn<>("Duration");
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
-        // Coluna para Custo
+        durationColumn.setCellFactory(column -> {
+            return new TextFieldTableCell<Route, Integer>(new IntegerStringConverter()) {
+                @Override
+                public void startEdit() {
+                    super.startEdit();
+                    TextField textField = (TextField) getGraphic();
+
+                    // Adiciona um filtro para aceitar apenas números
+                    textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                        if (!newValue.matches("\\d*")) {
+                            textField.setText(oldValue);
+                        }
+                    });
+                }
+            };
+        });
+
+        durationColumn.setEditable(true);
+
+        durationColumn.setOnEditCommit(event -> {
+            Route route = event.getRowValue();
+            try {
+                int newDuration = event.getNewValue();
+
+                // Chama o controlador para alterar a duração
+                controller.doChangeBicycleRouteDuration(route, newDuration);
+                table.refresh();
+
+                showNotification("Bicycle route duration updated successfully!");
+            } catch (IllegalArgumentException e) {
+                showWarning("Invalid duration: " + e.getMessage());
+                table.refresh();
+            }
+        });
+
         TableColumn<Route, Double> costColumn = new TableColumn<>("Sustainability");
         costColumn.setCellValueFactory(new PropertyValueFactory<>("sustainability"));
 
-        table.getColumns().addAll(transportTypeColumn, distanceColumn, durationColumn, costColumn);
+        TableColumn<Route, Boolean> activeColumn = new TableColumn<>("Active");
+        activeColumn.setCellValueFactory(cellData -> {
+            SimpleBooleanProperty activeProperty = new SimpleBooleanProperty(cellData.getValue().getState());
 
-        // Adicionar dados à tabela
-        table.getItems().addAll(routes);
+            // Adicionar listener para monitorar mudanças na checkbox
+            activeProperty.addListener((observable, oldValue, newValue) -> {
+                Route route = cellData.getValue();
 
-        stage.setScene(new javafx.scene.Scene(table, 334, 200));
+                controller.doDisableRoute(edge, List.of(route));
+                refreshTable(table, routes);
+            });
+
+            return activeProperty;
+        });
+
+        activeColumn.setCellFactory(column -> new CheckBoxTableCell<Route, Boolean>() {
+            @Override
+            public void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty) {
+                    Route route = getTableRow().getItem();
+                    if (route != null) {
+                        setDisable(!route.getState()); // Bloqueia checkbox se a rota estiver desativada
+                    }
+                }
+            }
+        });
+
+        table.getColumns().addAll(transportTypeColumn, distanceColumn, durationColumn, costColumn, activeColumn);
+
+        // Populate the table with initial routes
+        refreshTable(table, routes);
+
+        // Button to deactivate all routes
+        Button deactivateAllButton = new Button("Deactivate all routes");
+        deactivateAllButton.setOnAction(event -> {
+            controller.doDisableRoute(edge, routes);
+            refreshTable(table, routes);
+        });
+
+        // Button to undo changes
+        Button undoButton = new Button("Undo");
+        undoButton.setOnAction(event -> {
+            controller.undo(); // Undo changes in the controller
+            refreshGraphView();
+            refreshTableAfterUndo(edge, table, routes);
+        });
+
+        VBox vbox = new VBox(10, deactivateAllButton, undoButton, table);
+        vbox.setPadding(new Insets(10));
+
+        stage.setScene(new Scene(vbox, 600, 400));
         stage.setResizable(false);
         stage.show();
     }
+
+    /**
+     * Refreshes the table based on the current state of the routes.
+     */
+    private void refreshTable(TableView<Route> table, List<Route> routes) {
+        table.getItems().setAll(routes); // Replace the table's items with the updated list
+        table.refresh(); // Force refresh to ensure UI consistency
+    }
+
+    private void refreshGraphView() {
+        try {
+            InputStream smartgraphProperties = getClass().getClassLoader().getResourceAsStream("smartgraph.properties");
+            URL css = MapView.class.getClassLoader().getResource("styles/smartgraph.css");
+
+            if (smartgraphProperties != null && css != null) {
+                this.graph = model.getGraph();
+                // Recriar o painel gráfico com o grafo atualizado
+                this.graphView = new SmartGraphPanel<>(graph, new SmartGraphProperties(smartgraphProperties), new SmartRandomPlacementStrategy(), css.toURI());
+
+                // Redefinir os triggers para o novo gráfico
+                setTriggers();
+
+                // Substituir o gráfico atual na interface
+                StackPane mapArea = (StackPane) this.getCenter();
+                mapArea.getChildren().set(0, graphView);
+
+                model.positionVertex(graphView);
+            } else {
+                throw new RuntimeException("Failed to load graph properties or CSS.");
+            }
+        } catch (Exception e) {
+            showWarning("Failed to refresh graph view: " + e.getMessage());
+        }
+    }
+
+    private void refreshTableAfterUndo(SmartGraphEdge<List<Route>, Stop> edge, TableView<Route> table, List<Route> routes) {
+        Vertex<Stop>[] adjacentStops = edge.getUnderlyingEdge().vertices();
+
+        // Encontrar as rotas correspondentes no grafo
+        List<Route> updatedRoutes = findRoutesByStops(adjacentStops);
+
+        if (updatedRoutes != null) {
+            refreshTable(table, updatedRoutes);
+            routes.clear();
+            routes.addAll(updatedRoutes);
+        } else {
+            System.out.println("Aresta correspondente não encontrada no grafo.");
+        }
+    }
+
+    private List<Route> findRoutesByStops(Vertex<Stop>[] adjacentStops) {
+        String stopName1 = adjacentStops[0].element().getStopName();
+        String stopName2 = adjacentStops[1].element().getStopName();
+
+        for (Edge<List<Route>, Stop> e : model.getGraph().edges()) {
+            Vertex<Stop>[] vertices = e.vertices();
+            String graphStopName1 = vertices[0].element().getStopName();
+            String graphStopName2 = vertices[1].element().getStopName();
+
+            if ((stopName1.equals(graphStopName1) && stopName2.equals(graphStopName2)) ||
+                    (stopName1.equals(graphStopName2) && stopName2.equals(graphStopName1))) {
+                return e.element();
+            }
+        }
+
+        return null;
+    }
+
 
     /**
      * Exibe uma tabela com os detalhes de centralidade de todas as paragens.
@@ -437,14 +640,14 @@ public class MapView extends BorderPane implements TransportMapUI {
         TableColumn<Map.Entry<Vertex<Stop>, Integer>, String> stopNameColumn = new TableColumn<>("Stop Name");
         stopNameColumn.setCellValueFactory(cellData -> {
             Vertex<Stop> vertex = cellData.getValue().getKey();
-            return new javafx.beans.property.SimpleStringProperty(vertex.element().getStopName());
+            return new SimpleStringProperty(vertex.element().getStopName());
         });
 
         // Coluna para Centralidade
         TableColumn<Map.Entry<Vertex<Stop>, Integer>, Integer> centralityColumn = new TableColumn<>("Centrality");
         centralityColumn.setCellValueFactory(cellData -> {
             Integer centralityValue = cellData.getValue().getValue();
-            return new javafx.beans.property.SimpleIntegerProperty(centralityValue).asObject();
+            return new SimpleIntegerProperty(centralityValue).asObject();
         });
 
         table.getColumns().addAll(stopNameColumn, centralityColumn);
@@ -454,7 +657,7 @@ public class MapView extends BorderPane implements TransportMapUI {
         table.getItems().addAll(centralityMap.entrySet());
 
         // Configurar a cena e exibir o estágio
-        stage.setScene(new javafx.scene.Scene(table, 218, 400));
+        stage.setScene(new Scene(table, 218, 400));
         stage.setResizable(false);
         stage.show();
     }
@@ -761,6 +964,7 @@ public class MapView extends BorderPane implements TransportMapUI {
 
             // Encontrar a aresta correspondente
             model.getGraph().incidentEdges(start).stream()
+                    .filter(edge -> !edge.element().isEmpty())
                     .filter(edge -> model.getGraph().opposite(start, edge).equals(end))
                     .findFirst()
                     .ifPresent(edge -> {
@@ -769,7 +973,7 @@ public class MapView extends BorderPane implements TransportMapUI {
 
                         // Determinar a rota com o menor peso usando a estratégia
                         for (Route route : edge.element()) {
-                            if (transportTypes.contains(route.getTransportType())) {
+                            if (transportTypes.contains(route.getTransportType()) && route.getState()) {
                                 double weight = strategy.calculateWeight(route);
                                 if (weight < minWeight) {
                                     minWeight = weight;
@@ -787,6 +991,7 @@ public class MapView extends BorderPane implements TransportMapUI {
                             }
                         }
                     });
+
         }
     }
 
@@ -812,6 +1017,7 @@ public class MapView extends BorderPane implements TransportMapUI {
      */
     public void highlightEdge(Vertex<Stop> start, Vertex<Stop> end, WeightCalculationStrategy strategy) {
         model.getGraph().incidentEdges(start).stream()
+                .filter(edge -> !edge.element().isEmpty())
                 .filter(edge -> model.getGraph().opposite(start, edge).equals(end))
                 .findFirst()
                 .ifPresent(edge -> {
@@ -820,10 +1026,12 @@ public class MapView extends BorderPane implements TransportMapUI {
 
                     // Determinar a rota com o menor peso usando a estratégia, sem verificar transportTypes
                     for (Route route : edge.element()) {
-                        double weight = strategy.calculateWeight(route);
-                        if (weight < minWeight) {
-                            minWeight = weight;
-                            bestRoute = route;
+                        if (route.getState()) {
+                            double weight = strategy.calculateWeight(route);
+                            if (weight < minWeight) {
+                                minWeight = weight;
+                                bestRoute = route;
+                            }
                         }
                     }
 

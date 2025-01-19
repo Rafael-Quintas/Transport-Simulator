@@ -10,6 +10,7 @@ public class Route {
     private double distance;
     private int duration;
     private double sustainability;
+    private boolean state;
 
     /**
      * Construtor para inicializar uma instância de {@code Route}.
@@ -25,6 +26,16 @@ public class Route {
         this.distance = distance;
         this.duration = duration;
         this.sustainability = sustainability;
+        this.state = true;
+    }
+
+    public Route(TransportType type, double distance, int duration, double sustainability, boolean state) {
+        if (distance < 0 || duration < 0) { throw new IllegalArgumentException("Distance and Duration cannot be negative."); }
+        this.transportType = type;
+        this.distance = distance;
+        this.duration = duration;
+        this.sustainability = sustainability;
+        this.state = state;
     }
 
     /**
@@ -61,5 +72,25 @@ public class Route {
      */
     public double getSustainability(){
         return this.sustainability;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public boolean getState() {
+        return this.state;
+    }
+
+    public Route copyRoute() {
+        return new Route(this.transportType, this.distance, this.duration, this.sustainability, this.state);
+    }
+
+    public String toString() {
+        return this.transportType.toString() + "\n+" + this.distance + "\n" + this.duration + "\n" + this.sustainability + "\n" + this.state;
     }
 }

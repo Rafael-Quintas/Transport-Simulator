@@ -36,8 +36,7 @@ public class Main extends Application {
 
         TransportMap map = new TransportMap();
 
-        MapView view = new MapView(map);
-        TransportMapController controller = new TransportMapController(map, view, logger);
+        MapView view = new MapView(map, logger);
 
         map.positionVertex(view.getSmartGraph());
 
