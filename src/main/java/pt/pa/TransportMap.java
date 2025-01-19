@@ -330,7 +330,10 @@ public class TransportMap implements Originator {
         if (start == null || N < 0) {
             throw new IllegalArgumentException("Stop cannot be null, N cannot be negative.");
         }
+        return calculateStopsAtDistance(start, N);
+    }
 
+    private List<Stop> calculateStopsAtDistance(Vertex<Stop> start, int N) {
         Set<Stop> result = new LinkedHashSet<>();
         Queue<Vertex<Stop>> queue = new LinkedList<>();
         Map<Vertex<Stop>, Integer> distances = new HashMap<>();
@@ -342,16 +345,13 @@ public class TransportMap implements Originator {
             Vertex<Stop> current = queue.poll();
             int currentDistance = distances.get(current);
 
-            // Procuramos neighbors até chegarmos à distância N
             if (currentDistance < N) {
                 for (Edge<List<Route>, Stop> edge : graph.incidentEdges(current)) {
                     Vertex<Stop> neighbor = graph.opposite(current, edge);
-
                     if (!distances.containsKey(neighbor)) {
                         int neighborDistance = currentDistance + 1;
                         distances.put(neighbor, neighborDistance);
                         queue.add(neighbor);
-
                         if (neighborDistance == N) {
                             result.add(neighbor.element());
                         }
@@ -522,34 +522,16 @@ public class TransportMap implements Originator {
      * @return o custo total do Path.
      * @throws IllegalStateException se não houver Routes válidas para o Path escolhido.
      */
-    private double calculateTotalCost(
-            List<Vertex<Stop>> path,
-            List<TransportType> transports,
-            WeightCalculationStrategy strategy
-    ) {
+    private double calculateTotalCost(List<Vertex<Stop>> path, List<TransportType> transports, WeightCalculationStrategy strategy) {
         double totalCost = 0.0;
 
         for (int i = 0; i < path.size() - 1; i++) {
             Vertex<Stop> u = path.get(i);
             Vertex<Stop> v = path.get(i + 1);
-            double minCost = Double.POSITIVE_INFINITY;
 
-            for (Edge<List<Route>, Stop> edge : graph.incidentEdges(u)) {
-                if (graph.opposite(u, edge).equals(v)) {
-                    for (Route route : edge.element()) {
-                        if (route.getState() && transports.contains(route.getTransportType())) {
-                            double weight = strategy.calculateWeight(route);
-                            minCost = Math.min(minCost, weight);
-                        }
-                    }
-                }
-            }
-
-            if (minCost == Double.POSITIVE_INFINITY) {
-                throw new IllegalStateException("No valid routes found for the chosen path.");
-            }
-
-            totalCost += minCost;
+            // Reutilizando calculateCostBetweenStops
+            double edgeCost = calculateCostBetweenStops(u, v, transports, strategy);
+            totalCost += edgeCost;
         }
 
         if (strategy instanceof SustainabilityStrategy) {
@@ -558,6 +540,23 @@ public class TransportMap implements Originator {
 
         return Math.round(totalCost * 100.0) / 100.0;
     }
+
+
+    public double calculateCostBetweenStops(Vertex<Stop> start, Vertex<Stop> end, List<TransportType> transports, WeightCalculationStrategy strategy) {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("Start or end Stop cannot be null.");
+        }
+
+        return graph.incidentEdges(start).stream()
+                .filter(edge -> graph.opposite(start, edge).equals(end))
+                .flatMap(edge -> edge.element().stream())
+                .filter(route -> route.getState() && transports.contains(route.getTransportType()))
+                .mapToDouble(strategy::calculateWeight)
+                .min()
+                .orElseThrow(() -> new IllegalStateException("No valid routes found between " + start.element().getStopName() + " and " + end.element().getStopName()));
+    }
+
+
 
 
     /**
@@ -624,6 +623,12 @@ public class TransportMap implements Originator {
         }
     }
 
+    /**
+     * Copia o grafo original, criando uma nova instância independente com todos os vértices e arestas.
+     *
+     * @param original o grafo original a ser copiado.
+     * @return uma nova instância do grafo com os mesmos vértices e arestas do original.
+     */
     public Graph<Stop, List<Route>> copyGraph(Graph<Stop, List<Route>> original) {
         Graph<Stop, List<Route>> copy = new GraphEdgeList<>();
 
@@ -649,21 +654,43 @@ public class TransportMap implements Originator {
         return copy;
     }
 
+    /**
+     * Desativa as rotas especificadas de uma aresta, alterando o estado das rotas para falso.
+     *
+     * @param edge            a aresta que contém as rotas a serem desativadas.
+     * @param routesToDisable lista de rotas que serão desativadas.
+     */
     public void disableRoute(Edge<List<Route>, Stop> edge, List<Route> routesToDisable) {
         for (Route route : routesToDisable) {
             route.setState(false);
         }
     }
 
+    /**
+     * Altera a duração de uma rota de bicicleta para o valor especificado.
+     *
+     * @param route    a rota de bicicleta cuja duração será alterada.
+     * @param duration a nova duração a ser atribuída.
+     */
     public void changeBicycleRouteDuration(Route route, int duration) {
         route.setDuration(duration);
     }
 
+    /**
+     * Cria um memento contendo o estado atual do grafo.
+     *
+     * @return uma instância de {@link Memento} que armazena o estado do grafo.
+     */
     @Override
     public Memento createMemento() {
         return new TransportMapMemento(this.graph);
     }
 
+    /**
+     * Restaura o estado do grafo a partir de um memento fornecido.
+     *
+     * @param savedState o memento contendo o estado salvo do grafo.
+     */
     @Override
     public void setMemento(Memento savedState) {
         if (savedState instanceof TransportMapMemento) {
@@ -671,13 +698,26 @@ public class TransportMap implements Originator {
         }
     }
 
+    /**
+     * Classe interna que representa um memento para guardar o estado do grafo.
+     */
     private class TransportMapMemento implements Memento {
         private Graph<Stop, List<Route>> graph;
 
+        /**
+         * Construtor para criar um memento com o estado do grafo.
+         *
+         * @param graph o grafo a ser guardado no memento.
+         */
         public TransportMapMemento(Graph<Stop, List<Route>> graph) {
             this.graph = copyGraph(graph);
         }
 
+        /**
+         * Obtém o grafo armazenado no memento.
+         *
+         * @return o grafo guardado no memento.
+         */
         public Graph<Stop, List<Route>> getGraph() {
             return this.graph;
         }

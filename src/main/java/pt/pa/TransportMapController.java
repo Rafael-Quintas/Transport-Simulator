@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
+
 public class TransportMapController {
     private TransportMap model;
     private MapView view;
@@ -115,67 +116,74 @@ public class TransportMapController {
      * @param vertex vértice selecionado ({@link SmartGraphVertex}).
      */
     public void doShowCustomPath(SmartGraphVertex<Stop> vertex) {
-        if (view.getIsSelectingCustomPath()) {
-            Vertex<Stop> selectedVertex = vertex.getUnderlyingVertex();
+        if (!view.getIsSelectingCustomPath()) {
+            return;
+        }
 
-            if (view.getCustomPath().contains(selectedVertex)) {
-                view.showWarning("This Stop is already in the custom path: " + selectedVertex.element().getStopName());
-                return;
+        Vertex<Stop> selectedVertex = vertex.getUnderlyingVertex();
+        try {
+            List<Vertex<Stop>> customPath = view.getCustomPath();
+            if (customPath.contains(selectedVertex)) {
+                throw new IllegalArgumentException("This Stop is already in the custom path: " + selectedVertex.element().getStopName());
             }
 
-            if (view.getCustomPath().isEmpty() || model.isAdjacent(view.getCustomPath().get(view.getCustomPath().size() - 1), selectedVertex)) {
-                List<Vertex<Stop>> customPath = view.getCustomPath();
-                Vertex<Stop> lastVertex = customPath.isEmpty() ? null : customPath.get(customPath.size() - 1);
-
-                if (lastVertex != null) {
-                    WeightCalculationStrategy strategy = model.createStrategy(view.getCriteriaDropdown().getValue().toLowerCase());
-                    double edgeCost = calculateEdgeCost(lastVertex, selectedVertex, strategy);
-
-                    if (edgeCost == Double.POSITIVE_INFINITY) {
-                        view.showWarning("No valid route between " + lastVertex.element().getStopName() + " and " + selectedVertex.element().getStopName());
-                        return;
-                    }
-
-                    if (strategy instanceof SustainabilityStrategy) {
-                        edgeCost -= SustainabilityStrategy.OFFSET;
-                    }
-
-                    view.updateCurrentCustomPathCost(edgeCost);
-                    view.highlightEdge(lastVertex, selectedVertex, strategy);
-                }
-
-                view.addToCustomPath(selectedVertex);
-                view.showNotification("Vertex added to custom path: " + selectedVertex.element().getStopName());
-            } else {
-                view.showWarning("Selected Stop is not adjacent to the last Stop in the path.");
+            if (!customPath.isEmpty() && !model.isAdjacent(customPath.get(customPath.size() - 1), selectedVertex)) {
+                throw new IllegalArgumentException("Selected Stop is not adjacent to the last Stop in the path.");
             }
+
+            handleCustomPath(selectedVertex);
+        } catch (Exception e) {
+            view.showWarning(e.getMessage());
         }
     }
 
-    /**
-     * Calcula o custo da aresta entre dois vértices com base numa estratégia de cálculo de peso.
-     *
-     * @param start vértice de origem.
-     * @param end vértice de destino.
-     * @param strategy estratégia de cálculo de peso ({@link WeightCalculationStrategy}).
-     * @return custo da aresta ou {@code Double.POSITIVE_INFINITY} se não houver uma conexão válida.
-     */
-    private double calculateEdgeCost(Vertex<Stop> start, Vertex<Stop> end, WeightCalculationStrategy strategy) {
-        return model.getGraph().incidentEdges(start).stream()
-                .filter(edge -> model.getGraph().opposite(start, edge).equals(end))
-                .flatMap(edge -> edge.element().stream())
-                .filter(Route::getState)
-                .mapToDouble(strategy::calculateWeight)
-                .min()
-                .orElse(Double.POSITIVE_INFINITY);
+    private void handleCustomPath(Vertex<Stop> selectedVertex) {
+        List<Vertex<Stop>> customPath = view.getCustomPath();
+        Vertex<Stop> lastVertex = customPath.isEmpty() ? null : customPath.get(customPath.size() - 1);
+
+        if (lastVertex != null) {
+            WeightCalculationStrategy strategy = model.createStrategy(view.getCriteriaDropdown().getValue().toLowerCase());
+
+            // Considerar todos os transportes
+            List<TransportType> allTransportTypes = List.of(TransportType.values());
+
+            double edgeCost = model.calculateCostBetweenStops(lastVertex, selectedVertex, allTransportTypes, strategy);
+
+            if (strategy instanceof SustainabilityStrategy) {
+                edgeCost -= SustainabilityStrategy.OFFSET;
+            }
+
+            if (edgeCost == Double.POSITIVE_INFINITY) {
+                throw new IllegalArgumentException("No valid route between " + lastVertex.element().getStopName() + " and " + selectedVertex.element().getStopName());
+            }
+
+            view.updateCurrentCustomPathCost(edgeCost);
+            view.highlightEdge(lastVertex, selectedVertex, strategy);
+        }
+
+        view.addToCustomPath(selectedVertex);
+        view.showNotification("Vertex added to custom path: " + selectedVertex.element().getStopName());
     }
 
+    /**
+     * Desativa as rotas selecionadas numa aresta, alterando o seu estado para inativo.
+     *
+     * @param edge            a aresta que contém as rotas a serem desativadas.
+     * @param routesToDisable a lista de rotas a desativar.
+     */
     public void doDisableRoute(SmartGraphEdge<List<Route>, Stop> edge, List<Route> routesToDisable) {
         logger.info("INFO: User disabled an edge: " + edge.getUnderlyingEdge());
         caretaker.saveState();
         model.disableRoute(edge.getUnderlyingEdge(), routesToDisable);
     }
 
+    /**
+     * Altera a duração de uma rota de bicicleta para o valor fornecido.
+     *
+     * @param route    a rota de bicicleta cuja duração será alterada.
+     * @param duration o novo valor de duração (em minutos).
+     * @throws IllegalArgumentException se a rota não for do tipo bicicleta ou se a duração for menor que 0.
+     */
     public void doChangeBicycleRouteDuration(Route route, int duration) {
         if (route.getTransportType() != TransportType.BICYCLE) {
             logger.info("ERROR: User attemped to change the duration of a Route but it failed");
@@ -190,6 +198,11 @@ public class TransportMapController {
         model.changeBicycleRouteDuration(route, duration);
     }
 
+    /**
+     * Reverte o estado do modelo para a última versão guardada.
+     *
+     * @throws IllegalStateException se não houver estados para restaurar.
+     */
     public void undo() {
         caretaker.restoreState();
     }

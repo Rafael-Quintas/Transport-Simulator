@@ -3562,3 +3562,683 @@ Jan 19, 2025 3:19:52 PM pt.pa.TransportMapController doShowLeastCostRoute
 INFO: User has selected: Sustainability criteria
 Jan 19, 2025 3:19:52 PM pt.pa.TransportMapController doShowLeastCostRoute
 INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 3:41:31 DA TARDE pt.pa.TransportMapController doShowStopsNRoutesAway
+INFO: User has clicked the StopsNRoutesAway button
+jan. 19, 2025 3:52:58 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownReboleira
+jan. 19, 2025 3:52:59 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Reboleira
+jan. 19, 2025 3:53:00 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Amadora
+jan. 19, 2025 3:53:01 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 3:53:05 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 3:53:05 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Amadora
+jan. 19, 2025 3:53:05 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Distance criteria
+jan. 19, 2025 3:53:05 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 3:53:36 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownReboleira
+jan. 19, 2025 3:53:37 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Corroios
+jan. 19, 2025 3:53:38 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 3:53:41 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 3:53:41 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Corroios
+jan. 19, 2025 3:53:41 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Distance criteria
+jan. 19, 2025 3:53:41 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 3:53:46 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Corroios, Fogueteiro]
+jan. 19, 2025 3:53:47 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++5.55
+4
+2.8
+true, Train - Blue Line
++6.38
+7
+1.4
+true, Bicycle - Magenta Line
++5.55
+22
+0.55
+true]}, vertexOutbound=Vertex{Corroios}, vertexInbound=Vertex{Fogueteiro}}
+jan. 19, 2025 3:53:52 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Fogueteiro
+jan. 19, 2025 3:53:53 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 3:53:53 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Fogueteiro
+jan. 19, 2025 3:53:53 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Distance criteria
+jan. 19, 2025 3:53:53 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 3:57:01 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 3:57:03 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 3:57:05 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 3:57:06 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 3:57:09 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Entrecampos
+jan. 19, 2025 3:57:10 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Odivelas
+jan. 19, 2025 3:57:11 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Loures
+jan. 19, 2025 3:57:14 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Entrecampos, Odivelas]
+jan. 19, 2025 3:57:19 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Odivelas, Loures]
+jan. 19, 2025 3:57:26 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Cais do Sodré]
+jan. 19, 2025 3:57:28 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 3:57:32 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Reboleira
+jan. 19, 2025 3:57:38 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 3:57:39 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Palmela
+jan. 19, 2025 3:57:41 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 3:57:42 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Fogueteiro
+jan. 19, 2025 3:57:43 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Corroios
+jan. 19, 2025 3:57:45 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Charneca da Caparica
+jan. 19, 2025 3:57:46 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Caparica
+jan. 19, 2025 3:57:48 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Charneca da Caparica, Caparica]
+jan. 19, 2025 4:00:27 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:00:28 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:00:30 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:00:32 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:00:36 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:00:37 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Palmela
+jan. 19, 2025 4:01:50 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:01:52 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:01:53 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:01:55 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:01:58 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Duration
+jan. 19, 2025 4:01:59 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:02:01 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:02:03 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:02:04 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:02:05 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Seixal
+jan. 19, 2025 4:02:06 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Arrentela
+jan. 19, 2025 4:02:09 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Fogueteiro
+jan. 19, 2025 4:02:10 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:05:06 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:05:08 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:05:09 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:07:58 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:08:01 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:08:02 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:08:03 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:08:04 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Entrecampos
+jan. 19, 2025 4:08:06 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Reboleira
+jan. 19, 2025 4:08:09 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:08:11 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Entrecampos
+jan. 19, 2025 4:08:13 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:08:14 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cacilhas
+jan. 19, 2025 4:08:15 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Charneca da Caparica
+jan. 19, 2025 4:08:17 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Corroios
+jan. 19, 2025 4:08:19 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Fogueteiro
+jan. 19, 2025 4:09:50 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:09:52 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:09:54 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Seixal
+jan. 19, 2025 4:09:55 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Arrentela
+jan. 19, 2025 4:09:57 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Fogueteiro
+jan. 19, 2025 4:09:58 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:10:00 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:10:01 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Palmela
+jan. 19, 2025 4:10:03 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Setúbal
+jan. 19, 2025 4:10:05 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Sesimbra
+jan. 19, 2025 4:10:06 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:10:11 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Sintra
+jan. 19, 2025 4:10:13 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Mem Martins
+jan. 19, 2025 4:10:15 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Rio de Mouro
+jan. 19, 2025 4:10:16 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cacém
+jan. 19, 2025 4:10:18 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Queluz
+jan. 19, 2025 4:10:19 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Amadora
+jan. 19, 2025 4:10:21 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Reboleira
+jan. 19, 2025 4:10:23 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Odivelas
+jan. 19, 2025 4:10:25 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Entrecampos
+jan. 19, 2025 4:10:27 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Algés
+jan. 19, 2025 4:10:28 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:10:30 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pragal
+jan. 19, 2025 4:10:31 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cacilhas
+jan. 19, 2025 4:10:33 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pragal
+jan. 19, 2025 4:10:34 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Monte da Caparica
+jan. 19, 2025 4:10:41 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownReboleira
+jan. 19, 2025 4:10:41 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Troia
+jan. 19, 2025 4:10:42 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:10:45 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 4:10:45 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+jan. 19, 2025 4:10:45 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Distance criteria
+jan. 19, 2025 4:10:45 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:10:48 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Duration
+jan. 19, 2025 4:10:49 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 4:10:49 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+jan. 19, 2025 4:10:49 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Duration criteria
+jan. 19, 2025 4:10:49 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:10:50 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:10:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 4:10:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+jan. 19, 2025 4:10:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:10:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:10:54 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Cais do Sodré, Entrecampos]
+jan. 19, 2025 4:10:57 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Cais do Sodré]
+jan. 19, 2025 4:10:59 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:11:03 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Coina, Pinhal Novo]
+jan. 19, 2025 4:11:08 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:11:09 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:11:11 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 4:11:11 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+jan. 19, 2025 4:11:11 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:11:11 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:11:16 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Corroios, Pragal]
+jan. 19, 2025 4:11:17 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++4.04
+3
+2.0
+true, Train - Blue Line
++4.65
+5
+1.0
+true, Walk - Teal Line
++4.04
+49
+-1.24
+true, Bicycle - Magenta Line
++4.04
+16
+0.4
+true]}, vertexOutbound=Vertex{Corroios}, vertexInbound=Vertex{Pragal}}
+jan. 19, 2025 4:11:18 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Reboleira
+jan. 19, 2025 4:11:18 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+jan. 19, 2025 4:11:18 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:11:18 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:11:22 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:11:23 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+false, Train - Blue Line
++16.56
+17
+3.6
+false]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:12:50 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:12:54 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:12:59 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:13:00 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:13:03 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:13:05 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:13:07 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:13:08 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:13:13 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:13:14 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+false, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:13:16 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:13:18 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:14:34 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:14:35 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:14:38 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:14:40 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:14:41 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:14:43 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:14:44 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:14:45 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Seixal
+jan. 19, 2025 4:14:46 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Arrentela
+jan. 19, 2025 4:14:47 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Fogueteiro
+jan. 19, 2025 4:14:49 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:14:51 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:14:53 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:27:11 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:27:13 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:27:16 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:27:18 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:27:21 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:27:22 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:27:24 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:27:31 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:27:38 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:27:42 DA TARDE pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: ERROR: User attemped to change the duration of a Route but it failed
+jan. 19, 2025 4:27:44 DA TARDE pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: ERROR: User attemped to change the duration of a Route but it failed
+jan. 19, 2025 4:27:49 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Fogueteiro, Coina]
+jan. 19, 2025 4:27:51 DA TARDE pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: INFO: User has changed the duration of a Route
+jan. 19, 2025 4:27:54 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Origin Dropdown Amadora
+jan. 19, 2025 4:27:55 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Alcochete
+jan. 19, 2025 4:27:55 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:27:59 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Amadora
+jan. 19, 2025 4:27:59 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Alcochete
+jan. 19, 2025 4:27:59 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:27:59 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:28:15 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Amadora
+jan. 19, 2025 4:28:16 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Amadora
+jan. 19, 2025 4:28:16 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Amadora
+jan. 19, 2025 4:28:16 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:28:16 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:28:17 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Amadora
+jan. 19, 2025 4:28:17 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Amadora
+jan. 19, 2025 4:28:17 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:28:17 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:28:20 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Amadora
+jan. 19, 2025 4:28:20 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Amadora
+jan. 19, 2025 4:28:20 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:28:20 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:28:23 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Troia
+jan. 19, 2025 4:28:24 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Amadora
+jan. 19, 2025 4:28:24 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+jan. 19, 2025 4:28:24 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:28:24 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:28:28 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:28:29 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:28:31 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Amadora
+jan. 19, 2025 4:28:31 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Troia
+jan. 19, 2025 4:28:31 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Sustainability criteria
+jan. 19, 2025 4:28:31 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:28:32 DA TARDE pt.pa.TransportMapController doShowTopFive
+INFO: User has clicked the Top Five button
+jan. 19, 2025 4:28:34 DA TARDE pt.pa.TransportMapController doShowStopsNRoutesAway
+INFO: User has clicked the StopsNRoutesAway button
+jan. 19, 2025 4:28:39 DA TARDE pt.pa.TransportMapController doShowCentralityDetails
+INFO: User has clicked the Centrality button
+jan. 19, 2025 4:32:14 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Cais do Sodré]
+jan. 19, 2025 4:32:19 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:32:21 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:32:22 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:32:24 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Seixal
+jan. 19, 2025 4:32:25 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Arrentela
+jan. 19, 2025 4:32:27 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Fogueteiro
+jan. 19, 2025 4:32:28 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 4:32:30 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:32:32 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Palmela
+jan. 19, 2025 4:32:35 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Setúbal
+jan. 19, 2025 4:32:36 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Troia
+jan. 19, 2025 4:32:42 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:32:43 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 4:32:48 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 4:32:50 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 4:32:52 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 4:33:05 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Sustainability
+jan. 19, 2025 4:33:08 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Duration
+jan. 19, 2025 4:33:12 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 4:33:17 DA TARDE pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: ERROR: User attemped to change the duration of a Route but it failed
+jan. 19, 2025 4:33:23 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Entrecampos, Algés]
+jan. 19, 2025 4:33:27 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Entrecampos, Reboleira]
+jan. 19, 2025 4:33:30 DA TARDE pt.pa.TransportMapController doChangeBicycleRouteDuration
+INFO: INFO: User has changed the duration of a Route
+jan. 19, 2025 4:33:39 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownEntrecampos
+jan. 19, 2025 4:33:41 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Reboleira
+jan. 19, 2025 4:33:46 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Entrecampos
+jan. 19, 2025 4:33:46 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Reboleira
+jan. 19, 2025 4:33:46 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Duration criteria
+jan. 19, 2025 4:33:46 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 4:33:47 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Entrecampos, Reboleira]
+jan. 19, 2025 4:42:23 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 4:42:24 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Alcochete
+jan. 19, 2025 5:29:42 DA TARDE pt.pa.TransportMapController doShowCentralityDetails
+INFO: User has clicked the Centrality button
+jan. 19, 2025 5:29:44 DA TARDE pt.pa.TransportMapController doShowStopsNRoutesAway
+INFO: User has clicked the StopsNRoutesAway button
+jan. 19, 2025 5:29:57 DA TARDE pt.pa.TransportMapController doShowTopFive
+INFO: User has clicked the Top Five button
+jan. 19, 2025 5:30:03 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Criteria Dropdown Distance
+jan. 19, 2025 5:30:07 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 5:30:08 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 5:30:09 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Cais do Sodré
+jan. 19, 2025 5:30:10 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Entrecampos
+jan. 19, 2025 5:30:12 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 5:30:13 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++14.4
+11
+4.2
+true, Train - Blue Line
++16.56
+17
+3.6
+true]}, vertexOutbound=Vertex{Barreiro}, vertexInbound=Vertex{Pinhal Novo}}
+jan. 19, 2025 5:30:16 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Odivelas
+jan. 19, 2025 5:30:20 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 5:30:21 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 5:30:23 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Coina
+jan. 19, 2025 5:30:26 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Barreiro, Pinhal Novo]
+jan. 19, 2025 5:30:29 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Pinhal Novo
+jan. 19, 2025 5:30:30 DA TARDE pt.pa.TransportMapController doShowVertexDetails
+INFO: Vertex clicked: Barreiro
+jan. 19, 2025 5:30:34 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Origin DropdownAlgés
+jan. 19, 2025 5:30:35 DA TARDE pt.pa.TransportMapController triggerLog
+INFO: Destination Dropdown Cacém
+jan. 19, 2025 5:30:40 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Algés
+jan. 19, 2025 5:30:40 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Cacém
+jan. 19, 2025 5:30:40 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Distance criteria
+jan. 19, 2025 5:30:40 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 5:30:42 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Rio de Mouro, Oeiras]
+jan. 19, 2025 5:30:43 DA TARDE pt.pa.TransportMapController doDisableRoute
+INFO: INFO: User disabled an edge: Edge{{[Bus - Yellow Line
++9.6
+7
+4.8
+true, Train - Blue Line
++11.04
+12
+2.4
+true]}, vertexOutbound=Vertex{Rio de Mouro}, vertexInbound=Vertex{Oeiras}}
+jan. 19, 2025 5:30:44 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Algés
+jan. 19, 2025 5:30:44 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Cacém
+jan. 19, 2025 5:30:44 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Distance criteria
+jan. 19, 2025 5:30:44 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button
+jan. 19, 2025 5:30:48 DA TARDE pt.pa.TransportMapController doShowEdgeDetails
+INFO: Edge clicked: [Rio de Mouro, Oeiras]
+jan. 19, 2025 5:30:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following origin Stop: Algés
+jan. 19, 2025 5:30:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected the following destination Stop: Cacém
+jan. 19, 2025 5:30:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has selected: Distance criteria
+jan. 19, 2025 5:30:50 DA TARDE pt.pa.TransportMapController doShowLeastCostRoute
+INFO: User has clicked the Calculate Cost button

@@ -71,6 +71,11 @@ public class Stop {
         return this.longitude;
     }
 
+    /**
+     * Cria uma cópia desta Stop.
+     *
+     * @return uma nova instância de {@code Stop} com os mesmos valores desta Stop.
+     */
     public Stop copyStop() {
         return new Stop(this.stopCode, this.stopName, this.latitude, this.longitude);
     }

@@ -74,22 +74,48 @@ public class Route {
         return this.sustainability;
     }
 
+    /**
+     * Define a duração da Route.
+     *
+     * @param duration nova duração da Route, em minutos.
+     */
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
+    /**
+     * Define o estado da Route.
+     *
+     * @param state o novo estado da Route; {@code true} para ativo e {@code false} para inativo.
+     */
     public void setState(boolean state) {
         this.state = state;
     }
 
+    /**
+     * Retorna o estado atual da Route.
+     *
+     * @return {@code true} se a Route estiver ativa, {@code false} caso contrário.
+     */
     public boolean getState() {
         return this.state;
     }
 
+    /**
+     * Cria uma cópia desta Route.
+     *
+     * @return uma nova instância de {@code Route} com os mesmos valores desta Route.
+     */
     public Route copyRoute() {
         return new Route(this.transportType, this.distance, this.duration, this.sustainability, this.state);
     }
 
+    /**
+     * Retorna uma representação textual da Route.
+     *
+     * @return uma string que descreve o tipo de transporte, distância, duração,
+     *         sustentabilidade e estado da Route.
+     */
     public String toString() {
         return this.transportType.toString() + "\n+" + this.distance + "\n" + this.duration + "\n" + this.sustainability + "\n" + this.state;
     }

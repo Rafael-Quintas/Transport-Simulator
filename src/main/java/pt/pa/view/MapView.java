@@ -78,7 +78,6 @@ public class MapView extends BorderPane implements TransportMapUI {
     private boolean isSelectingCustomPath = false;
     private List<Vertex<Stop>> customPath = new ArrayList<>();
     private double currentCustomPathCost = 0.0;
-    private SmartGraphEdge<List<Route>, Stop> currentEdge;
     private TransportMapController controller;
 
     /**
@@ -138,7 +137,6 @@ public class MapView extends BorderPane implements TransportMapUI {
         });
 
         graphView.setEdgeDoubleClickAction(edge -> {
-            this.currentEdge = edge;
             controller.doShowEdgeDetails(edge);
         });
 
@@ -234,11 +232,15 @@ public class MapView extends BorderPane implements TransportMapUI {
         destinationDropdown.setStyle(dropdownFX);
         configureComboBox(destinationDropdown, 120);
 
+        List<String> stopNames = new ArrayList<>();
         for (Vertex<Stop> vertex : graph.vertices()) {
-            String stopName = vertex.element().getStopName();
-            originDropdown.getItems().add(stopName);
-            destinationDropdown.getItems().add(stopName);
+            stopNames.add(vertex.element().getStopName());
         }
+        Collections.sort(stopNames);
+
+
+        originDropdown.getItems().addAll(stopNames);
+        destinationDropdown.getItems().addAll(stopNames);
 
         criteriaDropdown = new ComboBox<>();
         criteriaDropdown.setPromptText("Criteria");
@@ -375,9 +377,12 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Exibe os detalhes de uma Stop na interface.
+     * Cria um painel vertical para exibir informações sobre rotas específicas de transporte.
      *
-     * @param numberOfRoutes Stop selecionada ({@link Stop}).
+     * @param text           o texto que identifica o tipo de transporte.
+     * @param numberOfRoutes o número de rotas associadas ao tipo de transporte.
+     * @param labelStyle     o estilo aplicado ao texto e número exibidos.
+     * @return um painel vertical ({@link VBox}) que exibe as informações.
      */
 
     private VBox createTransportRoute(String text, int numberOfRoutes, String labelStyle) {
@@ -392,6 +397,13 @@ public class MapView extends BorderPane implements TransportMapUI {
         return transportRoute;
     }
 
+    /**
+     * Atualiza o painel de rotas de transporte com novos dados.
+     *
+     * @param routeBox      o painel correspondente ao tipo de transporte.
+     * @param text          o texto identificador do tipo de transporte.
+     * @param numberOfRoutes o número atualizado de rotas associadas.
+     */
     private void updateTransportRoute(VBox routeBox, String text, int numberOfRoutes) {
         // Assume que o primeiro filho é o texto
         Label textLabel = (Label) routeBox.getChildren().get(0);
@@ -521,10 +533,14 @@ public class MapView extends BorderPane implements TransportMapUI {
 
         Button undoButton = new Button("Undo");
         undoButton.setOnAction(event -> {
-            controller.undo();
-            refreshGraphView();
-            refreshTableAfterUndo(edge, table, routes);
-            updateVisualizer();
+            try{
+                controller.undo();
+                refreshGraphView();
+                refreshTableAfterUndo(edge, table, routes);
+                updateVisualizer();
+            } catch (Exception e){
+                showWarning(e.getMessage());
+            }
         });
 
         VBox vbox = new VBox(10, deactivateAllButton, undoButton, table);
@@ -535,11 +551,22 @@ public class MapView extends BorderPane implements TransportMapUI {
         stage.show();
     }
 
+    /**
+     * Atualiza a tabela de rotas exibida com os dados fornecidos.
+     *
+     * @param table  a tabela a ser atualizada.
+     * @param routes a lista de rotas que será exibida na tabela.
+     */
     private void refreshTable(TableView<Route> table, List<Route> routes) {
         table.getItems().setAll(routes); // Replace the table's items with the updated list
         table.refresh(); // Force refresh to ensure UI consistency
     }
 
+    /**
+     * Atualiza a visualização gráfica do grafo para refletir alterações no modelo.
+     *
+     * Este método recarrega o painel gráfico utilizando as propriedades e o estilo definidos, reposicionando os vértices.
+     */
     private void refreshGraphView() {
         try {
             InputStream smartgraphProperties = getClass().getClassLoader().getResourceAsStream("smartgraph.properties");
@@ -566,6 +593,13 @@ public class MapView extends BorderPane implements TransportMapUI {
         }
     }
 
+    /**
+     * Atualiza a tabela de rotas após desfazer uma ação, sincronizando os dados com o modelo.
+     *
+     * @param edge  a aresta cujas rotas foram alteradas.
+     * @param table a tabela a ser atualizada.
+     * @param routes a lista de rotas exibida na tabela.
+     */
     private void refreshTableAfterUndo(SmartGraphEdge<List<Route>, Stop> edge, TableView<Route> table, List<Route> routes) {
         Vertex<Stop>[] adjacentStops = edge.getUnderlyingEdge().vertices();
 
@@ -581,6 +615,12 @@ public class MapView extends BorderPane implements TransportMapUI {
         }
     }
 
+    /**
+     * Procura rotas correspondentes entre dois vértices no grafo.
+     *
+     * @param adjacentStops os vértices adjacentes representando os extremos da aresta.
+     * @return a lista de rotas associada à conexão entre os vértices, ou {@code null} se não encontrada.
+     */
     private List<Route> findRoutesByStops(Vertex<Stop>[] adjacentStops) {
         String stopName1 = adjacentStops[0].element().getStopName();
         String stopName2 = adjacentStops[1].element().getStopName();
@@ -776,10 +816,10 @@ public class MapView extends BorderPane implements TransportMapUI {
     }
 
     /**
-     * Configura o estilo e o comportamento de um {@link ComboBox}.
+     * Define a configuração de estilo e largura preferencial para um {@link ComboBox}.
      *
-     * @param comboBox ComboBox a ser configurado.
-     * @param prefWidth largura preferencial do ComboBox.
+     * @param comboBox  o ComboBox a ser configurado.
+     * @param prefWidth a largura preferencial do ComboBox.
      */
     private void configureComboBox(ComboBox<String> comboBox, int prefWidth) {
         // Configura o cellFactory para os itens do ComboBox
