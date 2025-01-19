@@ -128,30 +128,29 @@ public class TransportMapController implements Observer {
 
             if (view.getCustomPath().isEmpty() || model.isAdjacent(view.getCustomPath().get(view.getCustomPath().size() - 1), selectedVertex)) {
                 List<Vertex<Stop>> customPath = view.getCustomPath();
-                view.addToCustomPath(selectedVertex);
+                Vertex<Stop> lastVertex = customPath.isEmpty() ? null : customPath.get(customPath.size() - 1);
 
-                if (customPath.size() > 1) {
-                    Vertex<Stop> lastVertex = customPath.get(customPath.size() - 2);
+                if (lastVertex != null) {
                     WeightCalculationStrategy strategy = model.createStrategy(view.getCriteriaDropdown().getValue().toLowerCase());
-
                     double edgeCost = calculateEdgeCost(lastVertex, selectedVertex, strategy);
 
-                    // Aplicar o OFFSET se for SustainabilityStrategy
-                    if (strategy instanceof SustainabilityStrategy) {
-                        edgeCost -= SustainabilityStrategy.OFFSET;
+                    if (edgeCost == Double.POSITIVE_INFINITY) {
+                        view.showWarning("No valid route between " + lastVertex.element().getStopName() + " and " + selectedVertex.element().getStopName());
+                        return;
                     }
 
                     view.updateCurrentCustomPathCost(edgeCost);
-
                     view.highlightEdge(lastVertex, selectedVertex, strategy);
                 }
 
+                view.addToCustomPath(selectedVertex);
                 view.showNotification("Vertex added to custom path: " + selectedVertex.element().getStopName());
             } else {
                 view.showWarning("Selected Stop is not adjacent to the last Stop in the path.");
             }
         }
     }
+
 
     /**
      * Calcula o custo da aresta entre dois vértices com base numa estratégia de cálculo de peso.
@@ -165,10 +164,12 @@ public class TransportMapController implements Observer {
         return model.getGraph().incidentEdges(start).stream()
                 .filter(edge -> model.getGraph().opposite(start, edge).equals(end))
                 .flatMap(edge -> edge.element().stream())
-                .mapToDouble(route -> strategy.calculateWeight(route))
+                .filter(Route::getState) // Considera apenas rotas ativas
+                .mapToDouble(strategy::calculateWeight)
                 .min()
                 .orElse(Double.POSITIVE_INFINITY);
     }
+
 
     public void doDisableRoute(SmartGraphEdge<List<Route>, Stop> edge, List<Route> routesToDisable) {
         logger.info("INFO: User disabled an edge: " + edge.getUnderlyingEdge());

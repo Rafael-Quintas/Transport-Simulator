@@ -510,6 +510,7 @@ public class MapView extends BorderPane implements TransportMapUI {
 
                 controller.doDisableRoute(edge, List.of(route));
                 refreshTable(table, routes);
+                updateVisualizer();
             });
 
             return activeProperty;
@@ -539,6 +540,7 @@ public class MapView extends BorderPane implements TransportMapUI {
         deactivateAllButton.setOnAction(event -> {
             controller.doDisableRoute(edge, routes);
             refreshTable(table, routes);
+            updateVisualizer();
         });
 
         // Button to undo changes
@@ -547,6 +549,7 @@ public class MapView extends BorderPane implements TransportMapUI {
             controller.undo(); // Undo changes in the controller
             refreshGraphView();
             refreshTableAfterUndo(edge, table, routes);
+            updateVisualizer();
         });
 
         VBox vbox = new VBox(10, deactivateAllButton, undoButton, table);

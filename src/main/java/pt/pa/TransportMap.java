@@ -234,8 +234,8 @@ public class TransportMap extends Subject implements Originator {
         List<Edge<List<Route>, Stop>> edgeList = (List<Edge<List<Route>, Stop>>) graph.edges();
         int total = 0;
 
-        for (Edge<List<Route>, Stop> e : edgeList) {
-            total += e.element().size();
+        for (Edge<List<Route>, Stop> edge : edgeList) {
+            total += (int) edge.element().stream().filter(Route::getState).count();
         }
 
         return total;
@@ -273,7 +273,7 @@ public class TransportMap extends Subject implements Originator {
     private int countRoutesByTransport(List<Route> routes, TransportType type) {
         int count = 0;
         for (Route route : routes) {
-            if (route.getTransportType().equals(type)) {
+            if (route.getTransportType().equals(type) && route.getState()) {
                 count++;
             }
         }
@@ -684,3 +684,5 @@ public class TransportMap extends Subject implements Originator {
         }
     }
 }
+
+
