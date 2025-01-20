@@ -331,7 +331,7 @@ public class MapView extends BorderPane implements TransportMapUI {
         walkRoutes = createTransportRoute("Walk", model.numberOfRoutesByTransport(TransportType.WALK), labelStyle);
         bicycleRoutes = createTransportRoute("Bicycle", model.numberOfRoutesByTransport(TransportType.BICYCLE), labelStyle);
 
-        // Organizer o número de routes para transportes num layout horizontal
+        // Organizar o número de routes para transportes num layout horizontal
         HBox transportRoutes = new HBox(15, totalRoutes, busRoutes, trainRoutes, boatRoutes, walkRoutes, bicycleRoutes);
 
         calculateLabel = new Label("Total Path Cost: ");
@@ -602,8 +602,6 @@ public class MapView extends BorderPane implements TransportMapUI {
      */
     private void refreshTableAfterUndo(SmartGraphEdge<List<Route>, Stop> edge, TableView<Route> table, List<Route> routes) {
         Vertex<Stop>[] adjacentStops = edge.getUnderlyingEdge().vertices();
-
-        // Econtrasse otas correspondentes no grafo
         List<Route> updatedRoutes = findRoutesByStops(adjacentStops);
 
         if (updatedRoutes != null) {
