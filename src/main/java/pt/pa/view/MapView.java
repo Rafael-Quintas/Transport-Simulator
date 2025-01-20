@@ -497,7 +497,7 @@ public class MapView extends BorderPane implements TransportMapUI {
             activeProperty.addListener((observable, oldValue, newValue) -> {
                 Route route = cellData.getValue();
 
-                controller.doDisableRoute(edge, List.of(route));
+                controller.doDisableRoute(List.of(route));
                 refreshTable(table, routes);
                 updateVisualizer();
             });
@@ -526,7 +526,7 @@ public class MapView extends BorderPane implements TransportMapUI {
 
         Button deactivateAllButton = new Button("Deactivate all routes");
         deactivateAllButton.setOnAction(event -> {
-            controller.doDisableRoute(edge, routes);
+            controller.doDisableRoute(routes);
             refreshTable(table, routes);
             updateVisualizer();
         });

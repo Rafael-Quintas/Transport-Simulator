@@ -13,8 +13,8 @@ import java.util.*;
  * @author Rafael Quintas, Rafael Pato, Guilherme Pereira
  */
 public class Path {
-    private final List<Vertex<Stop>> path;
-    private final double totalCost;
+    private List<Vertex<Stop>> path;
+    private double totalCost;
 
     /**
      * Construtor que cria uma instância de {@code Path}.

@@ -168,13 +168,12 @@ public class TransportMapController {
     /**
      * Desativa as rotas selecionadas numa aresta, alterando o seu estado para inativo.
      *
-     * @param edge            a aresta que contém as rotas a serem desativadas.
      * @param routesToDisable a lista de rotas a desativar.
      */
-    public void doDisableRoute(SmartGraphEdge<List<Route>, Stop> edge, List<Route> routesToDisable) {
-        logger.info("INFO: User disabled an edge: " + edge.getUnderlyingEdge());
+    public void doDisableRoute(List<Route> routesToDisable) {
+        logger.info("INFO: User disabled an edge");
         caretaker.saveState();
-        model.disableRoute(edge.getUnderlyingEdge(), routesToDisable);
+        model.disableRoute(routesToDisable);
     }
 
     /**

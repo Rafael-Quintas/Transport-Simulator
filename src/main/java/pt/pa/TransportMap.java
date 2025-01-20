@@ -529,7 +529,6 @@ public class TransportMap implements Originator {
             Vertex<Stop> u = path.get(i);
             Vertex<Stop> v = path.get(i + 1);
 
-            // Reutilizando calculateCostBetweenStops
             double edgeCost = calculateCostBetweenStops(u, v, transports, strategy);
             totalCost += edgeCost;
         }
@@ -555,9 +554,6 @@ public class TransportMap implements Originator {
                 .min()
                 .orElseThrow(() -> new IllegalStateException("No valid routes found between " + start.element().getStopName() + " and " + end.element().getStopName()));
     }
-
-
-
 
     /**
      * Cria uma estratégia de cálculo de peso com base no critério fornecido.
@@ -657,10 +653,9 @@ public class TransportMap implements Originator {
     /**
      * Desativa as rotas especificadas de uma aresta, alterando o estado das rotas para falso.
      *
-     * @param edge            a aresta que contém as rotas a serem desativadas.
      * @param routesToDisable lista de rotas que serão desativadas.
      */
-    public void disableRoute(Edge<List<Route>, Stop> edge, List<Route> routesToDisable) {
+    public void disableRoute(List<Route> routesToDisable) {
         for (Route route : routesToDisable) {
             route.setState(false);
         }
